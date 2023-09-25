@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>xyz.auriium</groupId>
+    <artifactId>mattlib2</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0-SNAPSHOT</version>
+    <modules>
+        <module>mattlib2-api</module>
+        <module>mattlib2-rev</module>
+        <module>mattlib2-reflection</module>
+        <module>mattlib2-log</module>
+        <module>mattlib2-auto</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>lib</id>
+            <url>file://${user.home}/wpilib/2023/maven</url>
+        </repository>
+        <repository>
+            <id>superyuuki</id>
+            <url>https://repo.superyuuki.com/releases</url>
+        </repository>
+    </repositories>
+
+
+
+
+</project>

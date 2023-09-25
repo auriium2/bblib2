@@ -1,0 +1,6 @@
+[idscomponent]
+id = "default:2 comp!arl: 4"
+[leftSomeComponent]
+confInt = 4
+[rightSomeComponent]
+confInt = 7
