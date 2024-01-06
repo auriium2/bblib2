@@ -1,6 +1,7 @@
 package xyz.auriium.mattlib2.rev;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.MotorFeedbackSensor;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import xyz.auriium.mattlib2.hard.ILinearController;
@@ -57,12 +58,24 @@ public class BuiltInSparkController extends BaseSparkMotor implements ILinearCon
     }
 
     @Override
-    public void controlToRotationalReference(double setpointMechanism_normalizedRotations) {
+    public void controlToRotationalReference(double setpoint_mechanismNormalizedRotations) {
 
     }
 
     @Override
-    public void controlToRotationalReference(double setpointMechanism_normalizedRotations, double measurementMechanism_normalizedRotations) {
+    public void controlToRotationalReference(double setpoint_mechanismNormalizedRotations, double measurement_mechanismNormalizedRotations) {
 
+    }
+
+    @Override
+    public void controlToInfiniteRotationalReference(double setpoint_mechanismRotations) {
+        double setpoint_encoderRotations = setpoint_mechanismRotations / motorConfig.encoderToMechanismCoefficient();
+
+        localPidController.setReference(setpoint_encoderRotations, CANSparkMax.ControlType.kPosition);
+    }
+
+    @Override
+    public void controlToInfiniteRotationalReference(double setpoint_mechanismRotations, double measurement_mechanismRotations) {
+        throw Exceptions.CANNOT_EXTERNAL_FEEDBACK_INTERNAL;
     }
 }

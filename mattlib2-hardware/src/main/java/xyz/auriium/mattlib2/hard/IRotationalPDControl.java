@@ -5,16 +5,20 @@ public interface IRotationalPDControl {
 
     /**
      * You should call this every frame. Don't call the other version if you call this one.
-     * @param setpointMechanism_normalizedRotations desired position of the mechanism in meters
+     * @param setpoint_mechanismNormalizedRotations desired position of the mechanism in meters
      */
-    void controlToRotationalReference(double setpointMechanism_normalizedRotations);
+    void controlToRotationalReference(double setpoint_mechanismNormalizedRotations);
 
     /**
      * You should call this every frame. Don't call the other version if you call this one.
-     * @param setpointMechanism_normalizedRotations position of the mechanism in meters
-     * @param measurementMechanism_normalizedRotations position of a substitute encoder readout.
+     * @param setpoint_mechanismNormalizedRotations position of the mechanism in meters
+     * @param measurement_mechanismNormalizedRotations position of a substitute encoder readout.
      *                                                 Using this after using moveToReference with internal encoder (not substitute) will cause derivative whiplash
      */
-    void controlToRotationalReference(double setpointMechanism_normalizedRotations, double measurementMechanism_normalizedRotations);
+    void controlToRotationalReference(double setpoint_mechanismNormalizedRotations, double measurement_mechanismNormalizedRotations);
 
+
+    void controlToInfiniteRotationalReference(double setpoint_mechanismRotations);
+
+    void controlToInfiniteRotationalReference(double setpoint_mechanismRotations, double measurement_mechanismRotations);
 }

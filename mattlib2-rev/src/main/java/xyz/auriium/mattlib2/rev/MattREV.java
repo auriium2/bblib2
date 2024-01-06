@@ -11,7 +11,7 @@ import xyz.auriium.mattlib2.log.components.impl.CANNetworkedConfig;
 import xyz.auriium.mattlib2.log.components.impl.MotorNetworkedConfig;
 import xyz.auriium.mattlib2.log.components.impl.PIDConfig;
 
-public class MattCTRE {
+public class MattREV {
 
 
     static CANSparkMax createSparkmax(CANNetworkedConfig canComponent) {

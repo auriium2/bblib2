@@ -30,6 +30,7 @@ public interface IPeriodicLooped {
 
     /**
      * This function should be run in robot periodic
+     * This function should also BE RUN BEFORE ALL USER ROBOT CODE  / SUBSYSTEM LOOPS
      */
     default void robotPeriodic() {
 
