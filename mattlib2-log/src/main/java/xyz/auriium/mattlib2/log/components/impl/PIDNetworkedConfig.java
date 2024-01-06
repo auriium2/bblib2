@@ -6,7 +6,7 @@ import xyz.auriium.mattlib2.log.annotation.Tune;
 import xyz.auriium.mattlib2.log.components.INetworkedConfig;
 import yuukonfig.core.annotate.Key;
 
-public interface PIDConfig extends INetworkedConfig {
+public interface PIDNetworkedConfig extends INetworkedConfig {
 
     @Tune
     @Key("p")

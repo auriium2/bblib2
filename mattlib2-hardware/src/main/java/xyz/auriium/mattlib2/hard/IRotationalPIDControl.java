@@ -1,6 +1,6 @@
 package xyz.auriium.mattlib2.hard;
 
-public interface IRotationalPDControl {
+public interface IRotationalPIDControl {
 
 
     /**

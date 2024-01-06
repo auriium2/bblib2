@@ -9,6 +9,7 @@ import net.bytebuddy.implementation.*;
 import net.bytebuddy.jar.asm.Opcodes;
 import net.bytebuddy.matcher.ElementMatchers;
 import xyz.auriium.mattlib2.Exceptions;
+import xyz.auriium.mattlib2.IPeriodicLooped;
 import xyz.auriium.mattlib2.Mattlib2Exception;
 import xyz.auriium.mattlib2.log.components.INetworkedConfig;
 import yuukonfig.LogComponentManipulator;
@@ -130,7 +131,7 @@ public class MattLog {
     /**
      * If this isn't called, your code will explode
      */
-    public IHasLifecycle[] initializeComponentsAndGenerateLoops() {
+    public IPeriodicLooped[] initializeComponentsAndGenerateLoops() {
         hasBeenInitialized = true;
 
         Map<ProcessPath, Class<?>> loadAs = new HashMap<>();

@@ -1,43 +1,42 @@
 package xyz.auriium.mattlib2.rev;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.MotorFeedbackSensor;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import xyz.auriium.mattlib2.hard.ILinearController;
 import xyz.auriium.mattlib2.hard.IRotationalController;
 import xyz.auriium.mattlib2.log.components.impl.CANNetworkedConfig;
 import xyz.auriium.mattlib2.log.components.impl.MotorNetworkedConfig;
-import xyz.auriium.mattlib2.log.components.impl.PIDConfig;
+import xyz.auriium.mattlib2.log.components.impl.PIDNetworkedConfig;
 
 import java.util.Optional;
 
 public class BuiltInSparkController extends BaseSparkMotor implements ILinearController, IRotationalController {
 
     final SparkMaxPIDController localPidController;
-    final PIDConfig PIDConfig;
+    final PIDNetworkedConfig PIDNetworkedConfig;
 
-    BuiltInSparkController(CANSparkMax sparkMax, CANNetworkedConfig canConfig, MotorNetworkedConfig motorConfig, PIDConfig pdConfig, RelativeEncoder encoder) {
+    BuiltInSparkController(CANSparkMax sparkMax, CANNetworkedConfig canConfig, MotorNetworkedConfig motorConfig, PIDNetworkedConfig pdConfig, RelativeEncoder encoder) {
         super(sparkMax, canConfig, motorConfig, encoder);
         localPidController = sparkMax.getPIDController();
-        PIDConfig = pdConfig;
+        PIDNetworkedConfig = pdConfig;
     }
 
     //Logging stuff
 
     @Override
     public void init() {
-        localPidController.setP(PIDConfig.pConstant());
-        localPidController.setI(PIDConfig.iConstant());
-        localPidController.setD(PIDConfig.dConstant());
+        localPidController.setP(PIDNetworkedConfig.pConstant());
+        localPidController.setI(PIDNetworkedConfig.iConstant());
+        localPidController.setD(PIDNetworkedConfig.dConstant());
     }
 
     @Override
     public void tunePeriodic() {
-        if (PIDConfig.hasUpdated()) {
-            localPidController.setP(PIDConfig.pConstant());
-            localPidController.setI(PIDConfig.iConstant());
-            localPidController.setD(PIDConfig.dConstant());
+        if (PIDNetworkedConfig.hasUpdated()) {
+            localPidController.setP(PIDNetworkedConfig.pConstant());
+            localPidController.setI(PIDNetworkedConfig.iConstant());
+            localPidController.setD(PIDNetworkedConfig.dConstant());
         }
     }
 
@@ -54,17 +53,38 @@ public class BuiltInSparkController extends BaseSparkMotor implements ILinearCon
 
     @Override
     public void controlToLinearReference(double setpointMechanism_meters, double measurementMechanism_meters) {
-
+        throw Exceptions.CANNOT_EXTERNAL_FEEDBACK_INTERNAL;
     }
 
     @Override
     public void controlToRotationalReference(double setpoint_mechanismNormalizedRotations) {
+        //This appears to be like the continuous mode code but explicit. I do not understand it.
 
+        double currentAngle_mechanismInfiniteRotations = angularPosition_mechanismRotations();
+        double currentAngle_mechanismNormalizedRotations = currentAngle_mechanismInfiniteRotations % 1d;
+        if (currentAngle_mechanismNormalizedRotations < 0d) {
+            currentAngle_mechanismNormalizedRotations += 1d; //no idea why this works
+        }
+
+        // take (infinite - normalized) for (current offset) then add (setpoint normalized) for (setpoint infinite)
+        double reference_mechanismInfiniteRotations = setpoint_mechanismNormalizedRotations
+                + currentAngle_mechanismInfiniteRotations
+                - currentAngle_mechanismNormalizedRotations;
+
+
+        // more modulus code i don't understand
+        if (setpoint_mechanismNormalizedRotations - currentAngle_mechanismNormalizedRotations > 0.5) {
+            reference_mechanismInfiniteRotations -= 1d;
+        } else if (setpoint_mechanismNormalizedRotations - currentAngle_mechanismNormalizedRotations < -0.5) {
+            reference_mechanismInfiniteRotations += 1d;
+        }
+
+        controlToInfiniteRotationalReference(reference_mechanismInfiniteRotations);
     }
 
     @Override
     public void controlToRotationalReference(double setpoint_mechanismNormalizedRotations, double measurement_mechanismNormalizedRotations) {
-
+        throw Exceptions.CANNOT_EXTERNAL_FEEDBACK_INTERNAL;
     }
 
     @Override

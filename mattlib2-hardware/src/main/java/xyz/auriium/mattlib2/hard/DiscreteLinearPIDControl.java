@@ -3,14 +3,14 @@ package xyz.auriium.mattlib2.hard;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.numbers.N1;
-import xyz.auriium.mattlib2.log.components.impl.PIDConfig;
+import xyz.auriium.mattlib2.log.components.impl.PIDNetworkedConfig;
 
 /**
  * A tuneable PD controller from Mattlib2
  */
-public class DiscreteLinearPDControl implements ILinearPDControl {
+public class DiscreteLinearPIDControl implements ILinearPIDControl {
 
-    final PIDConfig pdComponent;
+    final PIDNetworkedConfig pdComponent;
     final ILinearEncoder encoder; //nullable
     final IControlEffortReceiver<N1> actuator;
     final boolean hasEncoder;
@@ -20,19 +20,19 @@ public class DiscreteLinearPDControl implements ILinearPDControl {
     Vector<N1> cachedVector = VecBuilder.fill(0);
     double lastPositionForLogging = 0;
 
-    DiscreteLinearPDControl(PIDConfig pdComponent, ILinearEncoder encoder, IControlEffortReceiver<N1> actuator, boolean hasEncoder) {
+    DiscreteLinearPIDControl(PIDNetworkedConfig pdComponent, ILinearEncoder encoder, IControlEffortReceiver<N1> actuator, boolean hasEncoder) {
         this.pdComponent = pdComponent;
         this.encoder = encoder;
         this.actuator = actuator;
         this.hasEncoder = hasEncoder;
     }
 
-    public static DiscreteLinearPDControl withoutEncoder(PIDConfig pdComponent, IControlEffortReceiver<N1> actuator) {
-        return new DiscreteLinearPDControl(pdComponent, null, actuator, false);
+    public static DiscreteLinearPIDControl withoutEncoder(PIDNetworkedConfig pdComponent, IControlEffortReceiver<N1> actuator) {
+        return new DiscreteLinearPIDControl(pdComponent, null, actuator, false);
     }
 
-    public static DiscreteLinearPDControl withEncoder(PIDConfig pdComponent, IControlEffortReceiver<N1> actuator, ILinearEncoder encoder) {
-        return new DiscreteLinearPDControl(pdComponent, encoder, actuator, true);
+    public static DiscreteLinearPIDControl withEncoder(PIDNetworkedConfig pdComponent, IControlEffortReceiver<N1> actuator, ILinearEncoder encoder) {
+        return new DiscreteLinearPIDControl(pdComponent, encoder, actuator, true);
     }
 
     @Override
