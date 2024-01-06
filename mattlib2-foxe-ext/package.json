@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@foxglove/eslint-plugin": "1.0.0",
-    "@foxglove/studio": "1.71.0",
+    "@foxglove/studio": "^1.71.0",
     "@types/react": "18.2.22",
     "@types/react-dom": "18.2.7",
     "@typescript-eslint/eslint-plugin": "6.7.2",
@@ -38,5 +38,9 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "typescript": "5.2.2"
+  },
+  "dependencies": {
+    "@foxglove/studio-base": "^1.48.0",
+    "tss-react": "^4.9.3"
   }
 }

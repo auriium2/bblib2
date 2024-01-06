@@ -1,6 +1,7 @@
 import { ExtensionContext } from "@foxglove/studio";
-import { initExamplePanel } from "./ExamplePanel";
+import { initTuningPanel } from "./ConfigTunePanel";
 
 export function activate(extensionContext: ExtensionContext): void {
-  extensionContext.registerPanel({ name: "example-panel", initPanel: initExamplePanel });
+  extensionContext.registerPanel({ name: "mattlib2-configPanel", initPanel: initTuningPanel });
+
 }

@@ -11,27 +11,132 @@
     <modules>
         <module>mattlib2-api</module>
         <module>mattlib2-rev</module>
-        <module>mattlib2-reflection</module>
         <module>mattlib2-log</module>
         <module>mattlib2-auto</module>
+        <module>mattlib2-log-foxe</module>
+        <module>mattlib2-hardware</module>
+        <module>mattlib2-test</module>
     </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>install</phase>
+                        <goals><goal>jar-no-fork</goal></goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>yuuki-releases</id>
+            <name>releases</name>
+            <url>https://repo.superyuuki.com/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>yuuki-snapshots</id>
+            <name>snapshots</name>
+            <url>https://repo.superyuuki.com/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <mattlib2.wpi.year>2023</mattlib2.wpi.year>
+        <mattlib2.wpi.version>4.3</mattlib2.wpi.version>
+        <mattlib2.wpi.versionTag>${mattlib2.wpi.year}.${mattlib2.wpi.version}</mattlib2.wpi.versionTag>
     </properties>
 
     <repositories>
-        <repository>
-            <id>lib</id>
-            <url>file://${user.home}/wpilib/2023/maven</url>
-        </repository>
+
         <repository>
             <id>superyuuki</id>
             <url>https://repo.superyuuki.com/releases</url>
         </repository>
+        <repository>
+            <id>wpi2</id>
+            <url>https://frcmaven.wpi.edu/artifactory/release/</url>
+        </repository>
+        <repository>
+            <id>wpi3</id>
+            <url>https://frcmaven.wpi.edu/ui/native/release/edu/wpi/first/wpilibj/wpilibj-java/</url>
+        </repository>
     </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>xyz.auriium</groupId>
+            <artifactId>yuukonstants</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>1.14.5</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.measure</groupId>
+            <artifactId>unit-api</artifactId>
+            <version>2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>tech.units</groupId>
+            <artifactId>indriya</artifactId>
+            <version>2.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.9.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.9.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.9.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-commons</artifactId>
+            <version>1.9.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>4.11.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>4.11.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.wpilibj</groupId>
+            <artifactId>wpilibj-java</artifactId>
+            <version>2023.4.3</version>
+        </dependency>
+    </dependencies>
+
 
 
 

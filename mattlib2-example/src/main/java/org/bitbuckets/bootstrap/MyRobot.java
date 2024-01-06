@@ -1,32 +1,35 @@
 package org.bitbuckets.bootstrap;
 
+import edu.wpi.first.math.system.LinearSystemLoop;
 import edu.wpi.first.wpilibj.TimedRobot;
-import xyz.auriium.mattlib2.MattLog;
-import xyz.auriium.mattlib2.annotation.Conf;
-import xyz.auriium.mattlib2.annotation.Log;
-import xyz.auriium.mattlib2.components.IComponent;
-import xyz.auriium.mattlib2.components.impl.MotorComponent;
-import xyz.auriium.mattlib2.components.impl.PIDComponent;
-import xyz.auriium.mattlib2.nt.NetworkLogFeature;
-import xyz.auriium.mattlib2.nt.NetworkTuneFeature;
-
-import java.util.concurrent.CompletableFuture;
+import xyz.auriium.mattlib2.log.annotation.Conf;
+import xyz.auriium.mattlib2.log.annotation.Log;
+import xyz.auriium.mattlib2.utils.ExceptionUtil;
 
 public class MyRobot extends TimedRobot {
+/*
 
-    static final MattLog LOG = new MattLog(new NetworkLogFeature(), new NetworkTuneFeature());
+    private interface SomeComponent extends IComponent {
+
+        @Log
+        void logSomeValue(double d);
+
+        @Conf
+        int confInt();
+
+    }
+
+
+    static final MattLog LOG = new MattLog(new NetworkMattLogger());
     static final SomeComponent component2 = LOG.loadWaiting(SomeComponent.class, "rightSomeComponent");
+*/
 
-
-
+/*
 
     @Override
     public void robotInit() {
 
-
-        LOG.init();
-
-
+        ExceptionUtil.wrapExceptionalRunnable(LOG::init).run();
 
         component2.logSomeValue(2);
 
@@ -38,8 +41,7 @@ public class MyRobot extends TimedRobot {
         }
 
 
-
-
     }
+*/
 
 }
