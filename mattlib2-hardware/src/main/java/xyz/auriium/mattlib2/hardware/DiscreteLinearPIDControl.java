@@ -1,16 +1,17 @@
-package xyz.auriium.mattlib2.hard;
+package xyz.auriium.mattlib2.hardware;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.numbers.N1;
-import xyz.auriium.mattlib2.log.components.impl.PIDNetworkedConfig;
+import xyz.auriium.mattlib2.IPeriodicLooped;
+import xyz.auriium.mattlib2.hardware.config.PIDComponent;
 
 /**
  * A tuneable PD controller from Mattlib2
  */
-public class DiscreteLinearPIDControl implements ILinearPIDControl {
+public class DiscreteLinearPIDControl implements ILinearPIDControl, IPeriodicLooped {
 
-    final PIDNetworkedConfig pdComponent;
+    final PIDComponent pdComponent;
     final ILinearEncoder encoder; //nullable
     final IControlEffortReceiver<N1> actuator;
     final boolean hasEncoder;
@@ -20,18 +21,20 @@ public class DiscreteLinearPIDControl implements ILinearPIDControl {
     Vector<N1> cachedVector = VecBuilder.fill(0);
     double lastPositionForLogging = 0;
 
-    DiscreteLinearPIDControl(PIDNetworkedConfig pdComponent, ILinearEncoder encoder, IControlEffortReceiver<N1> actuator, boolean hasEncoder) {
+    DiscreteLinearPIDControl(PIDComponent pdComponent, ILinearEncoder encoder, IControlEffortReceiver<N1> actuator, boolean hasEncoder) {
         this.pdComponent = pdComponent;
         this.encoder = encoder;
         this.actuator = actuator;
         this.hasEncoder = hasEncoder;
+
+        mattRegister();
     }
 
-    public static DiscreteLinearPIDControl withoutEncoder(PIDNetworkedConfig pdComponent, IControlEffortReceiver<N1> actuator) {
+    public static DiscreteLinearPIDControl withoutEncoder(PIDComponent pdComponent, IControlEffortReceiver<N1> actuator) {
         return new DiscreteLinearPIDControl(pdComponent, null, actuator, false);
     }
 
-    public static DiscreteLinearPIDControl withEncoder(PIDNetworkedConfig pdComponent, IControlEffortReceiver<N1> actuator, ILinearEncoder encoder) {
+    public static DiscreteLinearPIDControl withEncoder(PIDComponent pdComponent, IControlEffortReceiver<N1> actuator, ILinearEncoder encoder) {
         return new DiscreteLinearPIDControl(pdComponent, encoder, actuator, true);
     }
 
@@ -62,16 +65,6 @@ public class DiscreteLinearPIDControl implements ILinearPIDControl {
 
         //UPDATE LOGGER
         lastPositionForLogging = controlOutput;
-    }
-
-    @Override
-    public void init() {
-
-    }
-
-    @Override
-    public void robotPeriodic() {
-
     }
 
     @Override

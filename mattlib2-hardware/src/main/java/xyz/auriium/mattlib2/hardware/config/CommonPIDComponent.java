@@ -1,12 +1,14 @@
-package xyz.auriium.mattlib2.log.components.impl;
+package xyz.auriium.mattlib2.hardware.config;
 
+import xyz.auriium.mattlib2.log.INetworkedComponent;
 import xyz.auriium.mattlib2.log.annotation.HasUpdated;
-import xyz.auriium.mattlib2.log.annotation.Log;
 import xyz.auriium.mattlib2.log.annotation.Tune;
-import xyz.auriium.mattlib2.log.components.INetworkedConfig;
 import yuukonfig.core.annotate.Key;
 
-public interface PIDNetworkedConfig extends INetworkedConfig {
+/**
+ * Commonly reused details of a PID controller
+ */
+public interface CommonPIDComponent extends INetworkedComponent {
 
     @Tune
     @Key("p")
@@ -23,11 +25,5 @@ public interface PIDNetworkedConfig extends INetworkedConfig {
 
     @HasUpdated(keysToCheck = {"p", "i", "d"})
     boolean hasUpdated();
-
-    @Log
-    void reportError(double error);
-
-    @Log
-    void reportOutput(double output);
 
 }

@@ -1,4 +1,4 @@
-package xyz.auriium.mattlib2.hard;
+package xyz.auriium.mattlib2.hardware;
 
 /**
  * A rotation motor is a motor that contributes motion to a rotational closed set of [0,1) looping back around.

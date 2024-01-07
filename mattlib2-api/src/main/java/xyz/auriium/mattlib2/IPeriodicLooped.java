@@ -1,5 +1,7 @@
 package xyz.auriium.mattlib2;
 
+import yuukonstants.exception.ExplainedException;
+
 import java.util.Optional;
 
 /**
@@ -10,29 +12,37 @@ import java.util.Optional;
  */
 public interface IPeriodicLooped {
 
+
     /**
-     * This function should be run in robotInit of the robot.
-     * It is intended to run initialization code that cannot fail
-     * For stuff that can fail, put it in {@link #verifyInit()}
+     * This function should be called before mattlog is registered
      */
-    default void init() {
+    default void preInit() {
 
     }
 
     /**
-     * This fn should be called after {@link #init()}, probably in robotInit
+     * Registers the PeriodicLoop. This must be called.
+     */
+    default void mattRegister() { //I truly hate this, but WPI does it to simplify things and so will I
+        MattLoopManager.INSTANCE.register(this);
+    }
+
+
+    /**
+     * This fn should be called probably in robotInit
      * It is intended to run ONCE after init. It's body should make sure the class it is attached to is running ok
      * If not, it should return an exception (not throw it)
      */
-    default Optional<Exception> verifyInit() {
+    default Optional<ExplainedException> verifyInit() {
         return Optional.empty();
     }
 
     /**
      * This function should be run in robot periodic
+     * It is intended to be called to run operational logic that must happen periodically in order for the component to function
      * This function should also BE RUN BEFORE ALL USER ROBOT CODE  / SUBSYSTEM LOOPS
      */
-    default void robotPeriodic() {
+    default void logicPeriodic() {
 
     }
 

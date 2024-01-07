@@ -3,33 +3,38 @@ package xyz.auriium.mattlib2.rev;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-import xyz.auriium.mattlib2.hard.ILinearController;
-import xyz.auriium.mattlib2.hard.IRotationalController;
-import xyz.auriium.mattlib2.log.components.impl.CANNetworkedConfig;
-import xyz.auriium.mattlib2.log.components.impl.MotorNetworkedConfig;
-import xyz.auriium.mattlib2.log.components.impl.PIDNetworkedConfig;
+import xyz.auriium.mattlib2.hardware.ILinearController;
+import xyz.auriium.mattlib2.hardware.IRotationalController;
+import xyz.auriium.mattlib2.hardware.config.CommonMotorComponent;
+import xyz.auriium.mattlib2.hardware.config.IndividualMotorComponent;
+import xyz.auriium.mattlib2.hardware.config.MotorComponent;
+import xyz.auriium.mattlib2.hardware.config.PIDComponent;
+import yuukonstants.exception.ExplainedException;
 
 import java.util.Optional;
 
 public class BuiltInSparkController extends BaseSparkMotor implements ILinearController, IRotationalController {
 
     final SparkMaxPIDController localPidController;
-    final PIDNetworkedConfig PIDNetworkedConfig;
+    final PIDComponent PIDNetworkedConfig;
 
-    BuiltInSparkController(CANSparkMax sparkMax, CANNetworkedConfig canConfig, MotorNetworkedConfig motorConfig, PIDNetworkedConfig pdConfig, RelativeEncoder encoder) {
-        super(sparkMax, canConfig, motorConfig, encoder);
+    BuiltInSparkController(CANSparkMax sparkMax, MotorComponent motorComponent, PIDComponent pdConfig, RelativeEncoder encoder) {
+        super(sparkMax, motorComponent, encoder);
         localPidController = sparkMax.getPIDController();
         PIDNetworkedConfig = pdConfig;
     }
 
-    //Logging stuff
+    //logging stuff
 
     @Override
-    public void init() {
+    public Optional<ExplainedException> verifyInit() {
         localPidController.setP(PIDNetworkedConfig.pConstant());
         localPidController.setI(PIDNetworkedConfig.iConstant());
         localPidController.setD(PIDNetworkedConfig.dConstant());
+
+        return Optional.empty();
     }
+
 
     @Override
     public void tunePeriodic() {
@@ -44,9 +49,9 @@ public class BuiltInSparkController extends BaseSparkMotor implements ILinearCon
 
     @Override
     public void controlToLinearReference(double setpointMechanism_meters) {
-        Optional<Double> coefOptional = motorConfig.rotationToMeterCoefficient();
-        if (coefOptional.isEmpty()) throw xyz.auriium.mattlib2.hard.Exceptions.MOTOR_NOT_LINEAR(motorConfig.selfPath());
-        double convertedEncoderPosition = setpointMechanism_meters / motorConfig.rotationToMeterCoefficient().orElseThrow() / motorConfig.encoderToMechanismCoefficient();
+        Optional<Double> coefOptional = motorComponent.rotationToMeterCoefficient();
+        if (coefOptional.isEmpty()) throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
+        double convertedEncoderPosition = setpointMechanism_meters / motorComponent.rotationToMeterCoefficient().orElseThrow() / motorComponent.encoderToMechanismCoefficient();
 
         localPidController.setReference(convertedEncoderPosition, CANSparkMax.ControlType.kPosition);
     }
@@ -57,7 +62,7 @@ public class BuiltInSparkController extends BaseSparkMotor implements ILinearCon
     }
 
     @Override
-    public void controlToRotationalReference(double setpoint_mechanismNormalizedRotations) {
+    public void controlToNormalizedReference(double setpoint_mechanismNormalizedRotations) {
         //This appears to be like the continuous mode code but explicit. I do not understand it.
 
         double currentAngle_mechanismInfiniteRotations = angularPosition_mechanismRotations();
@@ -79,23 +84,23 @@ public class BuiltInSparkController extends BaseSparkMotor implements ILinearCon
             reference_mechanismInfiniteRotations += 1d;
         }
 
-        controlToInfiniteRotationalReference(reference_mechanismInfiniteRotations);
+        controlToInfiniteReference(reference_mechanismInfiniteRotations);
     }
 
     @Override
-    public void controlToRotationalReference(double setpoint_mechanismNormalizedRotations, double measurement_mechanismNormalizedRotations) {
+    public void controlToNormalizedReference(double setpoint_mechanismNormalizedRotations, double measurement_mechanismNormalizedRotations) {
         throw Exceptions.CANNOT_EXTERNAL_FEEDBACK_INTERNAL;
     }
 
     @Override
-    public void controlToInfiniteRotationalReference(double setpoint_mechanismRotations) {
-        double setpoint_encoderRotations = setpoint_mechanismRotations / motorConfig.encoderToMechanismCoefficient();
+    public void controlToInfiniteReference(double setpoint_mechanismRotations) {
+        double setpoint_encoderRotations = setpoint_mechanismRotations / motorComponent.encoderToMechanismCoefficient();
 
         localPidController.setReference(setpoint_encoderRotations, CANSparkMax.ControlType.kPosition);
     }
 
     @Override
-    public void controlToInfiniteRotationalReference(double setpoint_mechanismRotations, double measurement_mechanismRotations) {
+    public void controlToInfiniteReference(double setpoint_mechanismRotations, double measurement_mechanismRotations) {
         throw Exceptions.CANNOT_EXTERNAL_FEEDBACK_INTERNAL;
     }
 }

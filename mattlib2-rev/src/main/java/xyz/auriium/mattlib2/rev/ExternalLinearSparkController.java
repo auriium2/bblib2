@@ -2,10 +2,11 @@ package xyz.auriium.mattlib2.rev;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import xyz.auriium.mattlib2.hard.ILinearController;
-import xyz.auriium.mattlib2.hard.ILinearPIDControl;
-import xyz.auriium.mattlib2.log.components.impl.CANNetworkedConfig;
-import xyz.auriium.mattlib2.log.components.impl.MotorNetworkedConfig;
+import xyz.auriium.mattlib2.hardware.ILinearController;
+import xyz.auriium.mattlib2.hardware.ILinearPIDControl;
+import xyz.auriium.mattlib2.hardware.config.CommonMotorComponent;
+import xyz.auriium.mattlib2.hardware.config.IndividualMotorComponent;
+import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 
 public class ExternalLinearSparkController extends BaseSparkMotor implements ILinearController {
 
@@ -14,12 +15,11 @@ public class ExternalLinearSparkController extends BaseSparkMotor implements ILi
     ExternalLinearSparkController(
             CANSparkMax sparkMax,
             RelativeEncoder relativeEncoder,
-            CANNetworkedConfig canConfig,
-            MotorNetworkedConfig motorConfig,
+            MotorComponent motorComponent,
             ILinearPIDControl externalController
     ) {
 
-        super(sparkMax, canConfig, motorConfig, relativeEncoder);
+        super(sparkMax, motorComponent, relativeEncoder);
 
         linearController = externalController;
     }

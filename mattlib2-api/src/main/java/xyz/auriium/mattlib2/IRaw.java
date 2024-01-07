@@ -16,6 +16,8 @@ public interface IRaw {
      * @throws UnsupportedOperationException if you get the class identifier wrong (like if you tried to get a TalonSRX from a CANCODER)
      */
     @Deprecated
-    <T> T rawAccess(Class<T> clazz) throws UnsupportedOperationException; //needs to be migrated
+    default <T> T rawAccess(Class<T> clazz) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("does not implement " + clazz.getSimpleName());
+    }
 
 }

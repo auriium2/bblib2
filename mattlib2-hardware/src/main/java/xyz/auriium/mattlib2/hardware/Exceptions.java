@@ -1,4 +1,4 @@
-package xyz.auriium.mattlib2.hard;
+package xyz.auriium.mattlib2.hardware;
 
 
 import xyz.auriium.mattlib2.Mattlib2Exception;
@@ -28,5 +28,17 @@ public class Exceptions {
                 "fix the can id of the device, or find the actual id of the device and change the config to this"
         );
     }
+
+    public static Mattlib2Exception CANNOT_FORCE_ABSOLUTE = new Mattlib2Exception(
+            "hardware/cannotForceAbsolute",
+            "Absolute motors cannot be forced to an offset, yet you seem to have tried to do just that",
+            "do not call forceOffset on an absolute encoder"
+    );
+
+    public static Mattlib2Exception CANNOT_VELOCITY_ABSOLUTE = new Mattlib2Exception(
+            "hardware/cannotVelocityAbsolute",
+            "Absolute motors cannot report a velocity, yet you seem to have tried to do just that",
+            "do not call any velocity functions on an absolute encoder"
+    );
 
 }

@@ -1,17 +1,16 @@
-package xyz.auriium.mattlib2.hard;
+package xyz.auriium.mattlib2.hardware;
+
+import xyz.auriium.mattlib2.IRaw;
 
 /**
  * Represents an encoder in rotation space
  * Units in rotations ofc
  */
-public interface IRotationEncoder {
+public interface IRotationEncoder extends IRaw {
 
     /**
-     *
-     * @param offset_mechanismRotations The rotational distance (unbound) the encoder should think it is at currently
-     *
-     *
-     * Units in mechanism rotations, converted back to the encoder using the coefficient of motor to encoder
+     *ynits in mechanism rotations, converted back to the encoder using the coefficient of motor to encoder.
+     * @param offset_mechanismRotations The rotational distance (unbound) the encoder should think it is at currently. It's safe for this to be greater than normalized
      */
     void forceRotationalOffset(double offset_mechanismRotations);
 

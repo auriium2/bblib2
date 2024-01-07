@@ -1,10 +1,12 @@
-package xyz.auriium.mattlib2.hard;
+package xyz.auriium.mattlib2.hardware;
+
+import xyz.auriium.mattlib2.IRaw;
 
 /**
  * Represents an encoder, reporting data on a linear axis
  *
  */
-public interface ILinearEncoder {
+public interface ILinearEncoder extends IRaw {
 
     /**
      *

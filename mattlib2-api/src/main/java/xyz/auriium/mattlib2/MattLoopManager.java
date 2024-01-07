@@ -8,17 +8,13 @@ import java.util.List;
  */
 public class MattLoopManager {
 
-    final List<IPeriodicLooped> orderedThingsToBeLooped;
+    final List<IPeriodicLooped> orderedThingsToBeLooped = new ArrayList<>();
 
-    public MattLoopManager(List<IPeriodicLooped> orderedThingsToBeLooped) {
-        this.orderedThingsToBeLooped = orderedThingsToBeLooped;
-    }
+    public static final MattLoopManager INSTANCE = new MattLoopManager();
 
-    public MattLoopManager() {
-        this(new ArrayList<>());
-    }
+    public void register(IPeriodicLooped runnable) {
+        if (orderedThingsToBeLooped.contains(runnable)) return;
 
-    public void markForLooping(IPeriodicLooped runnable) {
         orderedThingsToBeLooped.add(runnable);
     }
 
@@ -40,6 +36,7 @@ public class MattLoopManager {
      * @param <T>
      */
     public <T extends IPeriodicLooped> T registerAndReturn(T someThing) {
+        if (orderedThingsToBeLooped.contains(someThing)) return someThing;
         orderedThingsToBeLooped.add(someThing);
 
         return someThing;

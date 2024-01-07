@@ -74,9 +74,9 @@ dependencies {
     testImplementation 'org.mockito:mockito-junit-jupiter:5.2.0'
 
     implementation 'net.bytebuddy:byte-buddy:1.14.2'
-    implementation 'xyz.auriium:mattlib2-auto:1.0.0-SNAPSHOT'
-    implementation 'xyz.auriium:mattlib2-log:1.0.0-SNAPSHOT'
-    implementation 'xyz.auriium:mattlib2-rev:1.0.0-SNAPSHOT'
+    implementation 'xyz.auriium:mattlib2-auto:1.0.7-SNAPSHOT'
+    implementation 'xyz.auriium:mattlib2-log:1.0.7-SNAPSHOT'
+    implementation 'xyz.auriium:mattlib2-rev:1.0.7-SNAPSHOT'
     implementation 'com.superyuuki:yuukonfig-core:3.1.1'
     implementation 'com.superyuuki:yuukonfig-toml:3.1.1'
 

@@ -1,11 +1,13 @@
 package xyz.auriium.mattlib2.rev;
 
-import com.revrobotics.*;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVLibError;
+import com.revrobotics.RelativeEncoder;
 import xyz.auriium.mattlib2.IPeriodicLooped;
-import xyz.auriium.mattlib2.hard.ILinearMotor;
-import xyz.auriium.mattlib2.hard.IRotationalMotor;
-import xyz.auriium.mattlib2.log.components.impl.CANNetworkedConfig;
-import xyz.auriium.mattlib2.log.components.impl.MotorNetworkedConfig;
+import xyz.auriium.mattlib2.hardware.ILinearMotor;
+import xyz.auriium.mattlib2.hardware.IRotationalMotor;
+import xyz.auriium.mattlib2.hardware.config.MotorComponent;
+import yuukonstants.exception.ExplainedException;
 
 import java.util.Optional;
 
@@ -16,15 +18,15 @@ import java.util.Optional;
 class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped {
 
     final CANSparkMax sparkMax;
-    final CANNetworkedConfig canConfig;
-    final MotorNetworkedConfig motorConfig;
+    final MotorComponent motorComponent;
     final RelativeEncoder encoder;
 
-    BaseSparkMotor(CANSparkMax sparkMax, CANNetworkedConfig canConfig, MotorNetworkedConfig motorConfig, RelativeEncoder encoder) {
+    BaseSparkMotor(CANSparkMax sparkMax, MotorComponent motorComponent, RelativeEncoder encoder) {
         this.sparkMax = sparkMax;
-        this.canConfig = canConfig;
-        this.motorConfig = motorConfig;
+        this.motorComponent = motorComponent;
         this.encoder = encoder;
+
+        mattRegister();
     }
 
     //PeriodicLooped stuff
@@ -33,16 +35,16 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
     double outputVoltage = 0;
 
     @Override
-    public Optional<Exception> verifyInit() {
+    public Optional<ExplainedException> verifyInit() {
 
         REVLibError err = sparkMax.restoreFactoryDefaults();
         if (err != REVLibError.kOk) {
-            return Optional.of(Exceptions.GENERIC_REV_ERROR( canConfig.selfPath() ));
+            return Optional.of(Exceptions.GENERIC_REV_ERROR( motorComponent.selfPath() ));
         }
 
         REVLibError vcError = sparkMax.enableVoltageCompensation(12);
         if (vcError != REVLibError.kOk) {
-            return Optional.of(Exceptions.VOLTAGE_COMPENSATION_FAILED( canConfig.selfPath() ));
+            return Optional.of(Exceptions.VOLTAGE_COMPENSATION_FAILED( motorComponent.selfPath() ));
         }
 
 
@@ -50,15 +52,15 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
     }
 
     @Override
-    public void robotPeriodic() {
+    public void logicPeriodic() {
         outputVoltage = sparkMax.getBusVoltage();
         outputCurrent = sparkMax.getOutputCurrent();
     }
 
     @Override
     public void logPeriodic() {
-        motorConfig.logCurrentDraw(outputCurrent);
-        motorConfig.logVoltageGiven(outputVoltage);
+        motorComponent.logCurrentDraw(outputCurrent);
+        motorComponent.logVoltageGiven(outputVoltage);
     }
 
     //Other stuff
@@ -87,17 +89,17 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
     @Override
     public void forceRotationalOffset(double offset_mechanismRotations) {
-        double convertedEncoderPosition = offset_mechanismRotations / motorConfig.rotationToMeterCoefficient().orElseThrow();
+        double convertedEncoderPosition = offset_mechanismRotations / motorComponent.rotationToMeterCoefficient().orElseThrow();
 
         encoder.setPosition(convertedEncoderPosition);
     }
 
     @Override
     public void forceLinearOffset(double linearOffset_mechanismMeters) {
-        Optional<Double> coefOptional = motorConfig.rotationToMeterCoefficient();
-        if (coefOptional.isEmpty()) throw xyz.auriium.mattlib2.hard.Exceptions.MOTOR_NOT_LINEAR(motorConfig.selfPath());
+        Optional<Double> coefOptional = motorComponent.rotationToMeterCoefficient();
+        if (coefOptional.isEmpty()) throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
 
-        double convertedEncoderPosition = linearOffset_mechanismMeters / motorConfig.rotationToMeterCoefficient().orElseThrow() / motorConfig.encoderToMechanismCoefficient();
+        double convertedEncoderPosition = linearOffset_mechanismMeters / motorComponent.rotationToMeterCoefficient().orElseThrow() / motorComponent.encoderToMechanismCoefficient();
 
         encoder.setPosition(convertedEncoderPosition);
     }
@@ -109,12 +111,12 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
     @Override
     public double angularPosition_mechanismRotations() {
-        return encoder.getPosition() * motorConfig.encoderToMechanismCoefficient() ;
+        return encoder.getPosition() * motorComponent.encoderToMechanismCoefficient() ;
     }
 
     @Override
     public double angularPosition_normalizedMechanismRotations() {
-        double mechanismPosition_wrapped = encoder.getPosition() * motorConfig.encoderToMechanismCoefficient() % 1;
+        double mechanismPosition_wrapped = encoder.getPosition() * motorComponent.encoderToMechanismCoefficient() % 1;
 
         if (mechanismPosition_wrapped < 0) {
             mechanismPosition_wrapped += 1;
@@ -136,7 +138,7 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
     @Override
     public double angularVelocity_mechanismRotationsPerSecond() {
-        return angularvelocity_encoderRotationsPerSecond() * motorConfig.encoderToMechanismCoefficient();
+        return angularvelocity_encoderRotationsPerSecond() * motorComponent.encoderToMechanismCoefficient();
     }
 
     @Override
@@ -147,20 +149,28 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
     @Override
     public double linearPosition_mechanismMeters() {
-        Optional<Double> coefOptional = motorConfig.rotationToMeterCoefficient();
-        if (coefOptional.isEmpty()) throw xyz.auriium.mattlib2.hard.Exceptions.MOTOR_NOT_LINEAR(motorConfig.selfPath());
+        Optional<Double> coefOptional = motorComponent.rotationToMeterCoefficient();
+        if (coefOptional.isEmpty()) throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
         double coef = coefOptional.orElseThrow();
 
-        return encoder.getPosition() * coef * motorConfig.encoderToMechanismCoefficient();
+        return encoder.getPosition() * coef * motorComponent.encoderToMechanismCoefficient();
     }
 
     @Override
     public double linearVelocity_mechanismMetersPerSecond() {
-        Optional<Double> coefOptional = motorConfig.rotationToMeterCoefficient();
-        if (coefOptional.isEmpty()) throw xyz.auriium.mattlib2.hard.Exceptions.MOTOR_NOT_LINEAR(motorConfig.selfPath());
+        Optional<Double> coefOptional = motorComponent.rotationToMeterCoefficient();
+        if (coefOptional.isEmpty()) throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
         double coef = coefOptional.orElseThrow();
 
         return angularVelocity_mechanismRotationsPerSecond() * coef;
     }
 
+    @Override
+    public <T> T rawAccess(Class<T> clazz) throws UnsupportedOperationException {
+        if (clazz == CANSparkMax.class) {
+            return (T) sparkMax;
+        }
+
+        throw new UnsupportedOperationException("no such type");
+    }
 }

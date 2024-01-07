@@ -1,17 +1,13 @@
-package xyz.auriium.mattlib2.hard;
+package xyz.auriium.mattlib2.hardware;
 
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.numbers.N1;
-
-import javax.measure.Quantity;
-import javax.measure.quantity.ElectricCurrent;
-import javax.measure.quantity.ElectricPotential;
-import javax.measure.quantity.Volume;
+import xyz.auriium.mattlib2.IRaw;
 
 /**
  * Represents something that can be driven
  */
-public interface IActuator extends IControlEffortReceiver<N1> {
+public interface IActuator extends IControlEffortReceiver<N1>, IRaw {
 
     /**
      * @param voltage The voltage that the actuator should be driven at, typically ranged -12 to 12 but not always

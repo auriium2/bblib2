@@ -2,43 +2,43 @@ package xyz.auriium.mattlib2.rev;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import xyz.auriium.mattlib2.hard.IRotationalController;
-import xyz.auriium.mattlib2.hard.IRotationalPIDControl;
-import xyz.auriium.mattlib2.log.components.impl.CANNetworkedConfig;
-import xyz.auriium.mattlib2.log.components.impl.MotorNetworkedConfig;
+import xyz.auriium.mattlib2.hardware.IRotationalController;
+import xyz.auriium.mattlib2.hardware.IRotationalPIDControl;
+import xyz.auriium.mattlib2.hardware.config.CommonMotorComponent;
+import xyz.auriium.mattlib2.hardware.config.IndividualMotorComponent;
+import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 
 public class ExternalRotationalSparkController extends BaseSparkMotor implements IRotationalController {
     final IRotationalPIDControl externalControl;
 
     ExternalRotationalSparkController(
             CANSparkMax sparkMax,
-            CANNetworkedConfig canConfig,
-            MotorNetworkedConfig motorConfig,
             RelativeEncoder encoder,
+            MotorComponent motorComponent,
             IRotationalPIDControl externalControl
     ) {
-        super(sparkMax, canConfig, motorConfig, encoder);
+        super(sparkMax, motorComponent, encoder);
 
         this.externalControl = externalControl;
     }
 
     @Override
-    public void controlToRotationalReference(double setpoint_mechanismNormalizedRotations) {
-        externalControl.controlToRotationalReference(setpoint_mechanismNormalizedRotations);
+    public void controlToNormalizedReference(double setpoint_mechanismNormalizedRotations) {
+        externalControl.controlToNormalizedReference(setpoint_mechanismNormalizedRotations);
     }
 
     @Override
-    public void controlToRotationalReference(double setpoint_mechanismNormalizedRotations, double measurement_mechanismNormalizedRotations) {
-        externalControl.controlToRotationalReference(setpoint_mechanismNormalizedRotations, measurement_mechanismNormalizedRotations);
+    public void controlToNormalizedReference(double setpoint_mechanismNormalizedRotations, double measurement_mechanismNormalizedRotations) {
+        externalControl.controlToNormalizedReference(setpoint_mechanismNormalizedRotations, measurement_mechanismNormalizedRotations);
     }
 
     @Override
-    public void controlToInfiniteRotationalReference(double setpoint_mechanismRotations) {
-        externalControl.controlToInfiniteRotationalReference(setpoint_mechanismRotations);
+    public void controlToInfiniteReference(double setpoint_mechanismRotations) {
+        externalControl.controlToInfiniteReference(setpoint_mechanismRotations);
     }
 
     @Override
-    public void controlToInfiniteRotationalReference(double setpoint_mechanismRotations, double measurement_mechanismRotations) {
-        externalControl.controlToInfiniteRotationalReference(setpoint_mechanismRotations, measurement_mechanismRotations);
+    public void controlToInfiniteReference(double setpoint_mechanismRotations, double measurement_mechanismRotations) {
+        externalControl.controlToInfiniteReference(setpoint_mechanismRotations, measurement_mechanismRotations);
     }
 }

@@ -14,7 +14,7 @@ import xyz.auriium.mattlib2.log.Exceptions;
 import xyz.auriium.mattlib2.log.annotation.Conf;
 import xyz.auriium.mattlib2.log.annotation.Log;
 import xyz.auriium.mattlib2.log.annotation.Tune;
-import xyz.auriium.mattlib2.log.components.INetworkedConfig;
+import xyz.auriium.mattlib2.log.INetworkedComponent;
 import xyz.auriium.mattlib2.log.IMattLogger;
 import xyz.auriium.mattlib2.log.ProcessPath;
 import xyz.auriium.mattlib2.log.TomlNotFoundException;
@@ -61,7 +61,7 @@ public class LogComponentManipulator implements Manipulator {
 
     @Override
     public int handles() {
-        if (INetworkedConfig.class.isAssignableFrom(useClass)) return Priority.HANDLE;
+        if (INetworkedComponent.class.isAssignableFrom(useClass)) return Priority.HANDLE;
         return Priority.DONT_HANDLE;
     }
 

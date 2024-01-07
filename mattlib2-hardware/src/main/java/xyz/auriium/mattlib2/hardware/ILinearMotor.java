@@ -1,4 +1,4 @@
-package xyz.auriium.mattlib2.hard;
+package xyz.auriium.mattlib2.hardware;
 
 /**
  * A linear motor is a motor that contributes motion to a linear axis (not a closed set)

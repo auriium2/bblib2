@@ -1,4 +1,4 @@
-package xyz.auriium.mattlib2.hard;
+package xyz.auriium.mattlib2.hardware;
 
 /**
  * What in the fuck

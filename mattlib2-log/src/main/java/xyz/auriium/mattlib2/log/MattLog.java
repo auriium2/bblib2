@@ -9,9 +9,7 @@ import net.bytebuddy.implementation.*;
 import net.bytebuddy.jar.asm.Opcodes;
 import net.bytebuddy.matcher.ElementMatchers;
 import xyz.auriium.mattlib2.Exceptions;
-import xyz.auriium.mattlib2.IPeriodicLooped;
 import xyz.auriium.mattlib2.Mattlib2Exception;
-import xyz.auriium.mattlib2.log.components.INetworkedConfig;
 import yuukonfig.LogComponentManipulator;
 import yuukonfig.TypeMapManipulator;
 import yuukonfig.core.YuuKonfig;
@@ -22,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.BiFunction;
 
 /**
  * Silly logging/configuration/tuning solution
@@ -50,13 +49,14 @@ public class MattLog {
 
 
     /**
-     * The "safe" version of loadWaiting, wont block your code if you forget to call init
+     * The "safe" version of loadWaiting, wont block your code if you forget to call init. Don't use this unless you know how to program multithreaded, use load instead
      * @param type type of component you want
-     * @param path the path to load the component under. see {@link MattLog#loadWaiting(Class, String...)}
+     * @param path the path to load the component under.
      * @return a future waiting on a version of the component that is safe to call no matter what
      * @param <T> a component class
      */
-    public <T extends INetworkedConfig> CompletableFuture<T> loadFuture(Class<T> type, String... path) {
+    @Deprecated
+    public <T extends INetworkedComponent> CompletableFuture<T> loadFuture(Class<T> type, String... path) {
         if (hasBeenInitialized) throw Exceptions.ALREADY_INITIALIZED;
 
         CompletableFuture<T> uncompleted = new CompletableFuture<>();
@@ -65,6 +65,22 @@ public class MattLog {
         structs.add(toLoad);
 
         return uncompleted; //will be completed... later!
+    }
+
+    public <T extends INetworkedComponent> T[] loadRange(Class<T> type, String originalPath, int range, BiFunction<String, Integer, String> subNamingFunction) {
+        return null;
+    }
+
+    /**
+     *
+     * @param type
+     * @param originalPath
+     * @param range
+     * @return
+     * @param <T>
+     */
+    public <T extends INetworkedComponent> T[] loadRange(Class<T> type, String originalPath, int range) {
+        return loadRange(type, originalPath, range, (s,i) -> s+"/"+i);
     }
 
     /**
@@ -76,12 +92,12 @@ public class MattLog {
      *
      *           WARNING: CALLING ANYTHING OFF OF THE GENERATED COMPONENT BEFORE {@link #initializeComponentsAndGenerateLoops()} is called will BREAK YOUR CODE
      */
-    public <T extends INetworkedConfig> T loadWaiting(Class<T> type, String... path) {
+    public <T extends INetworkedComponent> T load(Class<T> type, String path) {
         if (hasBeenInitialized) throw Exceptions.ALREADY_INITIALIZED;
 
         CompletableFuture<T> uncompleted = new CompletableFuture<>();
 
-        LoadStruct<T> toLoad = new LoadStruct<>(new ProcessPath(path), type, uncompleted);
+        LoadStruct<T> toLoad = new LoadStruct<>(ProcessPath.parse(path), type, uncompleted);
         structs.add(toLoad);
 
         //Code below will generate a new Java class that implements a delegate which will call the future's join function
@@ -131,7 +147,7 @@ public class MattLog {
     /**
      * If this isn't called, your code will explode
      */
-    public IPeriodicLooped[] initializeComponentsAndGenerateLoops() {
+    public void initializeComponentsAndGenerateLoops() {
         hasBeenInitialized = true;
 
         Map<ProcessPath, Class<?>> loadAs = new HashMap<>();
@@ -164,8 +180,6 @@ public class MattLog {
             oldStruct.futureReference.complete(toResupply);
         }
         logger.ready();
-
-        return null;
     }
 
 
