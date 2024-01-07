@@ -11,6 +11,7 @@
     <modules>
         <module>mattlib2-api</module>
         <module>mattlib2-rev</module>
+        <module>mattlib2-ctre</module>
         <module>mattlib2-log</module>
         <module>mattlib2-auto</module>
         <module>mattlib2-log-foxe</module>
