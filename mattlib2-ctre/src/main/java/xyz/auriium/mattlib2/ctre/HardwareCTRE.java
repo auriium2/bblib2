@@ -10,7 +10,7 @@ import xyz.auriium.mattlib2.log.components.impl.CANNetworkedConfig;
 import xyz.auriium.mattlib2.log.components.impl.MotorNetworkedConfig;
 
 
-public class ArjunCTRE {
+public class HardwareCTRE {
 
     static Talon createTalon(CANNetworkedConfig canComponent) {
         try {
