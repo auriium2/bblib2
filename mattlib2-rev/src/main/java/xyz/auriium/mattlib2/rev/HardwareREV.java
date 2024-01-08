@@ -5,8 +5,6 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import xyz.auriium.mattlib2.MattLoopManager;
 import xyz.auriium.mattlib2.hardware.*;
-import xyz.auriium.mattlib2.hardware.config.CommonMotorComponent;
-import xyz.auriium.mattlib2.hardware.config.IndividualMotorComponent;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 import xyz.auriium.mattlib2.hardware.config.PIDComponent;
 
@@ -96,7 +94,7 @@ public class HardwareREV {
      * @param pidControl an external pid controller which will be used to control this motor
      * @return
      */
-    public static ILinearController linearSpark_externalPID(MotorComponent motorComponent, ILinearPIDControl pidControl) {
+    public static ILinearController linearSpark_externalPID(MotorComponent motorComponent, ILinearPositionControl pidControl) {
         if (motorComponent.rotationToMeterCoefficient().isEmpty()) {
             throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
         }
@@ -116,7 +114,7 @@ public class HardwareREV {
      * @param pidControl an external pid controller which will be used to control this motor
      * @return
      */
-    public static IRotationalController rotationalSpark_externalPID(MotorComponent motorComponent, IRotationalPIDControl pidControl) {
+    public static IRotationalController rotationalSpark_externalPID(MotorComponent motorComponent, IRotationalPositionControl pidControl) {
         if (motorComponent.rotationToMeterCoefficient().isEmpty()) {
             throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
         }

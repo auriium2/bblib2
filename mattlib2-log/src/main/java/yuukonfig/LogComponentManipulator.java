@@ -5,6 +5,7 @@ import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import net.bytebuddy.implementation.EqualsMethod;
+import net.bytebuddy.implementation.FixedValue;
 import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.MethodCall;
 import net.bytebuddy.implementation.bytecode.assign.Assigner;
@@ -13,6 +14,7 @@ import xyz.auriium.mattlib2.*;
 import xyz.auriium.mattlib2.log.Exceptions;
 import xyz.auriium.mattlib2.log.annotation.Conf;
 import xyz.auriium.mattlib2.log.annotation.Log;
+import xyz.auriium.mattlib2.log.annotation.SelfPath;
 import xyz.auriium.mattlib2.log.annotation.Tune;
 import xyz.auriium.mattlib2.log.INetworkedComponent;
 import xyz.auriium.mattlib2.log.IMattLogger;
@@ -140,6 +142,10 @@ public class LogComponentManipulator implements Manipulator {
                     .method(ElementMatchers.isEquals())
                     .intercept(EqualsMethod.isolated());
 
+            builder
+                    .method(ElementMatchers.is(INetworkedComponent.class.getMethod("selfPath")))
+                    .intercept(FixedValue.value(exceptionalKey));
+
             for (Map.Entry<Method, Supplier<Object>> values : configOrTuneMap.entrySet()) { //every method on the new implementation will only do one thing (return config value)
                 Implementation supplierInvoke = MethodCall
                         .invoke(Supplier.class.getMethod("get"))
@@ -217,6 +223,8 @@ public class LogComponentManipulator implements Manipulator {
         if (log != null) quantity++;
         Tune tune = method.getAnnotation(Tune.class);
         if (tune != null) quantity++;
+        SelfPath selfPath = method.getAnnotation(SelfPath.class);
+        if (selfPath != null) quantity++;
 
         String methodName = method.getName();
         String simpleName = method.getDeclaringClass().getSimpleName();

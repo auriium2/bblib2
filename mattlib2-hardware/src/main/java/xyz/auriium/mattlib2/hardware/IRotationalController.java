@@ -4,5 +4,5 @@ package xyz.auriium.mattlib2.hardware;
  * What in the fuck
  * Represents a motor controller, which by definition can control actuation, likely has onboard PD control, and has linear/rotation control
  */
-public interface IRotationalController extends IRotationalMotor, IRotationalPIDControl {
+public interface IRotationalController extends IRotationalMotor, IRotationalPositionControl {
 }

@@ -3,19 +3,17 @@ package xyz.auriium.mattlib2.rev;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import xyz.auriium.mattlib2.hardware.IRotationalController;
-import xyz.auriium.mattlib2.hardware.IRotationalPIDControl;
-import xyz.auriium.mattlib2.hardware.config.CommonMotorComponent;
-import xyz.auriium.mattlib2.hardware.config.IndividualMotorComponent;
+import xyz.auriium.mattlib2.hardware.IRotationalPositionControl;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 
 public class ExternalRotationalSparkController extends BaseSparkMotor implements IRotationalController {
-    final IRotationalPIDControl externalControl;
+    final IRotationalPositionControl externalControl;
 
     ExternalRotationalSparkController(
             CANSparkMax sparkMax,
             RelativeEncoder encoder,
             MotorComponent motorComponent,
-            IRotationalPIDControl externalControl
+            IRotationalPositionControl externalControl
     ) {
         super(sparkMax, motorComponent, encoder);
 

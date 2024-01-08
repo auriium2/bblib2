@@ -9,7 +9,7 @@ import xyz.auriium.mattlib2.hardware.config.PIDComponent;
 /**
  * A tuneable PD controller from Mattlib2
  */
-public class DiscreteLinearPIDControl implements ILinearPIDControl, IPeriodicLooped {
+public class DiscreteLinearPIDControl implements ILinearPositionControl, IPeriodicLooped {
 
     final PIDComponent pdComponent;
     final ILinearEncoder encoder; //nullable

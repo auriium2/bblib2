@@ -2,7 +2,7 @@ package xyz.auriium.mattlib2.hardware;
 
 import xyz.auriium.mattlib2.IPeriodicLooped;
 
-public interface ILinearPIDControl extends IPeriodicLooped {
+public interface ILinearPositionControl extends IPeriodicLooped {
 
     /**
      * You should call this every frame. Don't call the other version if you call this one.

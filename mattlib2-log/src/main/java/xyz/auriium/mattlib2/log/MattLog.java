@@ -67,8 +67,22 @@ public class MattLog {
         return uncompleted; //will be completed... later!
     }
 
+    /**
+     * Loads many components of the same type
+     * @param type
+     * @param originalPath the root path all the new components should be based on
+     * @param range
+     * @param subNamingFunction a function that makes the new components have slightly different names based on the numerical id
+     * @return an ordered array of all the new components within the range
+     * @param <T>
+     */
+    @SuppressWarnings("unchecked")
     public <T extends INetworkedComponent> T[] loadRange(Class<T> type, String originalPath, int range, BiFunction<String, Integer, String> subNamingFunction) {
-        return null;
+        T[] array = (T[]) new INetworkedComponent[4];
+        for (int i = 0; i < range; i++) {
+            array[i] = load(type, subNamingFunction.apply(originalPath, i));
+        }
+        return array;
     }
 
     /**

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>mattlib2</artifactId>
         <groupId>xyz.auriium</groupId>
-        <version>1.0.7-SNAPSHOT</version>
+        <version>1.0.8-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -31,7 +31,7 @@
         <dependency>
             <groupId>xyz.auriium</groupId>
             <artifactId>mattlib2-api</artifactId>
-            <version>1.0.7-SNAPSHOT</version>
+            <version>1.0.8-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -52,13 +52,8 @@
         <dependency>
             <groupId>xyz.auriium</groupId>
             <artifactId>mattlib2-log</artifactId>
-            <version>1.0.7-SNAPSHOT</version>
+            <version>1.0.8-SNAPSHOT</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-            <version>4.0.0-rc-2</version>
         </dependency>
         <dependency>
             <groupId>com.google.flatbuffers</groupId>
