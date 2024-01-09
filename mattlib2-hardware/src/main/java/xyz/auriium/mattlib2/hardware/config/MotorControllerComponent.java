@@ -57,13 +57,13 @@ public interface MotorControllerComponent extends MotorComponent, PIDComponent{
         }
 
         @Override
-        @Log
+        
         public void reportError(double error) {
             pidComponent.reportError(error);
         }
 
         @Override
-        @Log
+        
         public void reportOutput(double output) {
             pidComponent.reportOutput(output);
         }
@@ -73,82 +73,86 @@ public interface MotorControllerComponent extends MotorComponent, PIDComponent{
         }
 
         @Override
+        public Type typeOfMotor() {
+            return motorComponent.typeOfMotor();
+        }
+
+        @Override
         @Documented("the coefficient which converts a scalar in units of encoder rotations to mechanism rotations")
-        @Conf
         public double encoderToMechanismCoefficient() {
             return motorComponent.encoderToMechanismCoefficient();
         }
 
         @Override
         @Documented("i have no idea what this does")
-        @Conf
+        
         public double timeCoefficient() {
             return motorComponent.timeCoefficient();
         }
 
         @Override
         @Documented("the coefficient that converts rotations of the mechanism to meters travelled, if this is a linear actuator")
-        @Conf
+        
         public Optional<Double> rotationToMeterCoefficient() {
             return motorComponent.rotationToMeterCoefficient();
         }
 
         @Override
-        @Conf
-        public double currentLimit() {
+        
+        public Optional<Double> currentLimit() {
             return motorComponent.currentLimit();
         }
 
         @Override
-        @Conf
+        
         public Optional<Double> forwardLimit_mechanismRot() {
             return motorComponent.forwardLimit_mechanismRot();
         }
 
         @Override
-        @Conf
+        
         public Optional<Double> reverseLimit_mechanismRot() {
             return motorComponent.reverseLimit_mechanismRot();
         }
 
         @Override
-        @Conf
-        public boolean isInverted() {
-            return motorComponent.isInverted();
+        
+        public Optional<Boolean> inverted() {
+            return motorComponent.inverted();
         }
 
         @Override
-        @Conf
-        public boolean isRampRateModeEnabled() {
-            return motorComponent.isRampRateModeEnabled();
+        
+        public Optional<Boolean> rampRateLimitEnabled() {
+            return motorComponent.rampRateLimitEnabled();
         }
 
         @Override
-        @Conf
-        public boolean isBreakModeEnabled() {
-            return motorComponent.isBreakModeEnabled();
+        
+        public Optional<Boolean> breakModeEnabled() {
+            return motorComponent.breakModeEnabled();
         }
 
         @Override
-        @Conf
-        public boolean hasAbsoluteEncoder() {
+        
+        public Optional<Boolean> hasAbsoluteEncoder() {
             return motorComponent.hasAbsoluteEncoder();
         }
 
         @Override
-        @Conf
-        public int canId() {
-            return motorComponent.canId();
+        
+        public int id() {
+            return motorComponent.id();
         }
 
         @Override
-        @Log
+        
         public void logVoltageGiven(double voltage) {
             motorComponent.logVoltageGiven(voltage);
         }
 
         @Override
-        @Log
+        
         public void logCurrentDraw(double current) {
             motorComponent.logCurrentDraw(current);
         }

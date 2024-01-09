@@ -24,8 +24,6 @@ public class NTValueSupplier<T> implements Supplier<T> {
 
     @Override
     public T get() {
-
-
         return castTo.cast(entry.getValue().getValue());
     }
 }

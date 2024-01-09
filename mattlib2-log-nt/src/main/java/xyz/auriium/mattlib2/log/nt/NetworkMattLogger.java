@@ -3,6 +3,8 @@ package xyz.auriium.mattlib2.log.nt;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import xyz.auriium.mattlib2.log.IMattLogger;
@@ -10,7 +12,6 @@ import xyz.auriium.mattlib2.log.ProcessPath;
 
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class NetworkMattLogger implements IMattLogger {
@@ -88,15 +89,23 @@ public class NetworkMattLogger implements IMattLogger {
         }
 
         if (returnType == Pose2d.class) {
-            return (Supplier<T>) new Pose2dSupplier(entry);
+            return (Supplier<T>) new PoseSupplier(entry);
         }
 
         if (returnType == Pose3d.class) {
-            return (Supplier<T>) new Pose3dSupplier(entry);
+            return (Supplier<T>) new Pose3Supplier(entry);
         }
 
         if (returnType == Translation2d.class) {
-            return (Supplier<T>) new Translation2dSupplier(entry);
+            return (Supplier<T>) new TranslationSupplier(entry);
+        }
+
+        if (returnType == SwerveModulePosition[].class) {
+            return (Supplier<T>) new SwervePosConsumer(entry);
+        }
+
+        if (returnType == SwerveModuleState[].class) {
+            return (Supplier<T>) new SwerveStateConsumer(entry);
         }
 
 
@@ -134,13 +143,12 @@ public class NetworkMattLogger implements IMattLogger {
         }
 
         if (type == Pose3d.class) {
-            return Optional.of((Consumer<T>) new Pose3dSupplier(entry));
+            return Optional.of((Consumer<T>) new Pose3Consumer(entry));
         }
 
-
-
-
-
+        if (type == Translation2d.class) {
+            return Optional.of((Consumer<T>) new TranslationConsumer(entry));
+        }
 
 
 

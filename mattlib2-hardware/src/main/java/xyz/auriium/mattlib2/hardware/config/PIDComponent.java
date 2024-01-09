@@ -41,46 +41,39 @@ public interface PIDComponent extends CommonPIDComponent, IndividualPIDComponent
         }
 
         @Override
-        @SelfPath
         public String selfPath() {
             return individualPIDComponent.selfPath();
         }
 
         @Override
-        @Log
+        
         public void reportError(double error) {
             individualPIDComponent.reportError(error);
         }
 
         @Override
-        @Log
+        
         public void reportOutput(double output) {
             individualPIDComponent.reportOutput(output);
         }
 
         @Override
-        @Key("p")
-        @Tune
         public int pConstant() {
             return commonPIDComponent.pConstant();
         }
 
         @Override
-        @Key("d")
-        @Tune
         public int dConstant() {
             return commonPIDComponent.dConstant();
         }
 
         @Override
-        @Key("i")
-        @Tune
+
         public int iConstant() {
             return commonPIDComponent.iConstant();
         }
 
         @Override
-        @HasUpdated(keysToCheck = {"p", "i", "d"})
         public boolean hasUpdated() {
             return commonPIDComponent.hasUpdated();
         }

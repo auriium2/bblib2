@@ -5,7 +5,7 @@ import yuukonstants.exception.ExplainedException;
 import java.util.Optional;
 
 /**
- * If something has this interface, you better make sure that it is registered in {@link MattLoopManager}
+ * If something has this interface, you better make sure that it is registered in {@link MattlibLooper}
  * or the functions on it are otherwise called when they should be
  *
  * This interface defines that something has looping requirements in order to function
@@ -24,7 +24,7 @@ public interface IPeriodicLooped {
      * Registers the PeriodicLoop. This must be called.
      */
     default void mattRegister() { //I truly hate this, but WPI does it to simplify things and so will I
-        MattLoopManager.INSTANCE.register(this);
+        Mattlib.LOOPER.register(this);
     }
 
 

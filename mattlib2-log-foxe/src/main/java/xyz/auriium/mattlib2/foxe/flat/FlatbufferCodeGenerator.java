@@ -1,16 +1,25 @@
 package xyz.auriium.mattlib2.foxe.flat;
 
 import com.google.flatbuffers.FlatBufferBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.asm.Advice;
 import net.bytebuddy.dynamic.scaffold.subclass.ConstructorStrategy;
 import net.bytebuddy.implementation.EqualsMethod;
 import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.MethodCall;
 import net.bytebuddy.matcher.ElementMatchers;
-import xyz.auriium.mattlib2.foxe.LogDescriptionRecord;
+import xyz.auriium.mattlib2.foxe.NetworkDescriptionRecord;
 import xyz.auriium.mattlib2.foxe.ServerChannel;
 
 import java.lang.reflect.Modifier;
+import java.nio.ByteBuffer;
+import java.util.function.Supplier;
+/*
 
 public class FlatbufferCodeGenerator {
     static final ByteBuddy BUDDY = new ByteBuddy();
@@ -32,56 +41,36 @@ public class FlatbufferCodeGenerator {
     //This is "start table". Unf means unfinished; it needs to be supplied the field quantity.
     static final byte IDX_UNF_START_TABLE = 3;
 
-    static final byte IDX_UNF_PUT_BOOLEAN = 4;
-    static final byte IDX_UNF_PUT_INT = 5;
-    static final byte IDX_UNF_PUT_FLOAT = 6;
-    static final byte IDX_UNF_PUT_LONG = 7;
-    static final byte IDX_UNF_PUT_DOUBLE = 8;
-    static final byte IDX_UNF_PUT_STRING = 9;
-    static final byte IDX_UNF_PUT_BYTE = 10;
-    static final byte IDX_UNF_PUT_ARRAY = 11;
-    static final byte IDX_UNF_PUT_POSE2 = 12;
-    static final byte IDX_UNF_PUT_POSE3 = 13;
+
+
+    public Object generateFinalObject(NetworkDescriptionRecord[] records, Class<?> useClass) throws NoSuchMethodException {
 
 
 
-
-
-
-
-    final MethodCall[] implementations;
-
-    FlatbufferCodeGenerator(MethodCall[] implementations) {
-        this.implementations = implementations;
-    }
-
-    public Object generateFinalObject(LogDescriptionRecord[] records, Class<?> useClass) {
-
-
-
-        var builder = BUDDY.subclass(useClass, ConstructorStrategy.Default.DEFAULT_CONSTRUCTOR)
+        var builder = BUDDY
+                .subclass(useClass, ConstructorStrategy.Default.DEFAULT_CONSTRUCTOR)
                 .name(useClass.getPackageName() + "." + useClass.getSimpleName())
-                .suffix(FlatbufferConstants.GENERATED + Integer.toHexString(hashCode()));
-
-        builder
+                .suffix(FlatbufferConstants.GENERATED + Integer.toHexString(hashCode()))
                 .method(ElementMatchers.isEquals())
-                .intercept(EqualsMethod.isolated());
-
-        //class is set up, let's set up the fields, etc
-
-        builder.defineField(BUFFER_FIELD, FlatBufferBuilder.class, Modifier.PUBLIC); //Add a buffer to this object!
-        builder.defineField(CHANNEL_FIELD, ServerChannel.class, Modifier.PUBLIC); //send my data to me!!!
+                .intercept(EqualsMethod.isolated())
+                .defineField(BUFFER_FIELD, FlatBufferBuilder.class, Modifier.PUBLIC) //Add a buffer to this object!
+                .defineField(CHANNEL_FIELD, ServerChannel.class, Modifier.PUBLIC); //send my data to me!!!
 
         //let's add the log fields
 
         Implementation[] perFieldInsertImplementations = new Implementation[records.length];
 
         for (int i = 0; i < records.length; i++) {
-            LogDescriptionRecord rx = records[i];
+            NetworkDescriptionRecord rx = records[i];
+
             builder.defineField(rx.fieldName(), rx.fieldType(), Modifier.PUBLIC); //I MustBeUpdated should only be called from the main thread, so no need for volatile
+            perFieldInsertImplementations[i] = getImplementation(rx);
+            */
 /*
+
             builder.define()
-            perFieldInsertImplementations[i] =*/
+            perFieldInsertImplementations[i] =*//*
+
         }
 
         MethodCall createTableWithCorrectLength = implementations[IDX_UNF_START_TABLE].with(records.length);
@@ -95,53 +84,110 @@ public class FlatbufferCodeGenerator {
                 .andThen(implementations[IDX_FINISH_BUFFER])
                 .andThen(implementations[IDX_SEND_BYTES_TO_HELL]);
 
+*/
 /*
 
         new FlatBufferBuilder().startTable();
-*/
+*//*
+
 
         return null;
     }
-/*
-    Optional<MethodCall> selectMethodCall(Class<?> type, String fieldName) {
 
-        if (type == int.class || type == Integer.class) {
-            return Optional.of(
 
-            );
+    public static Implementation getImplementation(NetworkDescriptionRecord record) throws NoSuchMethodException {
+
+        Class<?> returnType = record.fieldType();
+        String specificFieldName = record.fieldName();
+        int fieldID = record.id();
+
+
+        FlatBufferBuilder bb = new FlatBufferBuilder();
+        bb.addDouble();
+        if (returnType == Double.class || returnType == double.class) { //handle doubles
+            return MethodCall
+                    .invoke(FlatBufferBuilder.class.getMethod("putDouble", double.class))
+                    .onField(CHANNEL_FIELD)
+                    .withField(specificFieldName);
         }
 
-        if (type == float.class || type == Float.class) {
-            return Optional.of(BaseType.Float);
+        if (returnType == Long.class || returnType == long.class) { //handle longs
+            return MethodCall
+                    .invoke(FlatBufferBuilder.class.getMethod("putLong", long.class))
+                    .onField(CHANNEL_FIELD)
+                    .withField(specificFieldName);
         }
 
-        if (type == double.class || type == Double.class) {
-            return Optional.of(BaseType.Double);
+        if (returnType == Integer.class || returnType == int.class) {
+            return MethodCall
+                    .invoke(FlatBufferBuilder.class.getMethod("putInt", int.class))
+                    .onField(CHANNEL_FIELD)
+                    .withField(specificFieldName);
         }
 
-        if (type == long.class || type == Long.class) {
-            return Optional.of(BaseType.Long);
+        if (returnType == String.class) {
+            MethodCall createStringReturnOffset = MethodCall
+                    .invoke(FlatBufferBuilder.class.getMethod("createString", ByteBuffer.class))
+                    .onField(CHANNEL_FIELD)
+                    .withField(specificFieldName);
+
+            return MethodCall
+                    .invoke(FlatBufferBuilder.class.getMethod("addOffset", int.class))
+                    .onField(CHANNEL_FIELD)
+                    .withMethodCall(createStringReturnOffset);
         }
 
-        if (type == boolean.class || type == Boolean.class) {
-            return Optional.of(BaseType.Bool);
+        if (returnType == Boolean.class || returnType == boolean.class) {
+            return MethodCall
+                    .invoke(FlatBufferBuilder.class.getMethod("putBoolean", boolean.class))
+                    .onField(CHANNEL_FIELD)
+                    .withField(specificFieldName);
         }
 
-        if (type == Byte.class || type == byte.class) {
-            return Optional.of(BaseType.Byte);
+        if (returnType == long[].class || returnType == Long[].class) {
+
+            FlatBufferBuilder builder = new FlatBufferBuilder();
+            builder.addOffset();
+
+            MethodCall lengthReturnsLength = MethodCall
+                    .invoke(long[].class.getMethod("size"))
+                    .onField(specificFieldName);
+
+            MethodCall startVector = MethodCall
+                    .invoke(FlatBufferBuilder.class.getMethod("startVector", int.class, int.class, int.class))
+                    .onField(BUFFER_FIELD)
+                    .with(Long.BYTES)
+                    .withMethodCall(lengthReturnsLength)
+                    .with(Long.BYTES);
+
+            Implementation.Composable working = startVector;
+
+            //we are in the vector
+            for (int i = 0; i < record.arraySize(); i++) {
+
+                MethodCall valueAtIndexReturnsValue = MethodCall
+                        .invoke(FlatbufferCodeGenerator.class.getMethod("getFromArray", Object[].class, int.class))
+                        .withField(specificFieldName)
+                        .with(i);
+
+                working = working.andThen(
+                        MethodCall.invoke(FlatBufferBuilder.class.getMethod("addLong", long.class))
+                                .onField(BUFFER_FIELD)
+                                .withMethodCall(valueAtIndexReturnsValue)
+                );
+            }
+
+            MethodCall endVectorReturnOffset = MethodCall.invoke(FlatBufferBuilder.class.getMethod("endVector"))
+                    .onField(BUFFER_FIELD);
+
+            MethodCall insertVectorOffsetIntoVtableOffset = MethodCall.invoke(FlatBufferBuilder.class.getMethod("addOffset", int.class, int.class, int.class))
+                    .with()
+
+            return working.andThen()
         }
 
-        if (type == String.class) {
-            return Optional.of(BaseType.String);
-        }
 
-        if (type.isArray() || type == Pose2d.class || type == Pose3d.class) {
-            return Optional.of(BaseType.Vector);
-        }
-
-
-        return Optional.empty();
-    }*/
+    }
 
     public static FlatbufferCodeGenerator makeSafely() {
 
@@ -179,8 +225,6 @@ public class FlatbufferCodeGenerator {
                     .onField(CHANNEL_FIELD);
 
             implementationArray[IDX_UNF_PUT_DOUBLE] = MethodCall
-                    .invoke(FlatBufferBuilder.class.getMethod("putDouble", double.class))
-                    .onField(CHANNEL_FIELD);
 
 
             return new FlatbufferCodeGenerator(implementationArray);
@@ -194,4 +238,19 @@ public class FlatbufferCodeGenerator {
 
     }
 
+
+    */
+/**
+     * PLEASE GET RID OF THIS THIS IS FUCKIGN RIDICULOUS
+     * @param array
+     * @param index
+     * @return
+     * @param <T>
+     *//*
+
+    public static <T> T getFromArray(T[] array, int index) {
+        return array[index];
+    }
+
 }
+*/

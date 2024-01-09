@@ -1,5 +1,7 @@
 package xyz.auriium.mattlib2.log.annotation;
 
+import yuukonfig.core.annotate.Key;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 

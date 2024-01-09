@@ -3,6 +3,7 @@ package xyz.auriium.mattlib2.hardware.config;
 import xyz.auriium.mattlib2.log.INetworkedComponent;
 import xyz.auriium.mattlib2.log.annotation.Conf;
 import xyz.auriium.mattlib2.log.annotation.decorator.Documented;
+import yuukonfig.core.annotate.Comment;
 
 import java.util.Optional;
 
@@ -11,31 +12,39 @@ import java.util.Optional;
  */
 public interface CommonMotorComponent extends INetworkedComponent {
 
+    enum Type {
+        BRUSHED,
+        BRUSHLESS
+    }
 
+    @Conf("type")
+    Type typeOfMotor();
 
-    @Conf() @Documented("the coefficient which converts a scalar in units of encoder rotations to mechanism rotations")
+    @Conf("sensor2mechanism_coef")
     double encoderToMechanismCoefficient();
 
-    @Conf() @Documented("i have no idea what this does")
+    @Conf("time_coef")
     double timeCoefficient();
-    @Conf() @Documented("the coefficient that converts rotations of the mechanism to meters travelled, if this is a linear actuator")
+
+    @Conf("rot2meter_coef")
     Optional<Double> rotationToMeterCoefficient();
 
-    @Conf()
-    double currentLimit();
-    @Conf()
+    @Conf("current_limit")
+    Optional<Double> currentLimit();
+
+    @Conf("forward_limit")
     Optional<Double> forwardLimit_mechanismRot();
-    @Conf()
+    @Conf("reverse_limit")
     Optional<Double> reverseLimit_mechanismRot();
 
-    @Conf()
-    boolean isInverted();
-    @Conf()
-    boolean isRampRateModeEnabled();
-    @Conf()
-    boolean isBreakModeEnabled();
-    @Conf()
-    boolean hasAbsoluteEncoder();
+    @Conf("inverted")
+    Optional<Boolean> inverted();
+    @Conf("ramp_limit_enabled")
+    Optional<Boolean> rampRateLimitEnabled();
+    @Conf("break_mode_enabled")
+    Optional<Boolean> breakModeEnabled();
+    @Conf("has_absolute")
+    Optional<Boolean> hasAbsoluteEncoder();
 
 
 

@@ -11,6 +11,7 @@ import yuukonstants.exception.ExplainedException;
 
 import java.util.Optional;
 
+@SuppressWarnings({"deprecated", "deprecation"})
 public class BuiltInSparkController extends BaseSparkMotor implements ILinearController, IRotationalController {
 
     final SparkMaxPIDController localPidController;

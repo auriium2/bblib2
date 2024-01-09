@@ -8,7 +8,7 @@ import com.google.flatbuffers.reflection.Schema;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import xyz.auriium.mattlib2.foxe.BufferUtils;
-import xyz.auriium.mattlib2.foxe.LogDescriptionRecord;
+import xyz.auriium.mattlib2.foxe.NetworkDescriptionRecord;
 import xyz.auriium.mattlib2.log.Exceptions;
 
 import java.util.HashMap;
@@ -29,15 +29,16 @@ public class FlatbufSchemaGenerator {
     public String calculateName(Class<?> useClass) {
         return useClass.getSimpleName(); //make this better later
     }
-    public byte[] generateSchemaFromDescription(Class<?> useClass, LogDescriptionRecord[] description) {
+    public byte[] generateSchemaFromDescription(Class<?> useClass, NetworkDescriptionRecord[] description) {
         return cache.computeIfAbsent(useClass, ignored -> {
+
 
             //build fields to the bytebuffer builder, add to storage vector
             FlatBufferBuilder bufferBuilder = new FlatBufferBuilder();
             int[] fieldsArray = new int[0];
 
             for (int i = 0; i < description.length; i++) {
-                LogDescriptionRecord record = description[i];
+                NetworkDescriptionRecord record = description[i];
                 int newFieldName_index = bufferBuilder.createString(record.fieldName());
                 Optional<Byte> possibleTypeOfField = computeBaseTypeIndex(record.fieldType());
                 if (possibleTypeOfField.isEmpty()) {
@@ -51,7 +52,7 @@ public class FlatbufSchemaGenerator {
                 Field.addId(bufferBuilder, record.id());
                 int createdField_offset = Field.endField(bufferBuilder);
 
-                BufferUtils.add(fieldsArray, createdField_offset);
+                fieldsArray = BufferUtils.add(fieldsArray, createdField_offset);
             }
 
             //TODO set up documentation as a constant 1shot field sent at the start

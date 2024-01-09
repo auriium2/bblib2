@@ -8,10 +8,10 @@ import xyz.auriium.mattlib2.log.annotation.Log;
  */
 public interface IndividualPIDComponent extends INetworkedComponent {
 
-    @Log
+    @Log("pid_error")
     void reportError(double error);
 
-    @Log
+    @Log("pid_output")
     void reportOutput(double output);
 
 }

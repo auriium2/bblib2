@@ -39,8 +39,8 @@ public interface MotorComponent extends IndividualMotorComponent, CommonMotorCom
         }
 
         @Override
-        public int canId() {
-            return individualMotorComponent.canId();
+        public int id() {
+            return individualMotorComponent.id();
         }
 
         @Override
@@ -51,6 +51,11 @@ public interface MotorComponent extends IndividualMotorComponent, CommonMotorCom
         @Override
         public void logCurrentDraw(double current) {
             individualMotorComponent.logCurrentDraw(current);
+        }
+
+        @Override
+        public Type typeOfMotor() {
+            return commonMotorComponent.typeOfMotor();
         }
 
         @Override
@@ -69,7 +74,7 @@ public interface MotorComponent extends IndividualMotorComponent, CommonMotorCom
         }
 
         @Override
-        public double currentLimit() {
+        public Optional<Double> currentLimit() {
             return commonMotorComponent.currentLimit();
         }
 
@@ -84,22 +89,22 @@ public interface MotorComponent extends IndividualMotorComponent, CommonMotorCom
         }
 
         @Override
-        public boolean isInverted() {
-            return commonMotorComponent.isInverted();
+        public Optional<Boolean> inverted() {
+            return commonMotorComponent.inverted();
         }
 
         @Override
-        public boolean isRampRateModeEnabled() {
-            return commonMotorComponent.isRampRateModeEnabled();
+        public Optional<Boolean> rampRateLimitEnabled() {
+            return commonMotorComponent.rampRateLimitEnabled();
         }
 
         @Override
-        public boolean isBreakModeEnabled() {
-            return commonMotorComponent.isBreakModeEnabled();
+        public Optional<Boolean> breakModeEnabled() {
+            return commonMotorComponent.breakModeEnabled();
         }
 
         @Override
-        public boolean hasAbsoluteEncoder() {
+        public Optional<Boolean> hasAbsoluteEncoder() {
             return commonMotorComponent.hasAbsoluteEncoder();
         }
 

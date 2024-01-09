@@ -1,9 +1,8 @@
 package xyz.auriium.mattlib2.rev;
 
+import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
-import xyz.auriium.mattlib2.MattLoopManager;
 import xyz.auriium.mattlib2.hardware.*;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 import xyz.auriium.mattlib2.hardware.config.PIDComponent;
@@ -14,11 +13,11 @@ public class HardwareREV {
     static CANSparkMax createSparkmax(MotorComponent commonMotorComponent) {
         try {
             return new CANSparkMax(
-                    commonMotorComponent.canId(),
-                    CANSparkMaxLowLevel.MotorType.kBrushless
+                    commonMotorComponent.id(),
+                    CANSparkLowLevel.MotorType.kBrushless
             );
         } catch (IllegalStateException e) {
-            throw xyz.auriium.mattlib2.hardware.Exceptions.NO_CAN_ID(commonMotorComponent.selfPath(), commonMotorComponent.canId());
+            throw xyz.auriium.mattlib2.hardware.Exceptions.NO_CAN_ID(commonMotorComponent.selfPath(), commonMotorComponent.id());
         }
     }
 
@@ -35,9 +34,7 @@ public class HardwareREV {
         CANSparkMax sparkMax = createSparkmax(motorComponent);
         RelativeEncoder relativeEncoder = sparkMax.getEncoder();
 
-        return MattLoopManager.INSTANCE.registerAndReturn(
-                new BaseSparkMotor(sparkMax, motorComponent, relativeEncoder)
-        );
+        return new BaseSparkMotor(sparkMax, motorComponent, relativeEncoder);
     }
     /**
      * Set up a mattlib SparkMax device that is tasked with causing rotational motion;
@@ -48,9 +45,7 @@ public class HardwareREV {
         CANSparkMax sparkMax = createSparkmax(motorComponent);
         RelativeEncoder relativeEncoder = sparkMax.getEncoder();
 
-        return MattLoopManager.INSTANCE.registerAndReturn(
-                new BaseSparkMotor(sparkMax, motorComponent, relativeEncoder)
-        );
+        return new BaseSparkMotor(sparkMax, motorComponent, relativeEncoder);
     }
 
     /**
@@ -67,9 +62,7 @@ public class HardwareREV {
         CANSparkMax sparkMax = createSparkmax(motorComponent);
         RelativeEncoder relativeEncoder = sparkMax.getEncoder();
 
-        return MattLoopManager.INSTANCE.registerAndReturn(
-                new BuiltInSparkController(sparkMax, motorComponent, pdConfig,  relativeEncoder)
-        ); //TBD
+        return new BuiltInSparkController(sparkMax, motorComponent, pdConfig,  relativeEncoder);
     }
 
     /**
@@ -82,9 +75,8 @@ public class HardwareREV {
         CANSparkMax sparkMax = createSparkmax(motorComponent);
         RelativeEncoder relativeEncoder = sparkMax.getEncoder();
 
-        return MattLoopManager.INSTANCE.registerAndReturn(
-                new BuiltInSparkController(sparkMax, motorComponent, pdConfig, relativeEncoder)
-        ); //TBD
+        return new BuiltInSparkController(sparkMax, motorComponent, pdConfig, relativeEncoder);
+
     }
 
     /**
@@ -102,9 +94,8 @@ public class HardwareREV {
         CANSparkMax sparkMax = createSparkmax(motorComponent);
         RelativeEncoder relativeEncoder = sparkMax.getEncoder();
 
-        return MattLoopManager.INSTANCE.registerAndReturn(
-                new ExternalLinearSparkController(sparkMax, relativeEncoder, motorComponent, pidControl)
-        ); //TBD
+        return new ExternalLinearSparkController(sparkMax, relativeEncoder, motorComponent, pidControl);
+
     }
 
     /**

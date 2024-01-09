@@ -6,8 +6,9 @@ import xyz.auriium.mattlib2.hardware.IRotationalController;
 import xyz.auriium.mattlib2.hardware.IRotationalPositionControl;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 
-public class ExternalRotationalSparkController extends BaseSparkMotor implements IRotationalController {
-    final IRotationalPositionControl externalControl;
+    public class ExternalRotationalSparkController extends BaseSparkMotor implements IRotationalController {
+
+        final IRotationalPositionControl externalControl;
 
     ExternalRotationalSparkController(
             CANSparkMax sparkMax,

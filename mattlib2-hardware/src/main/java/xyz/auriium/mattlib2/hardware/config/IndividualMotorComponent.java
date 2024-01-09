@@ -10,13 +10,25 @@ import xyz.auriium.mattlib2.log.annotation.Log;
  */
 public interface IndividualMotorComponent extends INetworkedComponent {
 
-    @Conf
-    int canId();
+    /**
+     *
+     * @return The can bus id of this device
+     */
+    @Conf("id")
+    int id();
 
-    @Log
+    /**
+     *
+     * @param voltage the voltage the motor is currently being supplied
+     */
+    @Log("voltage")
     void logVoltageGiven(double voltage);
 
-    @Log
+    /**
+     *
+     * @param current the quantity of current the motor is currently consuming
+     */
+    @Log("current")
     void logCurrentDraw(double current);
 
 }

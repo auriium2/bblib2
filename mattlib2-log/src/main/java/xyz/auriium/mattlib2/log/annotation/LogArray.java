@@ -1,15 +1,15 @@
 package xyz.auriium.mattlib2.log.annotation;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 /**
- * Annotate a method with this to log multiple datas at the same time (typically correlated data)
+ * You must mark arrays with this otherwise my code will break.
+ * unfortunately i am not talented enough of a bytecode programmer to use raw opcodes
+ * so i cannot implement a simple for loop
+ * please accept my apologies and use this instead
  */
-@Retention(RUNTIME)
-@Target(METHOD)
 public @interface LogArray {
+
+    String value();
+
+    int size();
+
 }
