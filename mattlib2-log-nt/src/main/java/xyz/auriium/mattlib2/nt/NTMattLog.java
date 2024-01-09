@@ -18,6 +18,7 @@ import xyz.auriium.mattlib2.log.TypeMap;
 import xyz.auriium.mattlib2.yuukonfig.TypeMapManipulator;
 import yuukonfig.core.YuuKonfig;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,36 +97,6 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
         structs.add(toLoad);
 
         return uncompleted; //will be completed... later!
-    }
-
-    /**
-     * Loads many components of the same type
-     * @param type
-     * @param originalPath the root path all the new components should be based on
-     * @param range
-     * @param subNamingFunction a function that makes the new components have slightly different names based on the numerical id
-     * @return an ordered array of all the new components within the range
-     * @param <T>
-     */
-    @SuppressWarnings("unchecked")
-    public <T extends INetworkedComponent> T[] loadRange(Class<T> type, String originalPath, int range, BiFunction<String, Integer, String> subNamingFunction) {
-        T[] array = (T[]) new INetworkedComponent[4];
-        for (int i = 0; i < range; i++) {
-            array[i] = load(type, subNamingFunction.apply(originalPath, i));
-        }
-        return array;
-    }
-
-    /**
-     *
-     * @param type
-     * @param originalPath
-     * @param range
-     * @return
-     * @param <T>
-     */
-    public <T extends INetworkedComponent> T[] loadRange(Class<T> type, String originalPath, int range) {
-        return loadRange(type, originalPath, range, (s,i) -> s+"/"+i);
     }
 
     /**
