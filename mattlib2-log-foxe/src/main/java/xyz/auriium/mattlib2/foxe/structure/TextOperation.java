@@ -1,4 +1,4 @@
-package xyz.auriium.mattlib2.foxe;
+package xyz.auriium.mattlib2.foxe.structure;
 
 public enum TextOperation {
 

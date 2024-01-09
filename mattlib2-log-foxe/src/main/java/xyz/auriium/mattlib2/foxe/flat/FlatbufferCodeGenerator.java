@@ -1,24 +1,5 @@
 package xyz.auriium.mattlib2.foxe.flat;
 
-import com.google.flatbuffers.FlatBufferBuilder;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
-import net.bytebuddy.ByteBuddy;
-import net.bytebuddy.asm.Advice;
-import net.bytebuddy.dynamic.scaffold.subclass.ConstructorStrategy;
-import net.bytebuddy.implementation.EqualsMethod;
-import net.bytebuddy.implementation.Implementation;
-import net.bytebuddy.implementation.MethodCall;
-import net.bytebuddy.matcher.ElementMatchers;
-import xyz.auriium.mattlib2.foxe.NetworkDescriptionRecord;
-import xyz.auriium.mattlib2.foxe.ServerChannel;
-
-import java.lang.reflect.Modifier;
-import java.nio.ByteBuffer;
-import java.util.function.Supplier;
 /*
 
 public class FlatbufferCodeGenerator {

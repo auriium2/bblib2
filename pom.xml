@@ -17,6 +17,7 @@
 
         <module>mattlib2-hardware</module>
         <module>mattlib2-test</module>
+        <module>mattlib2-sim</module>
 
     </modules>
 

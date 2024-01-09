@@ -1,4 +1,4 @@
-package xyz.auriium.mattlib2.foxe;
+package xyz.auriium.mattlib2.foxe.structure;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +13,7 @@ public record ChannelData(
         Optional<String> schemaEncoding
 ) {
 
-    Map<String, Object> asMap() {
+    public Map<String, Object> asMap() {
 
         Map<String, Object> internal = new HashMap<>();
 

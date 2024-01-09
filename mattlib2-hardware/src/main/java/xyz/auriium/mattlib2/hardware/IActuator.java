@@ -10,12 +10,16 @@ import xyz.auriium.mattlib2.IRaw;
 public interface IActuator extends IControlEffortReceiver<N1>, IRaw {
 
     /**
-     * @param voltage The voltage that the actuator should be driven at, typically ranged -12 to 12 but not always
+     * @param voltage The voltage that the actuator should be driven at, ranged -12 to 12.
+     *                - Voltages outside of that range will be rejected loudly
+     *                - If this motor is inverted, the voltage you give it will be internally inverted as well
      */
     void setToVoltage(double voltage);
 
     /**
-     * @param percent_zeroToOne The percent that
+     * @param percent_zeroToOne A percentage to drive the actuator at, ranged from 0 to 1.
+     *                          - Percentages outside of that range will be rejected loudly
+     *                          - If this motor is inverted, the movement of the motor will be internally inverted as well
      */
     void setToPercent(double percent_zeroToOne);
 
@@ -30,6 +34,8 @@ public interface IActuator extends IControlEffortReceiver<N1>, IRaw {
      * @return volts
      */
     double reportVoltageNow();
+
+    double reportTemperatureNow();
 
     @Override
     default void handleControlEffort(Vector<N1> inputVector_u) {

@@ -5,6 +5,10 @@ import com.google.gson.Gson;
 import io.undertow.websockets.core.*;
 import it.unimi.dsi.fastutil.ints.*;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import xyz.auriium.mattlib2.foxe.structure.ChannelData;
+import xyz.auriium.mattlib2.foxe.structure.Message;
+import xyz.auriium.mattlib2.foxe.structure.ServerData;
+import xyz.auriium.mattlib2.foxe.structure.TextOperation;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

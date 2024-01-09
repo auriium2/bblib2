@@ -1,4 +1,4 @@
-package xyz.auriium.mattlib2.foxe;
+package xyz.auriium.mattlib2.foxe.structure;
 
 import java.util.Map;
 import java.util.Set;

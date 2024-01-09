@@ -7,9 +7,8 @@ import com.google.flatbuffers.reflection.Object;
 import com.google.flatbuffers.reflection.Schema;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-import xyz.auriium.mattlib2.foxe.Exceptions;
 import xyz.auriium.mattlib2.foxe.util.BufferUtils;
-import xyz.auriium.mattlib2.foxe.NetworkDescriptionRecord;
+import xyz.auriium.mattlib2.foxe.structure.NetworkDescriptionRecord;
 
 import java.util.HashMap;
 import java.util.Map;

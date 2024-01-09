@@ -33,6 +33,7 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
     double outputCurrent = 0;
     double outputVoltage = 0;
+    double temperature = 0;
 
     @Override
     public Optional<ExplainedException> verifyInit() {
@@ -48,6 +49,7 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
         }
 
 
+
         return Optional.empty();
     }
 
@@ -55,6 +57,7 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
     public void logicPeriodic() {
         outputVoltage = sparkMax.getBusVoltage();
         outputCurrent = sparkMax.getOutputCurrent();
+        temperature = sparkMax.getMotorTemperature();
     }
 
     @Override
@@ -85,6 +88,11 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
     @Override
     public double reportVoltageNow() {
         return outputVoltage;
+    }
+
+    @Override
+    public double reportTemperatureNow() {
+        return temperature;
     }
 
     @Override
@@ -168,7 +176,7 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
     @Override
     public <T> T rawAccess(Class<T> clazz) throws UnsupportedOperationException {
         if (clazz == CANSparkMax.class) {
-            return (T) sparkMax;
+            return clazz.cast( sparkMax );
         }
 
         throw new UnsupportedOperationException("no such type");

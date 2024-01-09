@@ -2,6 +2,7 @@ package xyz.auriium.mattlib2;
 
 import xyz.auriium.mattlib2.log.INetworkedComponent;
 
+import java.lang.reflect.Array;
 import java.util.function.BiFunction;
 
 public interface IMattLog {
@@ -12,7 +13,7 @@ public interface IMattLog {
 
     @SuppressWarnings("unchecked")
     default <T extends INetworkedComponent> T[] loadRange(Class<T> type, String originalPath, int range, BiFunction<String, Integer, String> subNamingFunction) {
-        T[] array = (T[]) new INetworkedComponent[4];
+        T[] array = (T[]) Array.newInstance(type, range);
         for (int i = 0; i < range; i++) {
             array[i] = load(type, subNamingFunction.apply(originalPath, i));
         }

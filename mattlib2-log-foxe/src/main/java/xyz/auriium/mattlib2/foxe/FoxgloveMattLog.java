@@ -9,13 +9,13 @@ import io.undertow.websockets.extensions.PerMessageDeflateHandshake;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import xyz.auriium.mattlib2.IMattLog;
 import xyz.auriium.mattlib2.IPeriodicLooped;
+import xyz.auriium.mattlib2.foxe.structure.ChannelData;
+import xyz.auriium.mattlib2.foxe.structure.ServerData;
 import xyz.auriium.mattlib2.log.INetworkedComponent;
 import yuukonstants.exception.ExplainedException;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import static io.undertow.Handlers.path;
