@@ -17,7 +17,6 @@ import xyz.auriium.mattlib2.log.SelfPath;
 import xyz.auriium.mattlib2.log.Tune;
 import xyz.auriium.mattlib2.log.INetworkedComponent;
 import xyz.auriium.mattlib2.log.ProcessPath;
-import xyz.auriium.mattlib2.log.TomlNotFoundException;
 import xyz.auriium.mattlib2.yuukonfig.CustomForwarder;
 import yuukonfig.core.annotate.Comment;
 import yuukonfig.core.annotate.Key;
@@ -88,7 +87,7 @@ public class LogComponentManipulator implements Manipulator {
             if (conf != null || tune != null) { //Handle this as a config value
                 Node nullable = node.asMapping().value(key);
 
-                if (nullable == null) throw new TomlNotFoundException(manipulation.configName(), newPath);
+                if (nullable == null) throw Exceptions.NO_TOML(newPath);
 
 
                 Class<?> returnType = method.getReturnType();

@@ -1,5 +1,6 @@
 package xyz.auriium.mattlib2.foxe;
 
+
 import xyz.auriium.mattlib2.Mattlib2Exception;
 
 public class Exceptions {
