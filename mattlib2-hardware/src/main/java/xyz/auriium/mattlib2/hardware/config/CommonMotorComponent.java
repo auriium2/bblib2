@@ -1,9 +1,7 @@
 package xyz.auriium.mattlib2.hardware.config;
 
 import xyz.auriium.mattlib2.log.INetworkedComponent;
-import xyz.auriium.mattlib2.log.annotation.Conf;
-import xyz.auriium.mattlib2.log.annotation.decorator.Documented;
-import yuukonfig.core.annotate.Comment;
+import xyz.auriium.mattlib2.log.Conf;
 
 import java.util.Optional;
 

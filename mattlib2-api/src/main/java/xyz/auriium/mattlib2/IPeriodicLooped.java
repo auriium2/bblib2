@@ -56,4 +56,9 @@ public interface IPeriodicLooped {
      */
     default void tunePeriodic() {};
 
+    /**
+     * This function is run every time the robot is shutdown
+     */
+    default void shutdownHook() {}
+
 }

@@ -1,7 +1,7 @@
 package xyz.auriium.mattlib2.hardware.config;
 
-import xyz.auriium.mattlib2.log.annotation.*;
-import xyz.auriium.mattlib2.log.annotation.decorator.Documented;
+import xyz.auriium.mattlib2.log.Tune;
+import xyz.auriium.mattlib2.log.decorator.Documented;
 import yuukonfig.core.annotate.Key;
 
 import java.util.Optional;
@@ -31,14 +31,14 @@ public interface MotorControllerComponent extends MotorComponent, PIDComponent{
 
         @Override
         @Key("p")
-        @Tune
+        @xyz.auriium.mattlib2.log.Tune
         public int pConstant() {
             return pidComponent.pConstant();
         }
 
         @Override
         @Key("d")
-        @Tune
+        @xyz.auriium.mattlib2.log.Tune
         public int dConstant() {
             return pidComponent.dConstant();
         }
@@ -51,7 +51,7 @@ public interface MotorControllerComponent extends MotorComponent, PIDComponent{
         }
 
         @Override
-        @HasUpdated(keysToCheck = {"p", "i", "d"})
+        @xyz.auriium.mattlib2.log.HasUpdated(keysToCheck = {"p", "i", "d"})
         public boolean hasUpdated() {
             return pidComponent.hasUpdated();
         }
@@ -162,7 +162,7 @@ public interface MotorControllerComponent extends MotorComponent, PIDComponent{
         }
 
         @Override
-        @SelfPath
+        @xyz.auriium.mattlib2.log.SelfPath
         public String selfPath() {
             return motorComponent.selfPath();
         }

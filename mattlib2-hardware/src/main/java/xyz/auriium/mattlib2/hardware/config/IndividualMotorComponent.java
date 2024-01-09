@@ -1,8 +1,8 @@
 package xyz.auriium.mattlib2.hardware.config;
 
 import xyz.auriium.mattlib2.log.INetworkedComponent;
-import xyz.auriium.mattlib2.log.annotation.Conf;
-import xyz.auriium.mattlib2.log.annotation.Log;
+import xyz.auriium.mattlib2.log.Conf;
+import xyz.auriium.mattlib2.log.Log;
 
 /**
  * A config for all networked parts of a motor.

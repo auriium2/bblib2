@@ -1,12 +1,5 @@
 package xyz.auriium.mattlib2.hardware.config;
 
-import xyz.auriium.mattlib2.log.annotation.HasUpdated;
-import xyz.auriium.mattlib2.log.annotation.Log;
-import xyz.auriium.mattlib2.log.annotation.SelfPath;
-import xyz.auriium.mattlib2.log.annotation.Tune;
-import xyz.auriium.mattlib2.log.INetworkedComponent;
-import yuukonfig.core.annotate.Key;
-
 public interface PIDComponent extends CommonPIDComponent, IndividualPIDComponent {
 
 

@@ -11,7 +11,6 @@
     <modules>
         <module>mattlib2-api</module>
         <module>mattlib2-rev</module>
-        <module>mattlib2-log</module>
         <module>mattlib2-log-foxe</module>
         <module>mattlib2-log-nt</module>
         <module>mattlib2-auto</module>
@@ -70,10 +69,6 @@
             <id>wpi2</id>
             <url>https://frcmaven.wpi.edu/artifactory/release/</url>
         </repository>
-        <repository>
-            <id>wpi3</id>
-            <url>https://frcmaven.wpi.edu/ui/native/release/edu/wpi/first/wpilibj/wpilibj-java/</url>
-        </repository>
     </repositories>
 
     <pluginRepositories>
@@ -81,6 +76,13 @@
     </pluginRepositories>
 
     <dependencies>
+        <dependency>
+            <groupId>org.kordamp.jipsy</groupId>
+            <artifactId>jipsy-processor</artifactId>
+            <version>1.2.0</version>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -117,6 +119,7 @@
             <version>5.2.0</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
 

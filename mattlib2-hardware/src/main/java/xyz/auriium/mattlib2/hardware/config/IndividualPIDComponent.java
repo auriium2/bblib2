@@ -1,7 +1,7 @@
 package xyz.auriium.mattlib2.hardware.config;
 
 import xyz.auriium.mattlib2.log.INetworkedComponent;
-import xyz.auriium.mattlib2.log.annotation.Log;
+import xyz.auriium.mattlib2.log.Log;
 
 /**
  * Often very specific details of a pid controller

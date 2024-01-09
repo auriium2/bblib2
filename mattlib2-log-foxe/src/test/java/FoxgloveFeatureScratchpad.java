@@ -1,10 +1,10 @@
-import xyz.auriium.mattlib2.foxe.FoxgloveFeature;
+import xyz.auriium.mattlib2.foxe.FoxgloveMattLog;
 
 public class FoxgloveFeatureScratchpad {
 
     public static void main(String[] args) {
 
-        try (var ff = new FoxgloveFeature()) {
+        try (var ff = new FoxgloveMattLog()) {
             ff.init();
             ff.ready();
 

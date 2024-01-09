@@ -1,8 +1,8 @@
 package xyz.auriium.mattlib2.hardware.config;
 
 import xyz.auriium.mattlib2.log.INetworkedComponent;
-import xyz.auriium.mattlib2.log.annotation.HasUpdated;
-import xyz.auriium.mattlib2.log.annotation.Tune;
+import xyz.auriium.mattlib2.log.HasUpdated;
+import xyz.auriium.mattlib2.log.Tune;
 import yuukonfig.core.annotate.Key;
 
 /**

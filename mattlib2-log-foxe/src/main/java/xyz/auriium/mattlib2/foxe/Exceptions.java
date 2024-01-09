@@ -11,10 +11,12 @@ public class Exceptions {
             "contact matt or investigate"
         );
     };
-    static Mattlib2Exception IMPOSSIBLE_SHUTDOWN = new Mattlib2Exception(
-            "server/impossibleShutdown",
-            "mattlib2 tried to shutdown the foxe server but it was never started in the first place",
-            "contact matt or investigate the class FoxgloveFeature in mattlib2-log-foxe"
-    );
+    static Mattlib2Exception IMPOSSIBLE_SHUTDOWN() {
+        return new Mattlib2Exception(
+                "server/impossibleShutdown",
+                "mattlib2 tried to shutdown the foxe server but it was never started in the first place",
+                "contact matt or investigate the class FoxgloveFeature in mattlib2-log-foxe"
+        );
+    }
 
 }
