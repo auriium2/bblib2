@@ -114,7 +114,7 @@ public class TypeMapManipulator implements Manipulator {
 
             Node serializedNode = manipulation.serializeDefault(entry.getValue(), new String[0] );
 
-            System.out.println("e" + serializedNode.toString());
+            //System.out.println("e" + serializedNode.toString());
             String[] internalArray = entry.getKey().asArray();
 
 

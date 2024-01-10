@@ -30,6 +30,7 @@ public class NetworkMattLogger {
         NetworkTableEntry entry = NetworkTableInstance.getDefault().getEntry(path.getAsTablePath());
 
 
+
         if (returnType == Double.class || returnType == double.class) { //handle doubles
             Supplier<Double> supplier = new NTValueSupplier<>(entry, double.class);
 

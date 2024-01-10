@@ -11,12 +11,7 @@ import net.bytebuddy.implementation.MethodCall;
 import net.bytebuddy.implementation.bytecode.assign.Assigner;
 import net.bytebuddy.matcher.ElementMatchers;
 import xyz.auriium.mattlib2.*;
-import xyz.auriium.mattlib2.log.Conf;
-import xyz.auriium.mattlib2.log.Log;
-import xyz.auriium.mattlib2.log.SelfPath;
-import xyz.auriium.mattlib2.log.Tune;
-import xyz.auriium.mattlib2.log.INetworkedComponent;
-import xyz.auriium.mattlib2.log.ProcessPath;
+import xyz.auriium.mattlib2.log.*;
 import xyz.auriium.mattlib2.yuukonfig.CustomForwarder;
 import yuukonfig.core.annotate.Comment;
 import yuukonfig.core.annotate.Key;
@@ -32,10 +27,7 @@ import yuukonstants.GenericPath;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -73,16 +65,26 @@ public class LogComponentManipulator implements Manipulator {
 
         Map<Method, Supplier<Object>> configOrTuneMap = new HashMap<>();
         Map<Method, Consumer<Object>> loggerMap = new HashMap<>();
+        List<Method> hasUpdatedMap = new ArrayList<>();
+
 
         for (Method method : useClass.getMethods()) {
+
             if (method.getDeclaringClass() == Objects.class) continue;
             check(method);
+
+
 
             String key = getKey(method);
             GenericPath newPath = exceptionalKey.append(key);
 
             Conf conf = method.getAnnotation(Conf.class);
             Tune tune = method.getAnnotation(Tune.class);
+            HasUpdated up = method.getAnnotation(HasUpdated.class);
+            if (up != null) {
+                hasUpdatedMap.add(method);
+                continue;
+            }
 
             if (conf != null || tune != null) { //Handle this as a config value
                 Node nullable = node.asMapping().value(key);
@@ -131,18 +133,26 @@ public class LogComponentManipulator implements Manipulator {
         }
 
 
+
+
         try {
             var builder = BUDDY.subclass(useClass)
                     .name(useClass.getPackageName() + "." + useClass.getSimpleName())
                     .suffix("Generated_" + Integer.toHexString(hashCode()));
 
-            builder
+            builder = builder
                     .method(ElementMatchers.isEquals())
                     .intercept(EqualsMethod.isolated());
 
-            builder
+            builder = builder
                     .method(ElementMatchers.is(INetworkedComponent.class.getMethod("selfPath")))
                     .intercept(FixedValue.value(exceptionalKey));
+
+            for (Method method : hasUpdatedMap) {
+                builder = builder
+                        .method(ElementMatchers.is(method))
+                        .intercept(FixedValue.value(false)); //TODO this must be updated every so often
+            }
 
             for (Map.Entry<Method, Supplier<Object>> values : configOrTuneMap.entrySet()) { //every method on the new implementation will only do one thing (return config value)
                 Implementation supplierInvoke = MethodCall
@@ -219,6 +229,10 @@ public class LogComponentManipulator implements Manipulator {
         if (conf != null) quantity++;
         Log log = method.getAnnotation(Log.class);
         if (log != null) quantity++;
+        LogArray logArr = method.getAnnotation(LogArray.class);
+        if (logArr != null) quantity++;
+        HasUpdated hasUpdated = method.getAnnotation(HasUpdated.class);
+        if (hasUpdated != null) quantity++;
         Tune tune = method.getAnnotation(Tune.class);
         if (tune != null) quantity++;
         SelfPath selfPath = method.getAnnotation(SelfPath.class);

@@ -5,7 +5,10 @@ import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
-import net.bytebuddy.implementation.*;
+import net.bytebuddy.implementation.EqualsMethod;
+import net.bytebuddy.implementation.FieldAccessor;
+import net.bytebuddy.implementation.MethodCall;
+import net.bytebuddy.implementation.MethodDelegation;
 import net.bytebuddy.jar.asm.Opcodes;
 import net.bytebuddy.matcher.ElementMatchers;
 import xyz.auriium.mattlib2.Exceptions;
@@ -18,14 +21,12 @@ import xyz.auriium.mattlib2.log.TypeMap;
 import xyz.auriium.mattlib2.yuukonfig.TypeMapManipulator;
 import yuukonfig.core.YuuKonfig;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.BiFunction;
 
 /**
  * Silly logging/configuration/tuning solution
