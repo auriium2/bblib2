@@ -71,7 +71,7 @@ public class LogComponentManipulator implements Manipulator {
         for (Method method : useClass.getMethods()) {
 
             if (method.getDeclaringClass() == Objects.class) continue;
-            check(method);
+            //check(method);
 
 
 
@@ -197,7 +197,7 @@ public class LogComponentManipulator implements Manipulator {
 
         for (Method method : useClass.getMethods()) {
             if (method.getDeclaringClass() == Objects.class) continue;
-            check(method);
+            //check(method);
 
             String key = getKey(method);
             Class<?> as = method.getReturnType();
@@ -245,7 +245,7 @@ public class LogComponentManipulator implements Manipulator {
             throw xyz.auriium.mattlib2.Exceptions.TOO_MANY_ANNOTATIONS(methodName, simpleName);
         }
 
-        if (method.getAnnotations().length == 0) {
+        if (quantity == 0) {
             throw xyz.auriium.mattlib2.Exceptions.NO_ANNOTATIONS_ON_METHOD(methodName, simpleName);
         }
 
@@ -272,7 +272,7 @@ public class LogComponentManipulator implements Manipulator {
 
         for (Method method : useClass.getMethods()) {
             if (method.getDeclaringClass() == Objects.class) continue;
-            check(method);
+            //check(method);
             if (method.getAnnotation(Log.class) != null) continue; //No need to serialize for log
 
             Class<?> returnType = method.getReturnType();

@@ -14,21 +14,18 @@ public interface IndividualMotorComponent extends INetworkedComponent {
      *
      * @return The can bus id of this device
      */
-    @Conf("id")
-    int id();
+    @Conf("id") int id();
 
     /**
      *
      * @param voltage the voltage the motor is currently being supplied
      */
-    @Log("voltage")
-    void logVoltageGiven(double voltage);
+    @Log("voltage") void logVoltageGiven(double voltage);
 
     /**
      *
      * @param current the quantity of current the motor is currently consuming
      */
-    @Log("current")
-    void logCurrentDraw(double current);
+    @Log("current") void logCurrentDraw(double current);
 
 }

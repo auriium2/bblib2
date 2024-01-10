@@ -15,34 +15,24 @@ public interface CommonMotorComponent extends INetworkedComponent {
         BRUSHLESS
     }
 
-    @Conf("type")
-    Type typeOfMotor();
 
-    @Conf("sensor2mechanism_coef")
-    double encoderToMechanismCoefficient();
+    /**
+     *
+     * @return brushless or brushed (look it up)
+     */
+    @Conf("type") default Type typeOfMotor() { return Type.BRUSHLESS; }
+    @Conf("sensor2mechanism_coef") double encoderToMechanismCoefficient();
+    @Conf("time_coef") double timeCoefficient();
 
-    @Conf("time_coef")
-    double timeCoefficient();
+    @Conf("rot2meter_coef") Optional<Double> rotationToMeterCoefficient();
+    @Conf("current_limit") Optional<Double> currentLimit();
+    @Conf("forward_limit") Optional<Double> forwardLimit_mechanismRot();
+    @Conf("reverse_limit") Optional<Double> reverseLimit_mechanismRot();
 
-    @Conf("rot2meter_coef")
-    Optional<Double> rotationToMeterCoefficient();
-
-    @Conf("current_limit")
-    Optional<Double> currentLimit();
-
-    @Conf("forward_limit")
-    Optional<Double> forwardLimit_mechanismRot();
-    @Conf("reverse_limit")
-    Optional<Double> reverseLimit_mechanismRot();
-
-    @Conf("inverted")
-    Optional<Boolean> inverted();
-    @Conf("ramp_limit_enabled")
-    Optional<Boolean> rampRateLimitEnabled();
-    @Conf("break_mode_enabled")
-    Optional<Boolean> breakModeEnabled();
-    @Conf("has_absolute")
-    Optional<Boolean> hasAbsoluteEncoder();
+    @Conf("inverted") Optional<Boolean> inverted();
+    @Conf("ramp_limit_enabled") Optional<Boolean> rampRateLimitEnabled();
+    @Conf("break_mode_enabled") Optional<Boolean> breakModeEnabled();
+    @Conf("has_absolute") Optional<Boolean> hasAbsoluteEncoder();
 
 
 
