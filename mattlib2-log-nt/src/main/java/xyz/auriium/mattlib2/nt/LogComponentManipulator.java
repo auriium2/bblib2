@@ -17,6 +17,7 @@ import yuukonfig.core.annotate.Comment;
 import yuukonfig.core.annotate.Key;
 import yuukonfig.core.err.BadConfigException;
 import yuukonfig.core.err.BadValueException;
+import yuukonfig.core.impl.manipulator.section.ProxyForwarder;
 import yuukonfig.core.manipulation.Contextual;
 import yuukonfig.core.manipulation.Manipulation;
 import yuukonfig.core.manipulation.Manipulator;
@@ -25,8 +26,10 @@ import yuukonfig.core.node.Node;
 import yuukonfig.core.node.RawNodeFactory;
 import yuukonstants.GenericPath;
 
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -267,29 +270,53 @@ public class LogComponentManipulator implements Manipulator {
     @Override
     public Node serializeDefault(String[] comment) {
 
+        Object proxy = Proxy.newProxyInstance(
+                ClassLoader.getSystemClassLoader(),
+                new Class[]{ useClass },
+                (a,b,c) -> {
+                    if (b.isDefault()) {
+                        return InvocationHandler.invokeDefault(a, b, c);
+                    }
+
+                    throw new IllegalStateException("Defaulting anonymous proxy does not support normal method queries!");
+                }
+        );
 
         RawNodeFactory.MappingBuilder builder = factory.makeMappingBuilder();
 
         for (Method method : useClass.getMethods()) {
-            if (method.getDeclaringClass() == Objects.class) continue;
-            //check(method);
-            if (method.getAnnotation(Log.class) != null) continue; //No need to serialize for log
+            check(method);
 
             Class<?> returnType = method.getReturnType();
             String key = getKey(method);
             String[] comments = getComment(method);
-            Node serialized = manipulation.serializeDefault(
-                    returnType,
-                    comments,
-                    Contextual.present(method.getGenericReturnType())
-            );
+            Node serialized;
+
+            //System.out.println("working on: " + key);
+
+            if (method.isDefault()) {
+
+                //System.out.println("defaulting: " + key);
+                serialized = manipulation.serialize(
+                        new ProxyForwarder2(method, proxy).invoke(),
+                        returnType,
+                        comments,
+                        Contextual.present(method.getGenericReturnType())
+                );
+            } else {
+                serialized = manipulation.serializeDefault(
+                        returnType,
+                        comments,
+                        Contextual.present(method.getGenericReturnType())
+                );
+            }
 
             //System.out.println("finished: " + key + " : " + serialized);
 
             builder.add(key, serialized);
         }
 
-        return builder.build(String.valueOf(Arrays.asList(comment)));
+        return builder.build(comment);
     }
 
     String[] getComment(Method method) {

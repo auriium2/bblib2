@@ -5,7 +5,7 @@
     <parent>
         <artifactId>mattlib2</artifactId>
         <groupId>xyz.auriium</groupId>
-        <version>1.0.19-SNAPSHOT</version>
+        <version>1.0.20-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -28,17 +28,22 @@
         <dependency>
             <groupId>xyz.auriium</groupId>
             <artifactId>mattlib2-api</artifactId>
-            <version>1.0.19-SNAPSHOT</version>
+            <version>1.0.20-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>xyz.auriium</groupId>
             <artifactId>mattlib2-hardware</artifactId>
-            <version>1.0.19-SNAPSHOT</version>
+            <version>1.0.20-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.revrobotics.frc</groupId>
             <artifactId>REVLib-java</artifactId>
             <version>2024.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.wpilibj</groupId>
+            <artifactId>wpilibj-java</artifactId>
+            <version>2024.1.1</version>
         </dependency>
     </dependencies>
 

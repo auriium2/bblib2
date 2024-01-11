@@ -5,7 +5,7 @@
     <parent>
         <artifactId>mattlib2</artifactId>
         <groupId>xyz.auriium</groupId>
-        <version>1.0.19-SNAPSHOT</version>
+        <version>1.0.20-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -21,7 +21,33 @@
         <dependency>
             <groupId>xyz.auriium</groupId>
             <artifactId>mattlib2-api</artifactId>
-            <version>1.0.19-SNAPSHOT</version>
+            <version>1.0.20-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>xyz.auriium</groupId>
+            <artifactId>mattlib2-log-nt</artifactId>
+            <version>1.0.12-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.cscore</groupId>
+            <artifactId>cscore-java</artifactId>
+            <version>2024.1.1</version>
+            <scope>test</scope>
+
+        </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.hal</groupId>
+            <artifactId>hal-java</artifactId>
+            <version>2024.1.1</version>
+            <scope>test</scope>
+
+        </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.cameraserver</groupId>
+            <artifactId>cameraserver-java</artifactId>
+            <version>2024.1.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
