@@ -5,7 +5,7 @@
     <parent>
         <artifactId>mattlib2</artifactId>
         <groupId>xyz.auriium</groupId>
-        <version>1.0.21-SNAPSHOT</version>
+        <version>1.0.24-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,5 +16,18 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>xyz.auriium</groupId>
+            <artifactId>mattlib2-hardware</artifactId>
+            <version>1.0.24-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.wpilibj</groupId>
+            <artifactId>wpilibj-java</artifactId>
+            <version>${mattlib2.wpi.versionTag}</version>
+        </dependency>
+    </dependencies>
 
 </project>

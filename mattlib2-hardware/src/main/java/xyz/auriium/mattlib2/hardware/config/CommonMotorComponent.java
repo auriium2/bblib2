@@ -1,7 +1,7 @@
 package xyz.auriium.mattlib2.hardware.config;
 
 import xyz.auriium.mattlib2.log.INetworkedComponent;
-import xyz.auriium.mattlib2.log.Conf;
+import xyz.auriium.mattlib2.log.annote.Conf;
 
 import java.util.Optional;
 
@@ -15,6 +15,11 @@ public interface CommonMotorComponent extends INetworkedComponent {
         BRUSHLESS
     }
 
+    enum Normally {
+        OPEN,
+        CLOSED
+    }
+
 
     /**
      *
@@ -22,15 +27,17 @@ public interface CommonMotorComponent extends INetworkedComponent {
      */
     @Conf("type") default Type typeOfMotor() { return Type.BRUSHLESS; }
     @Conf("sensor2mechanism_coef") double encoderToMechanismCoefficient();
-    @Conf("time_coef") double timeCoefficient();
 
     @Conf("rot2meter_coef") Optional<Double> rotationToMeterCoefficient();
-    @Conf("current_limit") Optional<Double> currentLimit();
-    @Conf("forward_limit") Optional<Double> forwardLimit_mechanismRot();
-    @Conf("reverse_limit") Optional<Double> reverseLimit_mechanismRot();
+    @Conf("current_limit") Optional<Integer> currentLimit();
+    @Conf("forward_limit") Optional<Normally> forwardLimit();
+    @Conf("reverse_limit") Optional<Normally> reverseLimit();
+    @Conf("forward_soft_limit") Optional<Double> forwardSoftLimit_mechanismRot();
+    @Conf("reverse_soft_limit") Optional<Double> reverseSoftLimit_mechanismRot();
 
     @Conf("inverted") Optional<Boolean> inverted();
-    @Conf("ramp_limit_enabled") Optional<Boolean> rampRateLimitEnabled();
+    @Conf("open_ramp_rate") Optional<Double> openRampRate_seconds();
+    @Conf("closed_ramp_rate") Optional<Double> closedRampRate_seconds();
     @Conf("break_mode_enabled") Optional<Boolean> breakModeEnabled();
     @Conf("has_absolute") Optional<Boolean> hasAbsoluteEncoder();
 

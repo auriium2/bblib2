@@ -1,4 +1,4 @@
-package xyz.auriium.mattlib2.log;
+package xyz.auriium.mattlib2.log.annote;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -21,5 +21,6 @@ public @interface Log {
 
 
     String value();
+    int vectorSize() default 0;
 
 }

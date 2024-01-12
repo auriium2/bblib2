@@ -1,13 +1,24 @@
 package xyz.auriium.mattlib2.utils;
 
 import xyz.auriium.mattlib2.Mattlib2Exception;
-import xyz.auriium.mattlib2.log.Conf;
-import xyz.auriium.mattlib2.log.Log;
-import xyz.auriium.mattlib2.log.Tune;
+import xyz.auriium.mattlib2.log.annote.Conf;
+import xyz.auriium.mattlib2.log.annote.Log;
+import xyz.auriium.mattlib2.log.annote.Tune;
 
 import java.lang.reflect.Method;
 
 public class ReflectionUtil {
+
+    public static String getKey(Method method) {
+        Conf conf = method.getAnnotation(Conf.class);
+        if (conf != null) return conf.value();
+        Log log = method.getAnnotation(Log.class);
+        if (log != null) return log.value();
+        Tune tune = method.getAnnotation(Tune.class);
+        if (tune != null) return tune.value();
+
+        return method.getName();
+    }
 
     public static void check(Method method) {
 

@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 public class NetworkMattLogger {
 
 
-    
+
     public <T> Optional<Supplier<T>> generateTuner(ProcessPath path, T defaultValue) {
         return Optional.ofNullable(getCorrectSupplier(path, defaultValue));
     }
@@ -103,13 +103,6 @@ public class NetworkMattLogger {
             return (Supplier<T>) new TranslationSupplier(entry);
         }
 
-        if (returnType == SwerveModulePosition[].class) {
-            return (Supplier<T>) new SwervePosConsumer(entry);
-        }
-
-        if (returnType == SwerveModuleState[].class) {
-            return (Supplier<T>) new SwerveStateConsumer(entry);
-        }
 
 
         //TODO handle double arrays
@@ -119,7 +112,7 @@ public class NetworkMattLogger {
     }
 
 
-    
+
     public <T> Optional<Consumer<T>> generateLogger(ProcessPath path, Class<T> type) {
 
         NetworkTableEntry entry = NetworkTableInstance.getDefault().getEntry(path.getAsTablePath());
@@ -154,12 +147,17 @@ public class NetworkMattLogger {
         }
 
 
+        if (type == SwerveModulePosition[].class) {
+            return Optional.of((Consumer<T>) new SwervePosConsumer(entry));
+        }
+
+        if (type == SwerveModuleState[].class) {
+            return Optional.of((Consumer<T>) new SwerveStateConsumer(entry));
+        }
+
+
 
         return Optional.empty();
     }
 
-    
-    public void close() {
-
-    }
 }

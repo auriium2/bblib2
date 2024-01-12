@@ -1,8 +1,10 @@
 package xyz.auriium.mattlib2.hardware.config;
 
-import xyz.auriium.mattlib2.log.Tune;
+import xyz.auriium.mattlib2.log.annote.HasUpdated;
+import xyz.auriium.mattlib2.log.annote.SelfPath;
 import xyz.auriium.mattlib2.log.decorator.Documented;
 import yuukonfig.core.annotate.Key;
+import yuukonstants.GenericPath;
 
 import java.util.Optional;
 
@@ -30,34 +32,26 @@ public interface MotorControllerComponent extends MotorComponent, PIDComponent{
         }
 
         @Override
-        @Key("p")
-        @xyz.auriium.mattlib2.log.Tune
         public int pConstant() {
             return pidComponent.pConstant();
         }
 
         @Override
-        @Key("d")
-        @xyz.auriium.mattlib2.log.Tune
         public int dConstant() {
             return pidComponent.dConstant();
         }
 
         @Override
-        @Key("i")
-        @Tune
         public int iConstant() {
             return pidComponent.iConstant();
         }
 
         @Override
-        @xyz.auriium.mattlib2.log.HasUpdated(keysToCheck = {"p", "i", "d"})
         public boolean hasUpdated() {
             return pidComponent.hasUpdated();
         }
 
         @Override
-        
         public void reportError(double error) {
             pidComponent.reportError(error);
         }
@@ -78,41 +72,40 @@ public interface MotorControllerComponent extends MotorComponent, PIDComponent{
         }
 
         @Override
-        @Documented("the coefficient which converts a scalar in units of encoder rotations to mechanism rotations")
         public double encoderToMechanismCoefficient() {
             return motorComponent.encoderToMechanismCoefficient();
         }
 
         @Override
-        @Documented("i have no idea what this does")
-        
-        public double timeCoefficient() {
-            return motorComponent.timeCoefficient();
-        }
-
-        @Override
-        @Documented("the coefficient that converts rotations of the mechanism to meters travelled, if this is a linear actuator")
-        
         public Optional<Double> rotationToMeterCoefficient() {
             return motorComponent.rotationToMeterCoefficient();
         }
 
         @Override
-        
-        public Optional<Double> currentLimit() {
+        public Optional<Integer> currentLimit() {
             return motorComponent.currentLimit();
         }
 
         @Override
-        
-        public Optional<Double> forwardLimit_mechanismRot() {
-            return motorComponent.forwardLimit_mechanismRot();
+        public Optional<Normally> forwardLimit() {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<Normally> reverseLimit() {
+            return Optional.empty();
         }
 
         @Override
         
-        public Optional<Double> reverseLimit_mechanismRot() {
-            return motorComponent.reverseLimit_mechanismRot();
+        public Optional<Double> forwardSoftLimit_mechanismRot() {
+            return motorComponent.forwardSoftLimit_mechanismRot();
+        }
+
+        @Override
+        
+        public Optional<Double> reverseSoftLimit_mechanismRot() {
+            return motorComponent.reverseSoftLimit_mechanismRot();
         }
 
         @Override
@@ -123,8 +116,13 @@ public interface MotorControllerComponent extends MotorComponent, PIDComponent{
 
         @Override
         
-        public Optional<Boolean> rampRateLimitEnabled() {
-            return motorComponent.rampRateLimitEnabled();
+        public Optional<Double> openRampRate_seconds() {
+            return motorComponent.openRampRate_seconds();
+        }
+
+        @Override
+        public Optional<Double> closedRampRate_seconds() {
+            return motorComponent.closedRampRate_seconds();
         }
 
         @Override
@@ -147,14 +145,14 @@ public interface MotorControllerComponent extends MotorComponent, PIDComponent{
 
         @Override
         
-        public void logVoltageGiven(double voltage) {
-            motorComponent.logVoltageGiven(voltage);
+        public void reportVoltageGiven(double voltage) {
+            motorComponent.reportVoltageGiven(voltage);
         }
 
         @Override
         
-        public void logCurrentDraw(double current) {
-            motorComponent.logCurrentDraw(current);
+        public void reportCurrentDraw(double current) {
+            motorComponent.reportCurrentDraw(current);
         }
 
         public static MotorComponent ofSpecific(CommonMotorComponent common, IndividualMotorComponent individual) {
@@ -162,8 +160,8 @@ public interface MotorControllerComponent extends MotorComponent, PIDComponent{
         }
 
         @Override
-        @xyz.auriium.mattlib2.log.SelfPath
-        public String selfPath() {
+        @SelfPath
+        public GenericPath selfPath() {
             return motorComponent.selfPath();
         }
     }

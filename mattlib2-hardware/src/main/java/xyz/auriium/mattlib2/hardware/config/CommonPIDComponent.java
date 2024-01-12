@@ -1,8 +1,8 @@
 package xyz.auriium.mattlib2.hardware.config;
 
 import xyz.auriium.mattlib2.log.INetworkedComponent;
-import xyz.auriium.mattlib2.log.HasUpdated;
-import xyz.auriium.mattlib2.log.Tune;
+import xyz.auriium.mattlib2.log.annote.HasUpdated;
+import xyz.auriium.mattlib2.log.annote.Tune;
 import yuukonfig.core.annotate.Key;
 
 /**
@@ -10,9 +10,9 @@ import yuukonfig.core.annotate.Key;
  */
 public interface CommonPIDComponent extends INetworkedComponent {
 
-    @Tune @Key("p") int pConstant();
-    @Tune @Key("d") int dConstant();
-    @Tune @Key("i") int iConstant();
+    @Tune("p") int pConstant();
+    @Tune("d") int dConstant();
+    @Tune("i") int iConstant();
 
 
     @HasUpdated(keysToCheck = {"p", "i", "d"}) boolean hasUpdated();

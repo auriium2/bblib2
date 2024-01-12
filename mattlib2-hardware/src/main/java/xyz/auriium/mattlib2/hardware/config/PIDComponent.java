@@ -1,5 +1,7 @@
 package xyz.auriium.mattlib2.hardware.config;
 
+import yuukonstants.GenericPath;
+
 public interface PIDComponent extends CommonPIDComponent, IndividualPIDComponent {
 
 
@@ -13,6 +15,11 @@ public interface PIDComponent extends CommonPIDComponent, IndividualPIDComponent
         return new Impl(pidComponent, individualPIDComponent);
     }
 
+    /**
+     * @param common
+     * @param individuals
+     * @return an array of pidcomponents indexed by the respective individual pid component indices, all supplied by a common pidcomponent
+     */
     static PIDComponent[] ofRange(CommonPIDComponent common, IndividualPIDComponent[] individuals) {
         PIDComponent[] motorComponents = new PIDComponent[individuals.length];
 
@@ -22,6 +29,21 @@ public interface PIDComponent extends CommonPIDComponent, IndividualPIDComponent
 
         return motorComponents;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     class Impl implements PIDComponent {
@@ -34,7 +56,7 @@ public interface PIDComponent extends CommonPIDComponent, IndividualPIDComponent
         }
 
         @Override
-        public String selfPath() {
+        public GenericPath selfPath() {
             return individualPIDComponent.selfPath();
         }
 

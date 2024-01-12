@@ -2,6 +2,7 @@ package xyz.auriium.mattlib2.hardware;
 
 
 import xyz.auriium.mattlib2.Mattlib2Exception;
+import yuukonstants.GenericPath;
 
 import static java.lang.String.format;
 
@@ -13,18 +14,18 @@ public class Exceptions {
             "either use the withEncoder constructor or call moveToReference with an encoder readout"
     );
 
-    public static final Mattlib2Exception MOTOR_NOT_LINEAR(String motor) {
+    public static final Mattlib2Exception MOTOR_NOT_LINEAR(GenericPath motor) {
         return new Mattlib2Exception(
                 "hardware/motorNotLinear",
-                format("Motor %s was configured as purely rotational, and did not have a rotationToMeter coefficient, however, somebody tried to use a function with the word Linear in it, which needs the rotationToMeter coefficient to convert correctly.", motor),
+                format("Motor [%s] was configured as purely rotational, and did not have a rotationToMeter coefficient, however, somebody tried to use a function with the word Linear in it, which needs the rotationToMeter coefficient to convert correctly.", motor.getAsTablePath()),
                 "either add a rotationToMeter coefficient to allow the motor to be considered for linear functions, or use purely rotational functions instead"
         );
     }
 
-    public static Mattlib2Exception NO_CAN_ID(String path, int id) {
+    public static Mattlib2Exception NO_CAN_ID(GenericPath path, int id) {
         return new Mattlib2Exception(
                 "hardware/noSuchCanID",
-                "The motor at path " + path + "was configured to use can id " + id +", but no such can id could be found on the can bus",
+                "The motor at path [" + path.getAsTablePath() + "] was configured to use can id " + id +", but no such can id could be found on the can bus",
                 "fix the can id of the device, or find the actual id of the device and change the config to this"
         );
     }
@@ -41,4 +42,12 @@ public class Exceptions {
             "do not call any velocity functions on an absolute encoder"
     );
 
+
+    public static Mattlib2Exception PERCENT_DOMAIN_ERROR(GenericPath path) {
+        return new Mattlib2Exception(
+                "hardware/percentDomainError",
+                format("a call to [%s] used percent mode with a number outside the range 0-1", path.getAsTablePath()),
+                "make sure calls to percent mode motors are within range 0-1"
+        );
+    }
 }

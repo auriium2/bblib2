@@ -1,9 +1,12 @@
 package xyz.auriium.mattlib2.hardware.config;
 
+import yuukonstants.GenericPath;
+
 import java.util.Optional;
 
 /**
  * Load your config as this when you don't want to reuse your motor configs
+ * To see what config data this loads, check out {@link CommonMotorComponent} and {@link IndividualMotorComponent}
  */
 public interface MotorComponent extends IndividualMotorComponent, CommonMotorComponent {
 
@@ -17,7 +20,11 @@ public interface MotorComponent extends IndividualMotorComponent, CommonMotorCom
     static MotorComponent ofSpecific(CommonMotorComponent common, IndividualMotorComponent individual) {
         return new Impl(individual, common);
     }
-
+    /**
+     * @param common
+     * @param individuals
+     * @return an array of motorcomponents indexed by the respective individual motor component indices, all supplied by a common motorcomponent
+     */
     static MotorComponent[] ofRange(CommonMotorComponent common, IndividualMotorComponent[] individuals) {
         MotorComponent[] motorComponents = new MotorComponent[individuals.length];
 
@@ -27,6 +34,8 @@ public interface MotorComponent extends IndividualMotorComponent, CommonMotorCom
 
         return motorComponents;
     }
+
+
 
     class Impl implements MotorComponent {
 
@@ -44,13 +53,13 @@ public interface MotorComponent extends IndividualMotorComponent, CommonMotorCom
         }
 
         @Override
-        public void logVoltageGiven(double voltage) {
-            individualMotorComponent.logVoltageGiven(voltage);
+        public void reportVoltageGiven(double voltage) {
+            individualMotorComponent.reportVoltageGiven(voltage);
         }
 
         @Override
-        public void logCurrentDraw(double current) {
-            individualMotorComponent.logCurrentDraw(current);
+        public void reportCurrentDraw(double current) {
+            individualMotorComponent.reportCurrentDraw(current);
         }
 
         @Override
@@ -64,28 +73,33 @@ public interface MotorComponent extends IndividualMotorComponent, CommonMotorCom
         }
 
         @Override
-        public double timeCoefficient() {
-            return commonMotorComponent.timeCoefficient();
-        }
-
-        @Override
         public Optional<Double> rotationToMeterCoefficient() {
             return commonMotorComponent.rotationToMeterCoefficient();
         }
 
         @Override
-        public Optional<Double> currentLimit() {
+        public Optional<Integer> currentLimit() {
             return commonMotorComponent.currentLimit();
         }
 
         @Override
-        public Optional<Double> forwardLimit_mechanismRot() {
-            return commonMotorComponent.forwardLimit_mechanismRot();
+        public Optional<Normally> forwardLimit() {
+            return commonMotorComponent.forwardLimit();
         }
 
         @Override
-        public Optional<Double> reverseLimit_mechanismRot() {
-            return commonMotorComponent.reverseLimit_mechanismRot();
+        public Optional<Normally> reverseLimit() {
+            return commonMotorComponent.reverseLimit();
+        }
+
+        @Override
+        public Optional<Double> forwardSoftLimit_mechanismRot() {
+            return commonMotorComponent.forwardSoftLimit_mechanismRot();
+        }
+
+        @Override
+        public Optional<Double> reverseSoftLimit_mechanismRot() {
+            return commonMotorComponent.reverseSoftLimit_mechanismRot();
         }
 
         @Override
@@ -94,8 +108,12 @@ public interface MotorComponent extends IndividualMotorComponent, CommonMotorCom
         }
 
         @Override
-        public Optional<Boolean> rampRateLimitEnabled() {
-            return commonMotorComponent.rampRateLimitEnabled();
+        public Optional<Double> openRampRate_seconds() {
+            return commonMotorComponent.openRampRate_seconds();
+        }
+
+        @Override public Optional<Double> closedRampRate_seconds() {
+            return commonMotorComponent.closedRampRate_seconds();
         }
 
         @Override
@@ -109,7 +127,7 @@ public interface MotorComponent extends IndividualMotorComponent, CommonMotorCom
         }
 
         @Override
-        public String selfPath() {
+        public GenericPath selfPath() {
             return individualMotorComponent.selfPath();
         }
     }

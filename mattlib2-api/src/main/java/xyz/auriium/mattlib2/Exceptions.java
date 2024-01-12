@@ -70,6 +70,24 @@ public class Exceptions {
         );
     }
 
+    public static Mattlib2Exception MULTIPLE_SELF_PATH(GenericPath path) {
+        return new Mattlib2Exception(
+                "multipleSelfPath",
+                format("the component at path [%s] already has the @SelfPath annotated function on it. Do not add an extra one", path.getAsTablePath()),
+                "Remove the extra @selfpath you added"
+        );
+    }
+
+    public static Mattlib2Exception NO_SELF_PATH(GenericPath path) {
+        return new Mattlib2Exception(
+                "noSelfpath",
+                format("the component at path [%s] somehow has no @SelfPath annotated function on it.", path.getAsTablePath()),
+                "Contact matt"
+        );
+    }
+
+
+
     public static Mattlib2Exception BAD_LOG_TYPE(String methodName, String className, String unsupportedTypeName) {
         return new Mattlib2Exception(
                 "badLogType",

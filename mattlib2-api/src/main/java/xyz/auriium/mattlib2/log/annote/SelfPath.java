@@ -1,4 +1,6 @@
-package xyz.auriium.mattlib2.log;
+package xyz.auriium.mattlib2.log.annote;
+
+import yuukonfig.core.annotate.Key;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -8,9 +10,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Retention(RUNTIME)
 @Target(METHOD)
-public @interface Tune {
-
-
-   String tooltip() default "";
-
+public @interface SelfPath {
 }

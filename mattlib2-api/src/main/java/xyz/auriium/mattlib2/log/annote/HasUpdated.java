@@ -1,4 +1,4 @@
-package xyz.auriium.mattlib2.log;
+package xyz.auriium.mattlib2.log.annote;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

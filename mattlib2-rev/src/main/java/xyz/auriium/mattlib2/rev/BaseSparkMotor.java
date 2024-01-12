@@ -1,11 +1,10 @@
 package xyz.auriium.mattlib2.rev;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.REVLibError;
-import com.revrobotics.RelativeEncoder;
+import com.revrobotics.*;
 import xyz.auriium.mattlib2.IPeriodicLooped;
 import xyz.auriium.mattlib2.hardware.ILinearMotor;
 import xyz.auriium.mattlib2.hardware.IRotationalMotor;
+import xyz.auriium.mattlib2.hardware.config.CommonMotorComponent;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 import yuukonstants.exception.ExplainedException;
 
@@ -29,6 +28,8 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
         mattRegister();
     }
 
+    boolean isInverted = false;
+
     //PeriodicLooped stuff
 
     double outputCurrent = 0;
@@ -38,15 +39,61 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
     @Override
     public Optional<ExplainedException> verifyInit() {
 
+        isInverted = motorComponent.inverted().orElse(false);
+
         REVLibError err = sparkMax.restoreFactoryDefaults();
         if (err != REVLibError.kOk) {
-            return Optional.of(Exceptions.GENERIC_REV_ERROR( motorComponent.selfPath() ));
+            return Optional.of(Exceptions.GENERIC_REV_ERROR( motorComponent.selfPath().getAsTablePath() ));
         }
 
         REVLibError vcError = sparkMax.enableVoltageCompensation(12);
         if (vcError != REVLibError.kOk) {
-            return Optional.of(Exceptions.VOLTAGE_COMPENSATION_FAILED( motorComponent.selfPath() ));
+            return Optional.of(Exceptions.VOLTAGE_COMPENSATION_FAILED( motorComponent.selfPath().getAsTablePath() ));
         }
+
+        //cyrrent limits
+        motorComponent.currentLimit().ifPresent(sparkMax::setSmartCurrentLimit);
+
+        //hard and soft limits
+
+        motorComponent.forwardLimit().ifPresent(normally -> {
+            SparkLimitSwitch.Type type;
+            if (normally == CommonMotorComponent.Normally.CLOSED) {
+                type = SparkLimitSwitch.Type.kNormallyClosed;
+            } else {
+                type = SparkLimitSwitch.Type.kNormallyOpen;
+            }
+            sparkMax.getForwardLimitSwitch(type).enableLimitSwitch(true);
+        });
+        motorComponent.reverseLimit().ifPresent(normally -> {
+            SparkLimitSwitch.Type type;
+            if (normally == CommonMotorComponent.Normally.CLOSED) {
+                type = SparkLimitSwitch.Type.kNormallyClosed;
+            } else {
+                type = SparkLimitSwitch.Type.kNormallyOpen;
+            }
+            sparkMax.getReverseLimitSwitch(type).enableLimitSwitch(true);
+        });
+
+
+        motorComponent.forwardSoftLimit_mechanismRot().ifPresent(limit -> {
+            sparkMax.setSoftLimit(CANSparkBase.SoftLimitDirection.kForward, (float) (limit * motorComponent.encoderToMechanismCoefficient()));
+            sparkMax.enableSoftLimit(CANSparkBase.SoftLimitDirection.kForward, true);
+        });
+        motorComponent.reverseSoftLimit_mechanismRot().ifPresent(limit -> {
+            sparkMax.setSoftLimit(CANSparkBase.SoftLimitDirection.kReverse, (float) (limit * motorComponent.encoderToMechanismCoefficient()));
+            sparkMax.enableSoftLimit(CANSparkBase.SoftLimitDirection.kReverse, true);
+        });
+        motorComponent.breakModeEnabled().ifPresent(breakMode -> {
+            sparkMax.setIdleMode(breakMode ? CANSparkBase.IdleMode.kBrake : CANSparkBase.IdleMode.kCoast);
+        });
+
+        motorComponent.openRampRate_seconds().ifPresent(sparkMax::setOpenLoopRampRate);
+        motorComponent.closedRampRate_seconds().ifPresent(sparkMax::setClosedLoopRampRate);
+
+
+
+
 
 
 
@@ -62,8 +109,8 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
     @Override
     public void logPeriodic() {
-        motorComponent.logCurrentDraw(outputCurrent);
-        motorComponent.logVoltageGiven(outputVoltage);
+        motorComponent.reportCurrentDraw(outputCurrent);
+        motorComponent.reportVoltageGiven(outputVoltage);
     }
 
     //Other stuff
@@ -76,6 +123,10 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
     @Override
     public void setToPercent(double percent_zeroToOne) {
+        if (percent_zeroToOne > 1 || percent_zeroToOne < 0) {
+            sparkMax.set(percent_zeroToOne);
+        }
+
         sparkMax.setVoltage(percent_zeroToOne * 12);
     }
 
@@ -146,12 +197,12 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
     @Override
     public double angularVelocity_mechanismRotationsPerSecond() {
-        return angularvelocity_encoderRotationsPerSecond() * motorComponent.encoderToMechanismCoefficient();
+        return angularVelocity_encoderRotationsPerSecond() * motorComponent.encoderToMechanismCoefficient();
     }
 
     @Override
-    public double angularvelocity_encoderRotationsPerSecond() {
-        return encoder.getVelocity() * 60d;
+    public double angularVelocity_encoderRotationsPerSecond() {
+        return encoder.getVelocity() / 60d;
     }
 
 

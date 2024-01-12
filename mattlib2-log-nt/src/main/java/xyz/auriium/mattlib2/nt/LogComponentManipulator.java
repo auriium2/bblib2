@@ -10,14 +10,15 @@ import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.MethodCall;
 import net.bytebuddy.implementation.bytecode.assign.Assigner;
 import net.bytebuddy.matcher.ElementMatchers;
-import xyz.auriium.mattlib2.*;
-import xyz.auriium.mattlib2.log.*;
+import xyz.auriium.mattlib2.Exceptions;
+import xyz.auriium.mattlib2.Mattlib2Exception;
+import xyz.auriium.mattlib2.log.FixedSupplier;
+import xyz.auriium.mattlib2.log.INetworkedComponent;
+import xyz.auriium.mattlib2.log.ProcessPath;
+import xyz.auriium.mattlib2.log.annote.*;
 import xyz.auriium.mattlib2.yuukonfig.CustomForwarder;
-import yuukonfig.core.annotate.Comment;
-import yuukonfig.core.annotate.Key;
 import yuukonfig.core.err.BadConfigException;
 import yuukonfig.core.err.BadValueException;
-import yuukonfig.core.impl.manipulator.section.ProxyForwarder;
 import yuukonfig.core.manipulation.Contextual;
 import yuukonfig.core.manipulation.Manipulation;
 import yuukonfig.core.manipulation.Manipulator;
@@ -33,6 +34,8 @@ import java.lang.reflect.Proxy;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import static xyz.auriium.mattlib2.utils.ReflectionUtil.getKey;
 
 
 /**
@@ -69,14 +72,12 @@ public class LogComponentManipulator implements Manipulator {
         Map<Method, Supplier<Object>> configOrTuneMap = new HashMap<>();
         Map<Method, Consumer<Object>> loggerMap = new HashMap<>();
         List<Method> hasUpdatedMap = new ArrayList<>();
-
+        Method selfPathMethod = null;
 
         for (Method method : useClass.getMethods()) {
 
             if (method.getDeclaringClass() == Objects.class) continue;
-            //check(method);
-
-
+            check(method);
 
             String key = getKey(method);
             GenericPath newPath = exceptionalKey.append(key);
@@ -84,6 +85,16 @@ public class LogComponentManipulator implements Manipulator {
             Conf conf = method.getAnnotation(Conf.class);
             Tune tune = method.getAnnotation(Tune.class);
             HasUpdated up = method.getAnnotation(HasUpdated.class);
+            SelfPath selfPath = method.getAnnotation(SelfPath.class);
+
+            if (selfPath != null) {
+                if (selfPathMethod != null) throw Exceptions.MULTIPLE_SELF_PATH(newPath);
+                selfPathMethod = method;
+                continue;
+            }
+
+
+
             if (up != null) {
                 hasUpdatedMap.add(method);
                 continue;
@@ -113,12 +124,13 @@ public class LogComponentManipulator implements Manipulator {
                             )
                     );
                 } else {
-                    objectSupplier = () -> confObject;
+                    objectSupplier = new FixedSupplier<>(confObject);
                 }
 
                 configOrTuneMap.put(method, objectSupplier);
             } else { //It's a logger!
 
+                System.out.println(newPath.getAsTablePath());
                 Class<Object> type = (Class<Object>) method.getParameters()[0].getType();
 
                 Consumer<Object> objectConsumer = logger.generateLogger(ProcessPath.ofGeneric(newPath), type).orElseThrow(() ->
@@ -136,6 +148,7 @@ public class LogComponentManipulator implements Manipulator {
         }
 
 
+        if (selfPathMethod == null) throw Exceptions.NO_SELF_PATH(exceptionalKey);
 
 
         try {
@@ -148,7 +161,7 @@ public class LogComponentManipulator implements Manipulator {
                     .intercept(EqualsMethod.isolated());
 
             builder = builder
-                    .method(ElementMatchers.is(INetworkedComponent.class.getMethod("selfPath")))
+                    .method(ElementMatchers.is(selfPathMethod))
                     .intercept(FixedValue.value(exceptionalKey));
 
             for (Method method : hasUpdatedMap) {
@@ -204,14 +217,13 @@ public class LogComponentManipulator implements Manipulator {
 
             String key = getKey(method);
             Class<?> as = method.getReturnType();
-            String[] comments = getComment(method);
             Object toSerialize = new CustomForwarder(method, object).invoke(); //get the return of the method
 
 
             Node serialized = manipulation.serialize(
                     toSerialize,
                     as,
-                    comments,
+                    new String[0],
                     Contextual.present(
                             method.getGenericReturnType()
                     )
@@ -232,8 +244,6 @@ public class LogComponentManipulator implements Manipulator {
         if (conf != null) quantity++;
         Log log = method.getAnnotation(Log.class);
         if (log != null) quantity++;
-        LogArray logArr = method.getAnnotation(LogArray.class);
-        if (logArr != null) quantity++;
         HasUpdated hasUpdated = method.getAnnotation(HasUpdated.class);
         if (hasUpdated != null) quantity++;
         Tune tune = method.getAnnotation(Tune.class);
@@ -289,27 +299,26 @@ public class LogComponentManipulator implements Manipulator {
 
             Class<?> returnType = method.getReturnType();
             String key = getKey(method);
-            String[] comments = getComment(method);
             Node serialized;
-
-            //System.out.println("working on: " + key);
-
-            if (method.isDefault()) {
-
-                //System.out.println("defaulting: " + key);
-                serialized = manipulation.serialize(
-                        new ProxyForwarder2(method, proxy).invoke(),
-                        returnType,
-                        comments,
-                        Contextual.present(method.getGenericReturnType())
-                );
+            if (!method.isAnnotationPresent(Conf.class) && !method.isAnnotationPresent(Tune.class)) {
+                serialized = factory.notPresentOf(); //logging functions should not be serialized LOL
             } else {
-                serialized = manipulation.serializeDefault(
-                        returnType,
-                        comments,
-                        Contextual.present(method.getGenericReturnType())
-                );
+                if (method.isDefault()) {
+                    serialized = manipulation.serialize(
+                            new ProxyForwarder2(method, proxy).invoke(),
+                            returnType,
+                            new String[0],
+                            Contextual.present(method.getGenericReturnType())
+                    );
+                } else {
+                    serialized = manipulation.serializeDefault(
+                            returnType,
+                            new String[0],
+                            Contextual.present(method.getGenericReturnType())
+                    );
+                }
             }
+
 
             //System.out.println("finished: " + key + " : " + serialized);
 
@@ -319,20 +328,8 @@ public class LogComponentManipulator implements Manipulator {
         return builder.build(comment);
     }
 
-    String[] getComment(Method method) {
-        if (method.isAnnotationPresent(Comment.class)) {
-            return method.getAnnotation(Comment.class).value();
-        }
-
-        return new String[]{};
-    }
 
 
-    String getKey(Method method) {
-        if (method.isAnnotationPresent(Key.class)) {
-            return method.getAnnotation(Key.class).value();
-        }
 
-        return method.getName();
-    }
+
 }

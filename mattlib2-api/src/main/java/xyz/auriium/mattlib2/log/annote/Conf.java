@@ -1,4 +1,4 @@
-package xyz.auriium.mattlib2.log;
+package xyz.auriium.mattlib2.log.annote;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -11,7 +11,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Retention(RUNTIME)
 @Target(METHOD)
-public @interface Conf {
+public @interface Conf  {
 
     String value();
 

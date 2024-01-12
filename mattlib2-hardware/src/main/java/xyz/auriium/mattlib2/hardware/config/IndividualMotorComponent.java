@@ -1,8 +1,8 @@
 package xyz.auriium.mattlib2.hardware.config;
 
 import xyz.auriium.mattlib2.log.INetworkedComponent;
-import xyz.auriium.mattlib2.log.Conf;
-import xyz.auriium.mattlib2.log.Log;
+import xyz.auriium.mattlib2.log.annote.Conf;
+import xyz.auriium.mattlib2.log.annote.Log;
 
 /**
  * A config for all networked parts of a motor.
@@ -20,12 +20,14 @@ public interface IndividualMotorComponent extends INetworkedComponent {
      *
      * @param voltage the voltage the motor is currently being supplied
      */
-    @Log("voltage") void logVoltageGiven(double voltage);
+    @Log("voltage") void reportVoltageGiven(double voltage);
 
     /**
      *
      * @param current the quantity of current the motor is currently consuming
      */
-    @Log("current") void logCurrentDraw(double current);
+    @Log("current") void reportCurrentDraw(double current);
+
+    @Log("temperature_celsius") void reportTemperature(double temperatureCelsius);
 
 }

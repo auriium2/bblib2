@@ -87,6 +87,7 @@ public class TypeMapManipulator implements Manipulator {
             if (closestToTheTruth == null) {
                 closestToTheTruth = root.yamlMapping(internalArray[useIndex]);
             } else {
+                if (closestToTheTruth.asMapping().value(internalArray[useIndex]).type() == Node.Type.NOT_PRESENT) throw Exceptions.NO_TOML(path);
                 closestToTheTruth = closestToTheTruth.asMapping().yamlMapping(internalArray[useIndex]);
             }
 
@@ -118,6 +119,7 @@ public class TypeMapManipulator implements Manipulator {
             String[] internalArray = entry.getKey().asArray();
 
 
+            //TODO this doesn't work for nodes that are long...
 
             for (int i = internalArray.length - 1; i >= 0; i--) {
                 root.add(

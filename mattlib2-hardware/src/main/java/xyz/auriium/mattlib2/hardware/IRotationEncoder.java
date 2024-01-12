@@ -53,7 +53,7 @@ public interface IRotationEncoder extends IRaw {
      * @return
      */
     @Deprecated
-    double angularvelocity_encoderRotationsPerSecond();
+    double angularVelocity_encoderRotationsPerSecond();
 
 
 
