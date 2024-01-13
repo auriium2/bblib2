@@ -130,58 +130,6 @@ public class TypeMapManipulator implements Manipulator {
 
     }
 
-    /**
-     * I hate this recursive mess
-     * @param path
-     * @param existingRoot
-     * @param index
-     * @param toAdd
-     * @return
-     */
-    @SuppressWarnings("")
-    Mapping doThing(ProcessPath path, Mapping existingRoot, int index, Mapping toAdd) {
-        String oneKeyAhead = path.asArray()[index];
-        boolean atEndOfPath = index == path.maxIndex();
-        var maybeNode = existingRoot.value(oneKeyAhead);
-
-        if (maybeNode == null || maybeNode.type() == Node.Type.NOT_PRESENT) {
-            //need to rebuild the root
-            var newBuilder = factory.makeMappingBuilder();
-            if (atEndOfPath) {
-                newBuilder.add(oneKeyAhead, toAdd);
-            } else {
-                newBuilder.add(oneKeyAhead, doOtherThing(path, index+1, toAdd));
-            }
-            return newBuilder.build();
-
-        } else {
-            if (maybeNode.type() != Node.Type.MAPPING) throw Exceptions.NODE_NOT_MAP(path.append(maybeNode.type().name()));
-            Mapping maybeNodeAsMap = maybeNode.asMapping();
-
-
-            //new root builder
-            var newBuilder = factory.mergeMappingBuilder(existingRoot);
-
-            //the new one-key-ahead is equal to the existing one-key-ahead merged with toAdd
-            newBuilder.add(oneKeyAhead, doThing(
-                    path,
-                    maybeNode.asMapping(),
-                    index+1,
-                    toAdd
-            ));
-            return newBuilder.build();
-        }
-    }
-
-    public void printToConsole(Map<String, Node> map) {
-        System.out.println("--start--");
-        for (Map.Entry<String, Node> entry : map.entrySet()) {
-            String thing = entry.getValue() == null ? "null" : entry.getValue().toString();
-
-            System.out.println(entry.getKey() + ":" + thing);
-        }
-    }
-
     @Override
     public Node serializeDefault(String[] comment) {
 
@@ -191,24 +139,15 @@ public class TypeMapManipulator implements Manipulator {
         for (int i = 0; i < processMap.size(); i++) {
             ProcessPath path = processMap.pathArray[i];
             Class<?> type = processMap.clazzArray[i];
-            System.out.println("parsing: " + path.getAsTablePath());
 
 
             Node serializedNode = manipulation.serializeDefault(type, new String[0] );
             if (serializedNode.type() != Node.Type.MAPPING) throw Exceptions.NODE_NOT_MAP(path); //all serialized should be maps
 
             mappingToWorkWith = factory.mergeMappings(mappingToWorkWith, doOtherThing(path, 0, serializedNode.asMapping()));
-            printToConsole(mappingToWorkWith.getMap());
         }
 
         return mappingToWorkWith;
     }
 
-    boolean validToTakeBefore(GenericPath path) {
-        return path.length() > 1;
-    }
-
-    ProcessPath oneBefore(GenericPath path) {
-        return ProcessPath.of(Arrays.copyOf(path.asArray(), path.length() - 2));
-    }
 }

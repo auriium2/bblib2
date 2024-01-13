@@ -130,7 +130,7 @@ public class LogComponentManipulator implements Manipulator {
                 configOrTuneMap.put(method, objectSupplier);
             } else { //It's a logger!
 
-                System.out.println(newPath.getAsTablePath());
+                //System.out.println(newPath.getAsTablePath());
                 Class<Object> type = (Class<Object>) method.getParameters()[0].getType();
 
                 Consumer<Object> objectConsumer = logger.generateLogger(ProcessPath.ofGeneric(newPath), type).orElseThrow(() ->
