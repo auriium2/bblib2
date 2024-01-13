@@ -23,6 +23,10 @@ public class ProcessPath extends GenericPath {
         return Optional.of(ProcessPath.of(Arrays.copyOf(contents, contents.length - 1)));
     }
 
+    public int maxIndex() {
+        return length() - 1;
+    }
+
     public static ProcessPath parse(String stringWithSlash) {
         return of(stringWithSlash.split("/"));
     }

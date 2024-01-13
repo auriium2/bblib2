@@ -209,11 +209,17 @@ public class LogComponentManipulator implements Manipulator {
 
     @Override
     public Node serializeObject(Object object, String[] comment) {
-        RawNodeFactory.MappingBuilder builder = factory.makeMappingBuilder();
+        throw new UnsupportedOperationException();
+        /*RawNodeFactory.MappingBuilder builder = factory.makeMappingBuilder();
 
         for (Method method : useClass.getMethods()) {
             if (method.getDeclaringClass() == Objects.class) continue;
-            //check(method);
+            check(method);
+
+            if (!method.isAnnotationPresent(Conf.class) && !method.isAnnotationPresent(Tune.class)) {
+                continue;
+            }
+
 
             String key = getKey(method);
             Class<?> as = method.getReturnType();
@@ -234,7 +240,7 @@ public class LogComponentManipulator implements Manipulator {
         }
 
 
-        return builder.build();
+        return builder.build();*/
     }
 
     public static void check(Method method) {
@@ -301,7 +307,7 @@ public class LogComponentManipulator implements Manipulator {
             String key = getKey(method);
             Node serialized;
             if (!method.isAnnotationPresent(Conf.class) && !method.isAnnotationPresent(Tune.class)) {
-                serialized = factory.notPresentOf(); //logging functions should not be serialized LOL
+                continue;
             } else {
                 if (method.isDefault()) {
                     serialized = manipulation.serialize(

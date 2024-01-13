@@ -4,11 +4,12 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import xyz.auriium.mattlib2.hardware.IRotationalController;
 import xyz.auriium.mattlib2.hardware.IRotationalPositionControl;
+import xyz.auriium.mattlib2.hardware.IRotationalVelocityControl;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 
-    public class ExternalRotationalSparkController extends BaseSparkMotor implements IRotationalController {
+public class ExternalRotationalSparkController extends BaseSparkMotor implements IRotationalController {
 
-        final IRotationalPositionControl externalControl;
+    final IRotationalPositionControl externalControl;
 
     ExternalRotationalSparkController(
             CANSparkMax sparkMax,
@@ -40,4 +41,5 @@ import xyz.auriium.mattlib2.hardware.config.MotorComponent;
     public void controlToInfiniteReference(double setpoint_mechanismRotations, double measurement_mechanismRotations) {
         externalControl.controlToInfiniteReference(setpoint_mechanismRotations, measurement_mechanismRotations);
     }
+
 }

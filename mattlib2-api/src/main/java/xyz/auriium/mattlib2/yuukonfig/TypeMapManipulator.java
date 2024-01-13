@@ -3,8 +3,10 @@ package xyz.auriium.mattlib2.yuukonfig;
 
 import edu.wpi.first.units.UnitBuilder;
 import xyz.auriium.mattlib2.Exceptions;
+import xyz.auriium.mattlib2.log.ProcessMap;
 import xyz.auriium.mattlib2.log.ProcessPath;
 import xyz.auriium.mattlib2.log.TypeMap;
+import yuukonfig.core.YuuKonfig;
 import yuukonfig.core.err.BadValueException;
 import yuukonfig.core.manipulation.Contextual;
 import yuukonfig.core.manipulation.Manipulation;
@@ -31,15 +33,15 @@ public class TypeMapManipulator implements Manipulator {
     final Class<?> toCheck;
     final Contextual<Type> typeContextual;
     final RawNodeFactory factory;
-    final Map<ProcessPath, Class<?>> loadAs; //shitty hacl
+    final ProcessMap processMap;
 
 
-    public TypeMapManipulator(Manipulation manipulation, Class<?> toCheck, Contextual<Type> typeContextual, RawNodeFactory factory, Map<ProcessPath, Class<?>> loadAs) {
+    public TypeMapManipulator(Manipulation manipulation, Class<?> toCheck, Contextual<Type> typeContextual, RawNodeFactory factory, ProcessMap loadAs) {
         this.manipulation = manipulation;
         this.toCheck = toCheck;
         this.typeContextual = typeContextual;
         this.factory = factory;
-        this.loadAs = loadAs;
+        this.processMap = loadAs;
     }
 
     @Override
@@ -55,10 +57,10 @@ public class TypeMapManipulator implements Manipulator {
         Map<ProcessPath, Object> toReturnMap = new HashMap<>();
         Mapping root = node.asMapping();
 
-        for (Map.Entry<ProcessPath, Class<?>> subConfig : loadAs.entrySet()) {
+        for (int i = 0; i < processMap.size(); i++) {
 
-            ProcessPath path = subConfig.getKey();
-            Class<?> type = subConfig.getValue();
+            ProcessPath path = processMap.pathArray[i];
+            Class<?> type = processMap.clazzArray[i];
 
             Node drillNode = drillToNode(root, path);
             Object configObject = manipulation.deserialize(
@@ -68,7 +70,6 @@ public class TypeMapManipulator implements Manipulator {
                     Contextual.present(null)
             );
             toReturnMap.put(path, configObject);
-
         }
 
         return new TypeMap(toReturnMap);
@@ -111,100 +112,97 @@ public class TypeMapManipulator implements Manipulator {
         throw new UnsupportedOperationException();
     }
 
-/*
-    public void doSomethingRecursive(Map<ProcessPath, Node> map, RawNodeFactory.MappingBuilder root, Node serializedNode, ProcessPath pathToTry) {
-        Node node = map.get(pathToTry);
 
-        if (node == null || node.isEmpty()) {
-            map.put()
+    //we know the 'path is clear' lets spam that fucker
+    Mapping doOtherThing(ProcessPath path, int index, Mapping toAdd) {
+
+        String currentKey = path.asArray()[index];
+
+        if (index == path.maxIndex()) {
+            var builder = factory.makeMappingBuilder();
+            builder.add(currentKey, toAdd);
+            return builder.build();
+        } else {
+            var builder = factory.makeMappingBuilder();
+            builder.add(currentKey, doOtherThing(path, index+1, toAdd));
+            return builder.build();
         }
 
+    }
 
-        factory.mergeMappingBuilder().build();
+    /**
+     * I hate this recursive mess
+     * @param path
+     * @param existingRoot
+     * @param index
+     * @param toAdd
+     * @return
+     */
+    @SuppressWarnings("")
+    Mapping doThing(ProcessPath path, Mapping existingRoot, int index, Mapping toAdd) {
+        String oneKeyAhead = path.asArray()[index];
+        boolean atEndOfPath = index == path.maxIndex();
+        var maybeNode = existingRoot.value(oneKeyAhead);
 
-        if (builder == null) {
-            var path = pathToTry.goOneBack();
-            if (path.isEmpty()) {
-                root.add(pathToTry.getTail(), serializedNode.asMapping());
-
-                return;
+        if (maybeNode == null || maybeNode.type() == Node.Type.NOT_PRESENT) {
+            //need to rebuild the root
+            var newBuilder = factory.makeMappingBuilder();
+            if (atEndOfPath) {
+                newBuilder.add(oneKeyAhead, toAdd);
+            } else {
+                newBuilder.add(oneKeyAhead, doOtherThing(path, index+1, toAdd));
             }
+            return newBuilder.build();
 
-            if (validToTakeBefore(pathToTry)) {
-                doSomethingRecursive(map, root, serializedNode, oneBefore(pathToTry));
-            }
+        } else {
+            if (maybeNode.type() != Node.Type.MAPPING) throw Exceptions.NODE_NOT_MAP(path.append(maybeNode.type().name()));
+            Mapping maybeNodeAsMap = maybeNode.asMapping();
 
 
+            //new root builder
+            var newBuilder = factory.mergeMappingBuilder(existingRoot);
 
-
+            //the new one-key-ahead is equal to the existing one-key-ahead merged with toAdd
+            newBuilder.add(oneKeyAhead, doThing(
+                    path,
+                    maybeNode.asMapping(),
+                    index+1,
+                    toAdd
+            ));
+            return newBuilder.build();
         }
+    }
 
+    public void printToConsole(Map<String, Node> map) {
+        System.out.println("--start--");
+        for (Map.Entry<String, Node> entry : map.entrySet()) {
+            String thing = entry.getValue() == null ? "null" : entry.getValue().toString();
 
-
-
-
-    }*/
+            System.out.println(entry.getKey() + ":" + thing);
+        }
+    }
 
     @Override
     public Node serializeDefault(String[] comment) {
-        RawNodeFactory.MappingBuilder root = factory.makeMappingBuilder();
 
 
-        ProcessPath knownPath = null;
-        Map<GenericPath, RawNodeFactory.MappingBuilder> fillAss = new HashMap<>();
+        Mapping mappingToWorkWith = factory.makeMappingBuilder().build();
 
-        RawNodeFactory.MappingBuilder builder = fillAss.get(knownPath);
-        if (builder == null) {
-
-
-
+        for (int i = 0; i < processMap.size(); i++) {
+            ProcessPath path = processMap.pathArray[i];
+            Class<?> type = processMap.clazzArray[i];
+            System.out.println("parsing: " + path.getAsTablePath());
 
 
+            Node serializedNode = manipulation.serializeDefault(type, new String[0] );
+            if (serializedNode.type() != Node.Type.MAPPING) throw Exceptions.NODE_NOT_MAP(path); //all serialized should be maps
+
+            mappingToWorkWith = factory.mergeMappings(mappingToWorkWith, doOtherThing(path, 0, serializedNode.asMapping()));
+            printToConsole(mappingToWorkWith.getMap());
         }
 
-
-
-
-        for (Map.Entry<ProcessPath, Class<?>> entry : loadAs.entrySet()) {
-
-            Node serializedNode = manipulation.serializeDefault(entry.getValue(), new String[0] );
-
-            //System.out.println("e" + serializedNode.toString());
-            String[] internalArray = entry.getKey().asArray();
-
-
-
-            //TODO this doesn't work for nodes that are long...
-
-            for (int i = internalArray.length - 1; i >= 0; i--) {
-                root.add(
-                        internalArray[i],
-                        serializedNode
-                );
-            }
-        }
-
-
-        return root.build();
+        return mappingToWorkWith;
     }
-/*
-
-    public void sex(Map<ProcessPath, RawNodeFactory.MappingBuilder> mappingBuilderMap, ProcessPath previousPath) {
-
-        swerve
-        "swerve/house" int
-
-                "swerve/house"
-
-
-        Map<String, Map> recursiveMap = new HashMap<>();
-
-        for (String s : previousPath)
-
-
-        mappingBuilderMap.computeIfAbsent(previousPath, p -> factory.makeMappingBuilder())
-    }
-*/
 
     boolean validToTakeBefore(GenericPath path) {
         return path.length() > 1;

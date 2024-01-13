@@ -6,6 +6,14 @@ import static java.lang.String.format;
 
 public class Exceptions {
 
+    public static final Mattlib2Exception NODE_NOT_MAP(GenericPath path) {
+        throw new Mattlib2Exception(
+                "nodeNotMap",
+                format("the node at position [%s] is expected to be a mapping-like, but it is not.", path.getAsTablePath()),
+                "contact matt"
+        );
+    }
+
     public static final Mattlib2Exception ALREADY_INITIALIZED() {
         return new Mattlib2Exception(
                 "logAlreadyInitialized",

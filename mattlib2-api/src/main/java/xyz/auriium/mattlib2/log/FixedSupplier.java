@@ -13,7 +13,8 @@ public class FixedSupplier<T> implements Supplier<T> {
         this.data = data;
     }
 
-    @Override public T get() {
+    @Override
+    public T get() {
         return data;
     }
 }

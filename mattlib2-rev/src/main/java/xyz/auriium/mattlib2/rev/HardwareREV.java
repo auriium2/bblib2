@@ -79,6 +79,40 @@ public class HardwareREV {
 
     }
 
+
+    /**
+     * Sets up a mattlib SparkMax device that is tasked with controlling linear motion;
+     * useful for things that need to move controlled, like an elevator
+     * @param pdConfig controls
+     * @return
+     */
+    public static ILinearController linearSpark_builtInVelocityPID(MotorComponent motorComponent, PIDComponent pdConfig) {
+        if (motorComponent.rotationToMeterCoefficient().isEmpty()) {
+            throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
+        }
+
+        CANSparkMax sparkMax = createSparkmax(motorComponent);
+        RelativeEncoder relativeEncoder = sparkMax.getEncoder();
+
+        return new BuiltInSparkController(sparkMax, motorComponent, pdConfig,  relativeEncoder);
+    }
+
+
+
+    /**
+     * Sets up a mattlib SparkMax device that is tasked with controlling rotational velocity;
+     * useful for things that need to move at a specified speed rotationally like a turntable
+     * @param pdConfig controls for pid
+     * @return
+     */
+    public static IRotationalVelocityController rotationalSpark_builtInVelocityPID(MotorComponent motorComponent, PIDComponent pdConfig) {
+        CANSparkMax sparkMax = createSparkmax(motorComponent);
+        RelativeEncoder relativeEncoder = sparkMax.getEncoder();
+
+        return new BuiltInSparkController(sparkMax, motorComponent, pdConfig, relativeEncoder);
+
+    }
+
     /**
      * Sets up a mattlib SparkMax device that is tasked with controlling linear motion;
      * useful for things that need to move controlled, like an elevator
@@ -97,6 +131,7 @@ public class HardwareREV {
         return new ExternalLinearSparkController(sparkMax, relativeEncoder, motorComponent, pidControl);
 
     }
+
 
     /**
      * Sets up a mattlib SparkMax device that is tasked with controlling rotational motion;

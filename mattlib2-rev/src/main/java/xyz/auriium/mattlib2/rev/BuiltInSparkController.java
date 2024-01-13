@@ -1,10 +1,10 @@
 package xyz.auriium.mattlib2.rev;
 
+import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-import xyz.auriium.mattlib2.hardware.ILinearController;
-import xyz.auriium.mattlib2.hardware.IRotationalController;
+import xyz.auriium.mattlib2.hardware.*;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 import xyz.auriium.mattlib2.hardware.config.PIDComponent;
 import yuukonstants.exception.ExplainedException;
@@ -12,7 +12,7 @@ import yuukonstants.exception.ExplainedException;
 import java.util.Optional;
 
 @SuppressWarnings({"deprecated", "deprecation"})
-public class BuiltInSparkController extends BaseSparkMotor implements ILinearController, IRotationalController {
+public class BuiltInSparkController extends BaseSparkMotor implements ILinearController, IRotationalController, IRotationalVelocityController, ILinearVelocityController {
 
     final SparkMaxPIDController localPidController;
     final PIDComponent PIDNetworkedConfig;
@@ -42,6 +42,11 @@ public class BuiltInSparkController extends BaseSparkMotor implements ILinearCon
             localPidController.setI(PIDNetworkedConfig.iConstant());
             localPidController.setD(PIDNetworkedConfig.dConstant());
         }
+    }
+
+    @Override
+    public void logPeriodic() {
+        //TODO doesn't log stuff correcrly
     }
 
     //Controller stuff
@@ -101,5 +106,31 @@ public class BuiltInSparkController extends BaseSparkMotor implements ILinearCon
     @Override
     public void controlToInfiniteReference(double setpoint_mechanismRotations, double measurement_mechanismRotations) {
         throw Exceptions.CANNOT_EXTERNAL_FEEDBACK_INTERNAL;
+    }
+
+    @Override
+    public void controlToLinearVelocityReference(double setPointMechanism_metersPerSecond) {
+        Optional<Double> coefOptional = motorComponent.rotationToMeterCoefficient();
+        if (coefOptional.isEmpty()) throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
+
+        double nativeRPM = setPointMechanism_metersPerSecond
+                / motorComponent.rotationToMeterCoefficient().orElseThrow()
+                / motorComponent.encoderToMechanismCoefficient()
+                * 60d;
+
+
+
+        localPidController.setReference(nativeRPM, CANSparkBase.ControlType.kVelocity);
+    }
+
+    @Override
+    public void controlToRotationalVelocityReference(double setPointMechanism_rotationsPerSecond) {
+        double nativeRPM = setPointMechanism_rotationsPerSecond
+                / motorComponent.encoderToMechanismCoefficient()
+                * 60d;
+
+
+
+        localPidController.setReference(nativeRPM, CANSparkBase.ControlType.kVelocity);
     }
 }

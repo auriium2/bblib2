@@ -16,6 +16,7 @@ import xyz.auriium.mattlib2.IMattLog;
 import xyz.auriium.mattlib2.IPeriodicLooped;
 import xyz.auriium.mattlib2.Mattlib2Exception;
 import xyz.auriium.mattlib2.log.INetworkedComponent;
+import xyz.auriium.mattlib2.log.ProcessMap;
 import xyz.auriium.mattlib2.log.ProcessPath;
 import xyz.auriium.mattlib2.log.TypeMap;
 import xyz.auriium.mattlib2.yuukonfig.TypeMapManipulator;
@@ -52,12 +53,13 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
     public void preInit() {
         hasBeenInitialized = true;
 
-        Map<ProcessPath, Class<?>> loadAs = new HashMap<>();
+        ProcessMap processMap = new ProcessMap();
 
         for (LoadStruct<?> struct : structs) {
-            loadAs.put(struct.path, struct.type);
+            processMap = processMap.with(struct.path, struct.type);
         }
 
+        ProcessMap finalProcessMap = processMap;
         TypeMap map = YuuKonfig.instance()
                 .register(
                         (manipulation,clazz,c,factory) -> new LogComponentManipulator(
@@ -69,7 +71,7 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
                         )
                 )
                 .register(
-                        (manipulation, useClass, useType, factory) -> new TypeMapManipulator(manipulation, useClass, useType, factory, loadAs)
+                        (manipulation, useClass, useType, factory) -> new TypeMapManipulator(manipulation, useClass, useType, factory, finalProcessMap)
                 )
                 .loader(TypeMap.class, Filesystem.getDeployDirectory().toPath().resolve("config.toml"))
                 .load();

@@ -23,7 +23,6 @@ public class HardwareSIM {
                 simComponent.velocityStandardDeviation()
         );
 
-        //TODO figure out how to make this modular
         DCMotorSim motorSim = new DCMotorSim(
                 gearbox,
                 1d / motorComponent.encoderToMechanismCoefficient(),
