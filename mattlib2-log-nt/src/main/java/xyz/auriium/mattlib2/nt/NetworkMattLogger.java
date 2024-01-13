@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
@@ -19,6 +20,7 @@ import java.util.function.Supplier;
 public class NetworkMattLogger {
 
 
+    static final NetworkTable MATTLIB_TABLE = NetworkTableInstance.getDefault().getTable("mattlib");
 
     public <T> Optional<Supplier<T>> generateTuner(ProcessPath path, T defaultValue) {
         return Optional.ofNullable(getCorrectSupplier(path, defaultValue));
@@ -27,7 +29,7 @@ public class NetworkMattLogger {
     @SuppressWarnings("unchecked")
     <T> Supplier<T> getCorrectSupplier(ProcessPath path, T defaultValue) {
         Class<?> returnType = defaultValue.getClass();
-        NetworkTableEntry entry = NetworkTableInstance.getDefault().getEntry(path.getAsTablePath());
+        NetworkTableEntry entry = MATTLIB_TABLE.getEntry(path.getAsTablePath());
 
 
 
