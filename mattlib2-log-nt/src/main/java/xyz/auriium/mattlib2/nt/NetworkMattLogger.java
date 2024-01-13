@@ -20,7 +20,6 @@ import java.util.function.Supplier;
 public class NetworkMattLogger {
 
 
-    static final NetworkTable MATTLIB_TABLE = NetworkTableInstance.getDefault().getTable("mattlib");
 
     public <T> Optional<Supplier<T>> generateTuner(ProcessPath path, T defaultValue) {
         return Optional.ofNullable(getCorrectSupplier(path, defaultValue));
@@ -29,7 +28,7 @@ public class NetworkMattLogger {
     @SuppressWarnings("unchecked")
     <T> Supplier<T> getCorrectSupplier(ProcessPath path, T defaultValue) {
         Class<?> returnType = defaultValue.getClass();
-        NetworkTableEntry entry = MATTLIB_TABLE.getEntry(path.getAsTablePath());
+        NetworkTableEntry entry =  NetworkTableInstance.getDefault().getTable("mattlib").getEntry(path.getAsTablePath());
 
 
 
@@ -117,7 +116,7 @@ public class NetworkMattLogger {
 
     public <T> Optional<Consumer<T>> generateLogger(ProcessPath path, Class<T> type) {
 
-        NetworkTableEntry entry = NetworkTableInstance.getDefault().getEntry(path.getAsTablePath());
+        NetworkTableEntry entry = NetworkTableInstance.getDefault().getTable("mattlib").getEntry(path.getAsTablePath());
 
         //do not ask
         if (type == Integer.class || type == int.class || type == Double.class || type == double.class || type == Boolean.class || type == boolean.class || type == String.class || type == Byte.class || type == byte.class || type == Long.class || type == long.class) {
