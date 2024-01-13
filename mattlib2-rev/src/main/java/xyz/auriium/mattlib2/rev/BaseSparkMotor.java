@@ -6,6 +6,7 @@ import xyz.auriium.mattlib2.hardware.ILinearMotor;
 import xyz.auriium.mattlib2.hardware.IRotationalMotor;
 import xyz.auriium.mattlib2.hardware.config.CommonMotorComponent;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
+import xyz.auriium.mattlib2.utils.AngleUtil;
 import yuukonstants.exception.ExplainedException;
 
 import java.util.Optional;
@@ -175,24 +176,12 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
     @Override
     public double angularPosition_normalizedMechanismRotations() {
-        double mechanismPosition_wrapped = encoder.getPosition() * motorComponent.encoderToMechanismCoefficient() % 1;
-
-        if (mechanismPosition_wrapped < 0) {
-            mechanismPosition_wrapped += 1;
-        }
-
-        return mechanismPosition_wrapped;
+        return AngleUtil.normalizeRotations(angularPosition_mechanismRotations());
     }
 
     @Override
     public double angularPosition_normalizedEncoderRotations() {
-        double encoderPosition_wrapped = encoder.getPosition() % 1;
-
-        if (encoderPosition_wrapped < 0) {
-            encoderPosition_wrapped += 1;
-        }
-
-        return encoderPosition_wrapped;
+        return AngleUtil.normalizeRotations(angularPosition_encoderRotations());
     }
 
     @Override

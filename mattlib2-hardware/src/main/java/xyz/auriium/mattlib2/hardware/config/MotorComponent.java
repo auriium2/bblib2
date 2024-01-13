@@ -62,6 +62,10 @@ public interface MotorComponent extends IndividualMotorComponent, CommonMotorCom
             individualMotorComponent.reportCurrentDraw(current);
         }
 
+        @Override public void reportTemperature(double temperatureCelsius) {
+            individualMotorComponent.reportTemperature(temperatureCelsius);
+        }
+
         @Override
         public Type typeOfMotor() {
             return commonMotorComponent.typeOfMotor();
@@ -112,7 +116,8 @@ public interface MotorComponent extends IndividualMotorComponent, CommonMotorCom
             return commonMotorComponent.openRampRate_seconds();
         }
 
-        @Override public Optional<Double> closedRampRate_seconds() {
+        @Override
+        public Optional<Double> closedRampRate_seconds() {
             return commonMotorComponent.closedRampRate_seconds();
         }
 

@@ -1,6 +1,7 @@
 package xyz.auriium.mattlib2.yuukonfig;
 
 
+import edu.wpi.first.units.UnitBuilder;
 import xyz.auriium.mattlib2.Exceptions;
 import xyz.auriium.mattlib2.log.ProcessPath;
 import xyz.auriium.mattlib2.log.TypeMap;
@@ -16,8 +17,10 @@ import yuukonstants.GenericPath;
 import yuukonstants.exception.LocatedException;
 
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * This should return Map < ProcessPath , T > where T is a typed config of ProcessPath P
@@ -108,15 +111,67 @@ public class TypeMapManipulator implements Manipulator {
         throw new UnsupportedOperationException();
     }
 
+/*
+    public void doSomethingRecursive(Map<ProcessPath, Node> map, RawNodeFactory.MappingBuilder root, Node serializedNode, ProcessPath pathToTry) {
+        Node node = map.get(pathToTry);
+
+        if (node == null || node.isEmpty()) {
+            map.put()
+        }
+
+
+        factory.mergeMappingBuilder().build();
+
+        if (builder == null) {
+            var path = pathToTry.goOneBack();
+            if (path.isEmpty()) {
+                root.add(pathToTry.getTail(), serializedNode.asMapping());
+
+                return;
+            }
+
+            if (validToTakeBefore(pathToTry)) {
+                doSomethingRecursive(map, root, serializedNode, oneBefore(pathToTry));
+            }
+
+
+
+
+        }
+
+
+
+
+
+    }*/
+
     @Override
     public Node serializeDefault(String[] comment) {
         RawNodeFactory.MappingBuilder root = factory.makeMappingBuilder();
+
+
+        ProcessPath knownPath = null;
+        Map<GenericPath, RawNodeFactory.MappingBuilder> fillAss = new HashMap<>();
+
+        RawNodeFactory.MappingBuilder builder = fillAss.get(knownPath);
+        if (builder == null) {
+
+
+
+
+
+        }
+
+
+
+
         for (Map.Entry<ProcessPath, Class<?>> entry : loadAs.entrySet()) {
 
             Node serializedNode = manipulation.serializeDefault(entry.getValue(), new String[0] );
 
             //System.out.println("e" + serializedNode.toString());
             String[] internalArray = entry.getKey().asArray();
+
 
 
             //TODO this doesn't work for nodes that are long...
@@ -131,5 +186,31 @@ public class TypeMapManipulator implements Manipulator {
 
 
         return root.build();
+    }
+/*
+
+    public void sex(Map<ProcessPath, RawNodeFactory.MappingBuilder> mappingBuilderMap, ProcessPath previousPath) {
+
+        swerve
+        "swerve/house" int
+
+                "swerve/house"
+
+
+        Map<String, Map> recursiveMap = new HashMap<>();
+
+        for (String s : previousPath)
+
+
+        mappingBuilderMap.computeIfAbsent(previousPath, p -> factory.makeMappingBuilder())
+    }
+*/
+
+    boolean validToTakeBefore(GenericPath path) {
+        return path.length() > 1;
+    }
+
+    ProcessPath oneBefore(GenericPath path) {
+        return ProcessPath.of(Arrays.copyOf(path.asArray(), path.length() - 2));
     }
 }

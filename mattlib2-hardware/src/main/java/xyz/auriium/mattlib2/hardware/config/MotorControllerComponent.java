@@ -155,6 +155,11 @@ public interface MotorControllerComponent extends MotorComponent, PIDComponent{
             motorComponent.reportCurrentDraw(current);
         }
 
+        @Override
+        public void reportTemperature(double temperatureCelsius) {
+            motorComponent.reportTemperature(temperatureCelsius);
+        }
+
         public static MotorComponent ofSpecific(CommonMotorComponent common, IndividualMotorComponent individual) {
             return MotorComponent.ofSpecific(common, individual);
         }

@@ -1,12 +1,14 @@
 package xyz.auriium.mattlib2.sim;
 
-import edu.wpi.first.math.MathShared;
-import edu.wpi.first.math.MathSharedStore;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import xyz.auriium.mattlib2.IPeriodicLooped;
 import xyz.auriium.mattlib2.hardware.ILinearMotor;
 import xyz.auriium.mattlib2.hardware.IRotationalMotor;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
+import xyz.auriium.mattlib2.utils.AngleUtil;
+import yuukonstants.exception.ExplainedException;
+
+import java.util.Optional;
 
 public class DCSimController implements ILinearMotor, IRotationalMotor, IPeriodicLooped {
 
@@ -18,6 +20,16 @@ public class DCSimController implements ILinearMotor, IRotationalMotor, IPeriodi
         this.motorComponent = motorComponent;
 
         mattRegister();
+    }
+
+    boolean inverted = false;
+    double rotationalOffset_encoderRotations = 0;
+
+    @Override
+    public Optional<ExplainedException> verifyInit() {
+        motorComponent.inverted().ifPresent(b -> inverted = b);
+
+        return Optional.empty();
     }
 
     @Override
@@ -55,8 +67,6 @@ public class DCSimController implements ILinearMotor, IRotationalMotor, IPeriodi
     }
 
 
-    double rotationalOffset_encoderRotations = 0;
-
     @Override
     public void forceLinearOffset(double linearOffset_mechanismMeters) {
 
@@ -92,31 +102,31 @@ public class DCSimController implements ILinearMotor, IRotationalMotor, IPeriodi
 
     @Override
     public double angularPosition_encoderRotations() {
-        return motorSim.getAngularPositionRotations();
+        return motorSim.getAngularPositionRotations() + rotationalOffset_encoderRotations;
     }
 
     @Override
     public double angularPosition_mechanismRotations() {
-        return motorSim.getAngularPositionRotations() * motorComponent.encoderToMechanismCoefficient();
+        return angularPosition_encoderRotations() * motorComponent.encoderToMechanismCoefficient();
     }
 
     @Override
     public double angularPosition_normalizedMechanismRotations() {
-        return 0;
+        return AngleUtil.normalizeRotations(angularPosition_mechanismRotations());
     }
 
     @Override
     public double angularPosition_normalizedEncoderRotations() {
-        return 0;
+        return AngleUtil.normalizeRotations(angularPosition_encoderRotations());
     }
 
     @Override
     public double angularVelocity_mechanismRotationsPerSecond() {
-        return 0;
+        return motorSim.getAngularVelocityRPM() * motorComponent.encoderToMechanismCoefficient() / 60d;
     }
 
     @Override
     public double angularVelocity_encoderRotationsPerSecond() {
-        return 0;
+        return motorSim.getAngularVelocityRPM() / 60d;
     }
 }
