@@ -1,6 +1,5 @@
 package xyz.auriium.mattlib2.sim;
 
-import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.numbers.N1;
@@ -30,7 +29,7 @@ public class HardwareSIM {
                 mat
         );
 
-        return new DCSimController(motorSim, motorComponent);
+        return new DCSimMotor(motorSim, motorComponent);
     }
 
     public static IRotationalMotor rotationalSpark_noPID(MotorComponent motorComponent, SimComponent simComponent, DCMotor gearbox) {
@@ -47,7 +46,7 @@ public class HardwareSIM {
                 mat
         );
 
-        return new DCSimController(motorSim, motorComponent);
+        return new DCSimMotor(motorSim, motorComponent);
     }
 
 }

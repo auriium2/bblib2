@@ -1,132 +1,121 @@
 package xyz.auriium.mattlib2.sim;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import xyz.auriium.mattlib2.IPeriodicLooped;
-import xyz.auriium.mattlib2.hardware.ILinearMotor;
-import xyz.auriium.mattlib2.hardware.IRotationalMotor;
+import xyz.auriium.mattlib2.hardware.Exceptions;
+import xyz.auriium.mattlib2.hardware.ILinearController;
+import xyz.auriium.mattlib2.hardware.IRotationalController;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
-import xyz.auriium.mattlib2.utils.AngleUtil;
-import yuukonstants.exception.ExplainedException;
 
-import java.util.Optional;
+public class DCSimController extends DCSimMotor implements ILinearController, IRotationalController {
 
-public class DCSimController implements ILinearMotor, IRotationalMotor, IPeriodicLooped {
 
-    final DCMotorSim motorSim;
-    final MotorComponent motorComponent;
-
-    public DCSimController(DCMotorSim motorSim, MotorComponent motorComponent) {
-        this.motorSim = motorSim;
-        this.motorComponent = motorComponent;
-
-        mattRegister();
-    }
-
-    boolean inverted = false;
-    double rotationalOffset_encoderRotations = 0;
-
-    @Override
-    public Optional<ExplainedException> verifyInit() {
-        motorComponent.inverted().ifPresent(b -> inverted = b);
-
-        return Optional.empty();
-    }
-
-    @Override
-    public void logicPeriodic() {
-        motorSim.setInputVoltage(voltageNow);
-        motorSim.update(0.02);
-    }
-
-    double voltageNow = 0;
-
-    @Override
-    public void setToVoltage(double voltage) {
-        voltageNow = voltage;
-        motorSim.setInputVoltage(voltage);
-    }
-
-    @Override
-    public void setToPercent(double percent_zeroToOne) {
-        motorSim.setInputVoltage(percent_zeroToOne * 12);
-    }
-
-    @Override
-    public double reportCurrentNow_amps() {
-        return motorSim.getCurrentDrawAmps();
-    }
-
-    @Override
-    public double reportVoltageNow() {
-        return voltageNow;
-    }
-
-    @Override
-    public double reportTemperatureNow() {
-        return 0;
+    /**
+     * Units in encoder rotations
+     */
+    final PIDController pidController;
+    public DCSimController(DCMotorSim motorSim, MotorComponent motorComponent, PIDController pidController) {
+        super(motorSim, motorComponent);
+        this.pidController = pidController; //
     }
 
 
-    @Override
-    public void forceLinearOffset(double linearOffset_mechanismMeters) {
 
-        rotationalOffset_encoderRotations = linearOffset_mechanismMeters
-                / motorComponent.rotationToMeterCoefficient().orElseThrow(() -> xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath()))
-                / motorComponent.encoderToMechanismCoefficient();
+    @Override
+    public void controlToLinearReference(double setpointMechanism_meters) {
+        if (pidController.isContinuousInputEnabled()) {
+            pidController.disableContinuousInput();
+        }
+
+        double coef = motorComponent.rotationToMeterCoefficient().orElseThrow(() -> Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath()));
+
+        double controlEffort = pidController.calculate(
+                this.angularPosition_encoderRotations(),
+                setpointMechanism_meters
+                / coef
+                / motorComponent.encoderToMechanismCoefficient()
+        );
+
+        this.setToVoltage(controlEffort);
     }
 
     @Override
-    public double linearPosition_mechanismMeters() {
-        double rot2linear = motorComponent.rotationToMeterCoefficient().orElseThrow(() -> xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath()));
+    public void controlToLinearReference(double setpointMechanism_meters, double measurementMechanism_meters) {
+        if (pidController.isContinuousInputEnabled()) {
+            pidController.disableContinuousInput();
+        }
 
-        return motorSim.getAngularPositionRotations()
-                * motorComponent.encoderToMechanismCoefficient()
-                * rot2linear;
+
+        double coef = motorComponent.rotationToMeterCoefficient().orElseThrow(() -> Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath()));
+        double controlEffort = pidController.calculate(
+                angularPosition_encoderRotations(),
+                setpointMechanism_meters
+                / coef
+                / motorComponent.encoderToMechanismCoefficient()
+        );
+
+        this.setToVoltage(controlEffort);
     }
 
     @Override
-    public double linearVelocity_mechanismMetersPerSecond() {
-        double rot2linear = motorComponent.rotationToMeterCoefficient().orElseThrow(() -> xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath()));
+    public void controlToNormalizedReference(double setpoint_mechanismNormalizedRotations) {
+        if (!pidController.isContinuousInputEnabled()) {
+            pidController.enableContinuousInput(0,1);
+        }
 
-        return motorSim.getAngularVelocityRPM()
-                * motorComponent.encoderToMechanismCoefficient()
-                * rot2linear
-                / 60.0; //rpm -> rps
+        double controlEffort = pidController.calculate(
+                this.angularPosition_encoderRotations(),
+                setpoint_mechanismNormalizedRotations
+                        / motorComponent.encoderToMechanismCoefficient()
+        );
+
+        this.setToVoltage(controlEffort);
+
     }
 
     @Override
-    public void forceRotationalOffset(double offset_mechanismRotations) {
-        rotationalOffset_encoderRotations = offset_mechanismRotations
-                / motorComponent.encoderToMechanismCoefficient();
+    public void controlToNormalizedReference(double setpoint_mechanismNormalizedRotations, double measurement_mechanismNormalizedRotations) {
+        if (!pidController.isContinuousInputEnabled()) {
+            pidController.enableContinuousInput(0,1);
+        }
+
+        double controlEffort = pidController.calculate(
+                measurement_mechanismNormalizedRotations,
+                setpoint_mechanismNormalizedRotations
+                        / motorComponent.encoderToMechanismCoefficient()
+        );
+
+        this.setToVoltage(controlEffort);
     }
 
     @Override
-    public double angularPosition_encoderRotations() {
-        return motorSim.getAngularPositionRotations() + rotationalOffset_encoderRotations;
+    public void controlToInfiniteReference(double setpoint_mechanismRotations) {
+        if (pidController.isContinuousInputEnabled()) {
+            pidController.disableContinuousInput();
+        }
+
+        double controlEffort = pidController.calculate(
+                this.angularPosition_encoderRotations(),
+                setpoint_mechanismRotations
+                        / motorComponent.encoderToMechanismCoefficient()
+        );
+
+        this.setToVoltage(controlEffort);
     }
 
     @Override
-    public double angularPosition_mechanismRotations() {
-        return angularPosition_encoderRotations() * motorComponent.encoderToMechanismCoefficient();
-    }
+    public void controlToInfiniteReference(double setpoint_mechanismRotations, double measurement_mechanismRotations) {
+        if (pidController.isContinuousInputEnabled()) {
+            pidController.disableContinuousInput();
+        }
 
-    @Override
-    public double angularPosition_normalizedMechanismRotations() {
-        return AngleUtil.normalizeRotations(angularPosition_mechanismRotations());
-    }
+        double controlEffort = pidController.calculate(
+                measurement_mechanismRotations,
+                setpoint_mechanismRotations
+                        / motorComponent.encoderToMechanismCoefficient()
+        );
 
-    @Override
-    public double angularPosition_normalizedEncoderRotations() {
-        return AngleUtil.normalizeRotations(angularPosition_encoderRotations());
-    }
-
-    @Override
-    public double angularVelocity_mechanismRotationsPerSecond() {
-        return motorSim.getAngularVelocityRPM() * motorComponent.encoderToMechanismCoefficient() / 60d;
-    }
-
-    @Override
-    public double angularVelocity_encoderRotationsPerSecond() {
-        return motorSim.getAngularVelocityRPM() / 60d;
+        this.setToVoltage(controlEffort);
     }
 }
+

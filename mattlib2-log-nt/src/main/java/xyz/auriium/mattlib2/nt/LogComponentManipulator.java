@@ -27,10 +27,7 @@ import yuukonfig.core.node.Node;
 import yuukonfig.core.node.RawNodeFactory;
 import yuukonstants.GenericPath;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
+import java.lang.reflect.*;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -75,7 +72,7 @@ public class LogComponentManipulator implements Manipulator {
         Method selfPathMethod = null;
 
         for (Method method : useClass.getMethods()) {
-
+            if (Modifier.isStatic(method.getModifiers())) continue;
             if (method.getDeclaringClass() == Objects.class) continue;
             check(method);
 
@@ -301,6 +298,7 @@ public class LogComponentManipulator implements Manipulator {
         RawNodeFactory.MappingBuilder builder = factory.makeMappingBuilder();
 
         for (Method method : useClass.getMethods()) {
+            if (Modifier.isStatic(method.getModifiers())) continue;
             check(method);
 
             Class<?> returnType = method.getReturnType();
