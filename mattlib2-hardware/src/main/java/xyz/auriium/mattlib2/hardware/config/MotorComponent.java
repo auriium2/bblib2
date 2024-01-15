@@ -1,5 +1,6 @@
 package xyz.auriium.mattlib2.hardware.config;
 
+import xyz.auriium.mattlib2.Mattlib;
 import yuukonstants.GenericPath;
 
 import java.util.Optional;
@@ -9,6 +10,19 @@ import java.util.Optional;
  * To see what config data this loads, check out {@link CommonMotorComponent} and {@link IndividualMotorComponent}
  */
 public interface MotorComponent extends IndividualMotorComponent, CommonMotorComponent {
+
+
+    /**
+     * use this instead of loading a motor component
+     * @param path
+     * @return
+     */
+    static MotorComponent workaround(String path) {
+        return ofSpecific(
+                Mattlib.LOG.load(CommonMotorComponent.class, path),
+                Mattlib.LOG.load(IndividualMotorComponent.class, path)
+        );
+    }
 
 
     /**
