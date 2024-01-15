@@ -6,6 +6,14 @@ import static java.lang.String.format;
 
 public class Exceptions {
 
+    public static final Mattlib2Exception MATTLIB_FILE_EXCEPTION() {
+        throw new Mattlib2Exception(
+                "noConfigFile",
+                "for some reason the config file for mattlib is not present!",
+                "contact matt"
+        );
+    }
+
     public static final Mattlib2Exception NODE_NOT_MAP(GenericPath path) {
         throw new Mattlib2Exception(
                 "nodeNotMap",

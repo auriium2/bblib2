@@ -6,6 +6,7 @@ import xyz.auriium.mattlib2.hardware.Exceptions;
 import xyz.auriium.mattlib2.hardware.ILinearController;
 import xyz.auriium.mattlib2.hardware.IRotationalController;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
+import xyz.auriium.mattlib2.hardware.config.PIDComponent;
 
 public class DCSimController extends DCSimMotor implements ILinearController, IRotationalController {
 
@@ -14,12 +15,23 @@ public class DCSimController extends DCSimMotor implements ILinearController, IR
      * Units in encoder rotations
      */
     final PIDController pidController;
-    public DCSimController(DCMotorSim motorSim, MotorComponent motorComponent, PIDController pidController) {
+    final PIDComponent pidComponent;
+
+    public DCSimController(DCMotorSim motorSim, MotorComponent motorComponent, PIDController pidController, PIDComponent pidComponent) {
         super(motorSim, motorComponent);
         this.pidController = pidController; //
+        this.pidComponent = pidComponent;
     }
 
-
+    @Override
+    public void tunePeriodic() {
+        if (pidComponent.hasUpdated()) {
+            pidController.reset();
+            pidController.setP(pidComponent.pConstant());
+            pidController.setI(pidComponent.iConstant());
+            pidController.setD(pidComponent.dConstant());
+        }
+    }
 
     @Override
     public void controlToLinearReference(double setpointMechanism_meters) {

@@ -1,6 +1,7 @@
 package xyz.auriium.mattlib2.nt;
 
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.RobotBase;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
@@ -22,11 +23,10 @@ import xyz.auriium.mattlib2.log.TypeMap;
 import xyz.auriium.mattlib2.yuukonfig.TypeMapManipulator;
 import yuukonfig.core.YuuKonfig;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -60,6 +60,20 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
         }
 
         ProcessMap finalProcessMap = processMap;
+
+        String load = "config.toml";
+        if (RobotBase.isSimulation()) {
+            load = "sim.toml"; //TODO hack
+        }
+
+        var traj_dir = new File(Filesystem.getDeployDirectory(), "mattlib");
+        var traj_file = new File(traj_dir, load);
+
+        if (!traj_file.exists()) {
+            throw Exceptions.MATTLIB_FILE_EXCEPTION();
+        }
+
+
         TypeMap map = YuuKonfig.instance()
                 .register(
                         (manipulation,clazz,c,factory) -> new LogComponentManipulator(
@@ -73,7 +87,7 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
                 .register(
                         (manipulation, useClass, useType, factory) -> new TypeMapManipulator(manipulation, useClass, useType, factory, finalProcessMap)
                 )
-                .loader(TypeMap.class, Filesystem.getDeployDirectory().toPath().resolve("config.toml"))
+                .loader(TypeMap.class, traj_file.toPath())
                 .load();
 
         for (LoadStruct<?> struct : structs) {

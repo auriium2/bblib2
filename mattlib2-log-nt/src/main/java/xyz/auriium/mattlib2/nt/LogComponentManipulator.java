@@ -16,7 +16,6 @@ import xyz.auriium.mattlib2.log.FixedSupplier;
 import xyz.auriium.mattlib2.log.INetworkedComponent;
 import xyz.auriium.mattlib2.log.ProcessPath;
 import xyz.auriium.mattlib2.log.annote.*;
-import xyz.auriium.mattlib2.yuukonfig.CustomForwarder;
 import yuukonfig.core.err.BadConfigException;
 import yuukonfig.core.err.BadValueException;
 import yuukonfig.core.manipulation.Contextual;
@@ -90,8 +89,6 @@ public class LogComponentManipulator implements Manipulator {
                 continue;
             }
 
-
-
             if (up != null) {
                 hasUpdatedMap.add(method);
                 continue;
@@ -149,9 +146,16 @@ public class LogComponentManipulator implements Manipulator {
 
 
         try {
-            var builder = BUDDY.subclass(useClass)
+            var builder = BUDDY
+                    .subclass(useClass)
                     .name(useClass.getPackageName() + "." + useClass.getSimpleName())
                     .suffix("Generated_" + Integer.toHexString(hashCode()));
+
+            for (Class<?> anInterface : useClass.getInterfaces()) {
+                System.out.println(anInterface.getSimpleName());
+                builder = builder.implement(anInterface);
+            }
+
 
             builder = builder
                     .method(ElementMatchers.isEquals())
@@ -161,23 +165,34 @@ public class LogComponentManipulator implements Manipulator {
                     .method(ElementMatchers.is(selfPathMethod))
                     .intercept(FixedValue.value(exceptionalKey));
 
+
             for (Method method : hasUpdatedMap) {
                 builder = builder
                         .method(ElementMatchers.is(method))
                         .intercept(FixedValue.value(false)); //TODO this must be updated every so often
             }
 
+
             for (Map.Entry<Method, Supplier<Object>> values : configOrTuneMap.entrySet()) { //every method on the new implementation will only do one thing (return config value)
+                System.out.println(values.getKey() + " implemented with " + values.getValue().get());
+
                 Implementation supplierInvoke = MethodCall
                         .invoke(Supplier.class.getMethod("get"))
                         .on(values.getValue())
                         .withAssigner(Assigner.DEFAULT, Assigner.Typing.DYNAMIC);
 
+
+
                 builder = builder
-                        .method(ElementMatchers.is(values.getKey()))
+                        .method(ElementMatchers.named(values.getKey().getName()))
                         .intercept(supplierInvoke);
+
+
+
             }
             for (Map.Entry<Method, Consumer<Object>> values : loggerMap.entrySet()) {
+                System.out.println(values.getKey() + " is logged");
+
                 Implementation consumerInvoke = MethodCall
                         .invoke(Consumer.class.getMethod("accept", Object.class))
                         .on(values.getValue())
@@ -185,13 +200,17 @@ public class LogComponentManipulator implements Manipulator {
                         .withAssigner(Assigner.DEFAULT, Assigner.Typing.STATIC); //TODO this needs to be fixed
 
                 builder = builder
-                        .method(ElementMatchers.is(values.getKey()))
+                        .method(ElementMatchers.named(values.getKey().getName()))
                         .intercept(consumerInvoke);
+
+
             }
 
             DynamicType.Unloaded<?> unloaded = builder.make();
+
             ClassLoader loaderToUse = useClass.getClassLoader();
             DynamicType.Loaded<?> loaded = unloaded.load(loaderToUse, ClassLoadingStrategy.ForBootstrapInjection.Default.INJECTION);
+
 
             return loaded
                     .getLoaded()
