@@ -62,9 +62,6 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
         ProcessMap finalProcessMap = processMap;
 
         String load = "config.toml";
-        if (RobotBase.isSimulation()) {
-            load = "sim.toml"; //TODO hack
-        }
 
         var traj_dir = new File(Filesystem.getDeployDirectory(), "mattlib");
         var traj_file = new File(traj_dir, load);

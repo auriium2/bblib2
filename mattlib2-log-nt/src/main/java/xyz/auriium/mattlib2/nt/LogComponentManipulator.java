@@ -98,8 +98,6 @@ public class LogComponentManipulator implements Manipulator {
                 Node nullable = node.asMapping().value(key);
 
                 if (nullable == null) throw Exceptions.NO_TOML(newPath);
-
-
                 Class<?> returnType = method.getReturnType();
                 Object confObject = manipulation.deserialize(
                         nullable,
@@ -136,8 +134,6 @@ public class LogComponentManipulator implements Manipulator {
                 );
 
                 loggerMap.put(method, objectConsumer);
-
-
             }
         }
 
@@ -152,7 +148,7 @@ public class LogComponentManipulator implements Manipulator {
                     .suffix("Generated_" + Integer.toHexString(hashCode()));
 
             for (Class<?> anInterface : useClass.getInterfaces()) {
-                System.out.println(anInterface.getSimpleName());
+                //System.out.println(anInterface.getSimpleName());
                 builder = builder.implement(anInterface);
             }
 
@@ -174,7 +170,7 @@ public class LogComponentManipulator implements Manipulator {
 
 
             for (Map.Entry<Method, Supplier<Object>> values : configOrTuneMap.entrySet()) { //every method on the new implementation will only do one thing (return config value)
-                System.out.println(values.getKey() + " implemented with " + values.getValue().get());
+                //System.out.println(values.getKey() + " implemented with " + values.getValue().get());
 
                 Implementation supplierInvoke = MethodCall
                         .invoke(Supplier.class.getMethod("get"))
@@ -191,8 +187,7 @@ public class LogComponentManipulator implements Manipulator {
 
             }
             for (Map.Entry<Method, Consumer<Object>> values : loggerMap.entrySet()) {
-                System.out.println(values.getKey() + " is logged");
-
+                //System.out.println(values.getKey() + " is logged");
                 Implementation consumerInvoke = MethodCall
                         .invoke(Consumer.class.getMethod("accept", Object.class))
                         .on(values.getValue())
@@ -202,15 +197,11 @@ public class LogComponentManipulator implements Manipulator {
                 builder = builder
                         .method(ElementMatchers.named(values.getKey().getName()))
                         .intercept(consumerInvoke);
-
-
             }
 
             DynamicType.Unloaded<?> unloaded = builder.make();
-
             ClassLoader loaderToUse = useClass.getClassLoader();
             DynamicType.Loaded<?> loaded = unloaded.load(loaderToUse, ClassLoadingStrategy.ForBootstrapInjection.Default.INJECTION);
-
 
             return loaded
                     .getLoaded()
