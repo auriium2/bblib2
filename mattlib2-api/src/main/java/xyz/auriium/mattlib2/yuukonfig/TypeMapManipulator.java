@@ -89,6 +89,10 @@ public class TypeMapManipulator implements Manipulator {
 
         while (useIndex < internalArray.length) {
             if (closestToTheTruth == null) {
+                if (root.value(internalArray[useIndex]).type() != Node.Type.MAPPING) {
+                    return factory.notPresentOf(); //TODO another terrible hack
+                }
+
                 closestToTheTruth = root.yamlMapping(internalArray[useIndex]);
             } else {
                 if (closestToTheTruth.asMapping().value(internalArray[useIndex]).type() == Node.Type.NOT_PRESENT) throw Exceptions.NO_TOML(path);

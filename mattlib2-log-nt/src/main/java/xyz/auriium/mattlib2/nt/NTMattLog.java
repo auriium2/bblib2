@@ -70,8 +70,10 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
             throw Exceptions.MATTLIB_FILE_EXCEPTION();
         }
 
+        //System.out.println("has read: " + traj_file.canRead() + " has write: " + traj_file.canWrite());
 
-        TypeMap map = YuuKonfig.instance()
+
+        var loader = YuuKonfig.instance()
                 .register(
                         (manipulation,clazz,c,factory) -> new LogComponentManipulator(
                                 clazz,
@@ -84,8 +86,14 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
                 .register(
                         (manipulation, useClass, useType, factory) -> new TypeMapManipulator(manipulation, useClass, useType, factory, finalProcessMap)
                 )
-                .loader(TypeMap.class, traj_file.toPath())
-                .load();
+                .loader(TypeMap.class, traj_file.toPath());
+
+        TypeMap map;
+        if (RobotBase.isSimulation()) {
+            map = loader.load();
+        } else {
+            map = loader.loadWithoutDefaults();
+        }
 
         for (LoadStruct<?> struct : structs) {
             LoadStruct<Object> oldStruct = (LoadStruct<Object>) struct;
