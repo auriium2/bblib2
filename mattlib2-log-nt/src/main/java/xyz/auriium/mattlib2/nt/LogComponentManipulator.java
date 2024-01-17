@@ -12,19 +12,21 @@ import net.bytebuddy.implementation.bytecode.assign.Assigner;
 import net.bytebuddy.matcher.ElementMatchers;
 import xyz.auriium.mattlib2.Exceptions;
 import xyz.auriium.mattlib2.Mattlib2Exception;
+import xyz.auriium.mattlib2.MattlibSettings;
 import xyz.auriium.mattlib2.log.FixedSupplier;
 import xyz.auriium.mattlib2.log.INetworkedComponent;
 import xyz.auriium.mattlib2.log.ProcessPath;
 import xyz.auriium.mattlib2.log.annote.*;
-import yuukonfig.core.err.BadConfigException;
+import xyz.auriium.mattlib2.utils.ReflectionUtil;
+import xyz.auriium.yuukonstants.GenericPath;
 import yuukonfig.core.err.BadValueException;
-import yuukonfig.core.manipulation.Contextual;
-import yuukonfig.core.manipulation.Manipulation;
+import yuukonfig.core.err.YuuKonfigException;
+import yuukonfig.core.impl.BaseManipulation;
 import yuukonfig.core.manipulation.Manipulator;
 import yuukonfig.core.manipulation.Priority;
+import yuukonfig.core.node.Mapping;
 import yuukonfig.core.node.Node;
 import yuukonfig.core.node.RawNodeFactory;
-import yuukonstants.GenericPath;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -40,15 +42,13 @@ import static xyz.auriium.mattlib2.utils.ReflectionUtil.getKey;
 public class LogComponentManipulator implements Manipulator {
 
     final Class<?> useClass;
-    final Manipulation manipulation;
+    final BaseManipulation manipulation;
     final RawNodeFactory factory;
-    final Supplier<Boolean> shouldUseTuning;
     final NetworkMattLogger logger;
 
-    public LogComponentManipulator(Class<?> useClass, Manipulation manipulation, Supplier<Boolean> shouldUseTuning, RawNodeFactory factory, NetworkMattLogger logger) {
+    public LogComponentManipulator(Class<?> useClass, BaseManipulation manipulation, RawNodeFactory factory, NetworkMattLogger logger) {
         this.useClass = useClass;
         this.manipulation = manipulation;
-        this.shouldUseTuning = shouldUseTuning;
         this.factory = factory;
         this.logger = logger;
     }
@@ -63,7 +63,7 @@ public class LogComponentManipulator implements Manipulator {
 
 
     @Override
-    public Object deserialize(Node node, GenericPath exceptionalKey) throws BadValueException {
+    public Object deserialize(Node node) throws BadValueException {
 
         Map<Method, Supplier<Object>> configOrTuneMap = new HashMap<>();
         Map<Method, Consumer<Object>> loggerMap = new HashMap<>();
@@ -73,10 +73,10 @@ public class LogComponentManipulator implements Manipulator {
         for (Method method : useClass.getMethods()) {
             if (Modifier.isStatic(method.getModifiers())) continue;
             if (method.getDeclaringClass() == Objects.class) continue;
-            check(method);
+            ReflectionUtil.checkMattLog(method);
 
             String key = getKey(method);
-            GenericPath newPath = exceptionalKey.append(key);
+            GenericPath newPath = node.path().append(key);
 
             Conf conf = method.getAnnotation(Conf.class);
             Tune tune = method.getAnnotation(Tune.class);
@@ -95,21 +95,25 @@ public class LogComponentManipulator implements Manipulator {
             }
 
             if (conf != null || tune != null) { //Handle this as a config value
-                Node nullable = node.asMapping().value(key);
-
-                if (nullable == null) throw Exceptions.NO_TOML(newPath);
+                Mapping mp = node.asMapping();
                 Class<?> returnType = method.getReturnType();
+                Node subNode = null; //shitty hack
+                if (returnType == Optional.class) {
+                    subNode = mp.valuePossiblyMissing(key);
+                } else {
+                    subNode = mp.valueGuaranteed(key);
+                }
+
                 Object confObject = manipulation.deserialize(
-                        nullable,
-                        newPath,
+                        subNode,
                         returnType
                 );
 
                 Supplier<Object> objectSupplier;
 
-                if (tune != null && shouldUseTuning.get()) { //it's a tune and not a conf AND we are in tuning mode (only set at restart)
+                if (tune != null && MattlibSettings.USE_LOGGING) { //it's a tune and not a conf AND we are in tuning mode (only set at restart)
                     objectSupplier = logger.generateTuner(ProcessPath.ofGeneric(newPath), confObject).orElseThrow(() ->
-                            new BadConfigException(
+                            new Mattlib2Exception(
                              "tunerGenerationFailed",
                              String.format("could not set up a tuneable value of type %s", confObject.getClass().getName()),
                              "report this to matt"
@@ -126,7 +130,7 @@ public class LogComponentManipulator implements Manipulator {
                 Class<Object> type = (Class<Object>) method.getParameters()[0].getType();
 
                 Consumer<Object> objectConsumer = logger.generateLogger(ProcessPath.ofGeneric(newPath), type).orElseThrow(() ->
-                        new BadConfigException(
+                        new YuuKonfigException(
                         "tunerGenerationFailed",
                          String.format("could not set up a loggable value of type %s", type.getName()),
                          "report this to matt"
@@ -138,7 +142,7 @@ public class LogComponentManipulator implements Manipulator {
         }
 
 
-        if (selfPathMethod == null) throw Exceptions.NO_SELF_PATH(exceptionalKey);
+        if (selfPathMethod == null) throw Exceptions.NO_SELF_PATH(node.path());
 
 
         try {
@@ -148,7 +152,6 @@ public class LogComponentManipulator implements Manipulator {
                     .suffix("Generated_" + Integer.toHexString(hashCode()));
 
             for (Class<?> anInterface : useClass.getInterfaces()) {
-                //System.out.println(anInterface.getSimpleName());
                 builder = builder.implement(anInterface);
             }
 
@@ -159,7 +162,7 @@ public class LogComponentManipulator implements Manipulator {
 
             builder = builder
                     .method(ElementMatchers.is(selfPathMethod))
-                    .intercept(FixedValue.value(exceptionalKey));
+                    .intercept(FixedValue.value(node.path()));
 
 
             for (Method method : hasUpdatedMap) {
@@ -176,8 +179,6 @@ public class LogComponentManipulator implements Manipulator {
                         .invoke(Supplier.class.getMethod("get"))
                         .on(values.getValue())
                         .withAssigner(Assigner.DEFAULT, Assigner.Typing.DYNAMIC);
-
-
 
                 builder = builder
                         .method(ElementMatchers.named(values.getKey().getName()))
@@ -215,83 +216,12 @@ public class LogComponentManipulator implements Manipulator {
 
 
     @Override
-    public Node serializeObject(Object object, String[] comment) {
+    public Node serializeObject(Object object, GenericPath path) {
         throw new UnsupportedOperationException();
-        /*RawNodeFactory.MappingBuilder builder = factory.makeMappingBuilder();
-
-        for (Method method : useClass.getMethods()) {
-            if (method.getDeclaringClass() == Objects.class) continue;
-            check(method);
-
-            if (!method.isAnnotationPresent(Conf.class) && !method.isAnnotationPresent(Tune.class)) {
-                continue;
-            }
-
-
-            String key = getKey(method);
-            Class<?> as = method.getReturnType();
-            Object toSerialize = new CustomForwarder(method, object).invoke(); //get the return of the method
-
-
-            Node serialized = manipulation.serialize(
-                    toSerialize,
-                    as,
-                    new String[0],
-                    Contextual.present(
-                            method.getGenericReturnType()
-                    )
-            );
-
-            builder.add(key, serialized);
-
-        }
-
-
-        return builder.build();*/
     }
-
-    public static void check(Method method) {
-
-        int quantity = 0;
-        Conf conf = method.getAnnotation(Conf.class);
-        if (conf != null) quantity++;
-        Log log = method.getAnnotation(Log.class);
-        if (log != null) quantity++;
-        HasUpdated hasUpdated = method.getAnnotation(HasUpdated.class);
-        if (hasUpdated != null) quantity++;
-        Tune tune = method.getAnnotation(Tune.class);
-        if (tune != null) quantity++;
-        SelfPath selfPath = method.getAnnotation(SelfPath.class);
-        if (selfPath != null) quantity++;
-
-        String methodName = method.getName();
-        String simpleName = method.getDeclaringClass().getSimpleName();
-
-        if (quantity > 1) {
-            throw xyz.auriium.mattlib2.Exceptions.TOO_MANY_ANNOTATIONS(methodName, simpleName);
-        }
-
-        if (quantity == 0) {
-            throw xyz.auriium.mattlib2.Exceptions.NO_ANNOTATIONS_ON_METHOD(methodName, simpleName);
-        }
-
-        if ((conf != null || tune != null) && method.getParameterCount() != 0) {
-            throw xyz.auriium.mattlib2.Exceptions.BAD_CONF_OR_TUNE(methodName, simpleName);
-        }
-
-        if (log != null && method.getParameterCount() == 0) {
-            throw xyz.auriium.mattlib2.Exceptions.BAD_LOG(methodName, simpleName);
-        }
-
-        if (log != null && method.getReturnType() != void.class) {
-            throw Exceptions.BAD_RETURN_TYPE(methodName, simpleName);
-        }
-    }
-
-
 
     @Override
-    public Node serializeDefault(String[] comment) {
+    public Node serializeDefault(GenericPath path) {
 
         Object proxy = Proxy.newProxyInstance(
                 ClassLoader.getSystemClassLoader(),
@@ -305,11 +235,11 @@ public class LogComponentManipulator implements Manipulator {
                 }
         );
 
-        RawNodeFactory.MappingBuilder builder = factory.makeMappingBuilder();
+        RawNodeFactory.MappingBuilder builder = factory.makeMappingBuilder(path);
 
         for (Method method : useClass.getMethods()) {
             if (Modifier.isStatic(method.getModifiers())) continue;
-            check(method);
+            ReflectionUtil.checkMattLog(method);
 
             Class<?> returnType = method.getReturnType();
             String key = getKey(method);
@@ -321,25 +251,20 @@ public class LogComponentManipulator implements Manipulator {
                     serialized = manipulation.serialize(
                             new ProxyForwarder2(method, proxy).invoke(),
                             returnType,
-                            new String[0],
-                            Contextual.present(method.getGenericReturnType())
+                            path.append(key)
                     );
                 } else {
-                    serialized = manipulation.serializeDefault(
+                    serialized = manipulation.serializeDefaultCtx(
                             returnType,
-                            new String[0],
-                            Contextual.present(method.getGenericReturnType())
+                            path.append(key)
                     );
                 }
             }
 
-
-            //System.out.println("finished: " + key + " : " + serialized);
-
             builder.add(key, serialized);
         }
 
-        return builder.build(comment);
+        return builder.build();
     }
 
 

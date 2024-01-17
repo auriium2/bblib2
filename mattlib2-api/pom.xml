@@ -5,7 +5,7 @@
     <parent>
         <artifactId>mattlib2</artifactId>
         <groupId>xyz.auriium</groupId>
-        <version>1.1.10-SNAPSHOT</version>
+        <version>1.2.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -18,11 +18,7 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>xyz.auriium</groupId>
-            <artifactId>yuukonstants</artifactId>
-            <version>1.0.11</version>
-        </dependency>
+
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
@@ -31,14 +27,32 @@
         <dependency>
             <groupId>com.superyuuki</groupId>
             <artifactId>yuukonfig-core</artifactId>
-            <version>3.1.8-SNAPSHOT</version>
+            <version>3.2.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.superyuuki</groupId>
             <artifactId>yuukonfig-toml</artifactId>
-            <version>3.1.8-SNAPSHOT</version>
+            <version>3.2.1-SNAPSHOT</version>
         </dependency>
 
+        <dependency>
+            <groupId>xyz.auriium</groupId>
+            <artifactId>mattlib2-log-nt</artifactId>
+            <version>1.2.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>edu.wpi.first.wpilibj</groupId>
+            <artifactId>wpilibj-java</artifactId>
+            <version>2024.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.wpiunits</groupId>
+            <artifactId>wpiunits-java</artifactId>
+            <version>2024.1.1</version>
+        </dependency>
         <dependency>
             <groupId>edu.wpi.first.wpimath</groupId>
             <artifactId>wpimath-java</artifactId>
@@ -49,11 +63,7 @@
             <artifactId>wpiutil-java</artifactId>
             <version>2024.1.1</version>
         </dependency>
-        <dependency>
-            <groupId>edu.wpi.first.wpiunits</groupId>
-            <artifactId>wpiunits-java</artifactId>
-            <version>2024.1.1</version>
-        </dependency>
+
     </dependencies>
 
 

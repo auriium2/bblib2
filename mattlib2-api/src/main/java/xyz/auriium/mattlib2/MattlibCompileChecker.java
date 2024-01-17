@@ -1,8 +1,8 @@
 package xyz.auriium.mattlib2;
 
 import xyz.auriium.mattlib2.checker.CompileCheck;
-import yuukonstants.exception.ExceptionUtil;
-import yuukonstants.exception.ExplainedException;
+import xyz.auriium.yuukonstants.exception.ExceptionUtil;
+import xyz.auriium.yuukonstants.exception.ExplainedException;
 
 import java.util.*;
 

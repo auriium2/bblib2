@@ -5,7 +5,7 @@
     <parent>
         <artifactId>mattlib2</artifactId>
         <groupId>xyz.auriium</groupId>
-        <version>1.1.10-SNAPSHOT</version>
+        <version>1.2.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>xyz.auriium</groupId>
             <artifactId>mattlib2-api</artifactId>
-            <version>1.1.10-SNAPSHOT</version>
+            <version>1.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>edu.wpi.first.ntcore</groupId>
@@ -33,6 +33,22 @@
             <artifactId>wpilibj-java</artifactId>
             <version>2024.1.1</version>
         </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.wpiunits</groupId>
+            <artifactId>wpiunits-java</artifactId>
+            <version>2024.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.wpimath</groupId>
+            <artifactId>wpimath-java</artifactId>
+            <version>2024.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.wpiutil</groupId>
+            <artifactId>wpiutil-java</artifactId>
+            <version>2024.1.1</version>
+        </dependency>
+
     </dependencies>
 
 </project>

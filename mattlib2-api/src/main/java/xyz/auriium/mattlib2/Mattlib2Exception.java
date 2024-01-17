@@ -1,6 +1,7 @@
 package xyz.auriium.mattlib2;
 
-import yuukonstants.exception.ExplainedException;
+
+import xyz.auriium.yuukonstants.exception.ExplainedException;
 
 public class Mattlib2Exception extends ExplainedException {
     public Mattlib2Exception(String type, String message, String solution) {

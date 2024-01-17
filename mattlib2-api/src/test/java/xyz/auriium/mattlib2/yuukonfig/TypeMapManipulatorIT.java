@@ -1,8 +1,6 @@
-package xyz.auriium.mattlib2;
+package xyz.auriium.mattlib2.yuukonfig;
 
-import edu.wpi.first.wpilibj.Filesystem;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import xyz.auriium.mattlib2.log.INetworkedComponent;
@@ -12,19 +10,11 @@ import xyz.auriium.mattlib2.log.TypeMap;
 import xyz.auriium.mattlib2.log.annote.Conf;
 import xyz.auriium.mattlib2.nt.LogComponentManipulator;
 import xyz.auriium.mattlib2.nt.NetworkMattLogger;
-import xyz.auriium.mattlib2.yuukonfig.TypeMapManipulator;
 import yuukonfig.core.YuuKonfig;
-import yuukonfig.core.manipulation.Contextual;
-import yuukonfig.core.manipulation.Manipulation;
 import yuukonfig.core.node.Node;
-import yuukonfig.toml.TomlNodeFactory;
-
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 //shitty little test that i should move to the origin
-class TypeMapManipulatorTest {
+class TypeMapManipulatorIT {
 
     public interface MyConfig extends INetworkedComponent {
         default @Conf("i") int i() {
@@ -45,7 +35,6 @@ class TypeMapManipulatorTest {
                         (manipulation,clazz,c,factory) -> new LogComponentManipulator(
                                 clazz,
                                 manipulation,
-                                () -> false,
                                 factory,
                                 Mockito.mock(NetworkMattLogger.class)
                         )
@@ -61,23 +50,23 @@ class TypeMapManipulatorTest {
                 .serializeTest(TypeMap.class);
 
         Assertions.assertFalse(node.type() == Node.Type.NOT_PRESENT);
-        Assertions.assertSame(node.asMapping().value("house").type(), Node.Type.MAPPING);
+        Assertions.assertSame(node.asMapping().valueGuaranteed("house").type(), Node.Type.MAPPING);
 
         Node cat = node.asMapping()
-                .value("house")
+                .valueGuaranteed("house")
                 .asMapping()
-                .value("cat");
+                .valueGuaranteed("cat");
 
         Assertions.assertSame(Node.Type.MAPPING,cat.type());
 
         Assertions.assertEquals("1",
 
                         cat.asMapping()
-                        .value("i")
+                        .valueGuaranteed("i")
                         .asScalar()
                         .value()
         );
-        Assertions.assertEquals("2",node.asMapping().value("house").asMapping().value("j").asScalar().value());
+        Assertions.assertEquals("2",node.asMapping().valueGuaranteed("house").asMapping().valueGuaranteed("j").asScalar().value());
 
     }
 

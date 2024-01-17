@@ -7,7 +7,7 @@
     <groupId>xyz.auriium</groupId>
     <artifactId>mattlib2</artifactId>
     <packaging>pom</packaging>
-    <version>1.1.10-SNAPSHOT</version>
+    <version>1.2.0-SNAPSHOT</version>
     <modules>
 
         <module>mattlib2-api</module>
@@ -15,10 +15,10 @@
         <module>mattlib2-log-foxe</module>
         <module>mattlib2-log-nt</module>
         <module>mattlib2-auto</module>
-
+        <module>mattlib2-auto-wpi</module>
         <module>mattlib2-hardware</module>
-        <module>mattlib2-test</module>
         <module>mattlib2-sim</module>
+
 
     </modules>
 
@@ -57,6 +57,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <yuukonstants.version>1.2.0</yuukonstants.version>
         <mattlib2.wpi.year>2024</mattlib2.wpi.year>
         <mattlib2.wpi.version>1.1</mattlib2.wpi.version>
         <mattlib2.wpi.versionTag>${mattlib2.wpi.year}.${mattlib2.wpi.version}</mattlib2.wpi.versionTag>
@@ -83,6 +84,12 @@
             <artifactId>jipsy-processor</artifactId>
             <version>1.2.0</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>xyz.auriium</groupId>
+            <artifactId>yuukonstants</artifactId>
+            <version>${yuukonstants.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -121,6 +128,7 @@
             <version>5.2.0</version>
             <scope>test</scope>
         </dependency>
+
 
     </dependencies>
 

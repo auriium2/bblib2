@@ -1,4 +1,4 @@
-package xyz.auriium.mattlib2.auto;
+package xyz.auriium.mattlib2.auto.routines;
 
 /**
  * Similar to a Command from wpilib, but designed to be compact and simple.
@@ -13,7 +13,6 @@ public interface Routine {
      */
     enum Orders {
         CONTINUE, //Tells the routine to keep working
-        CANCEL //Tells the routine to stop working and return a "ok cancelled"
     }
 
     /**
@@ -27,11 +26,22 @@ public interface Routine {
         FAIL, //tells the routine that something caused this routine to fail //i.e. something gets in the way of an arm
     }
 
+    /**
+     * This function should reset the state of the routine and prepare it to be running again
+     */
+    void awaken();
 
     /**
      * The method describing the order-outcome loop. The routine takes orders, performs actions, then describes the outcome of it's mission
      * @param ctx
      */
     Outcome runLogic(Orders ctx);
+
+    /**
+     * This function should clean up all resources held by the routine. i.e. this is a motor routine? tell the motor to stop.
+     * Used for safety features
+     */
+    void cleanup();
+
 
 }

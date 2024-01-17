@@ -1,6 +1,7 @@
 package xyz.auriium.mattlib2.log;
 
-import yuukonstants.GenericPath;
+
+import xyz.auriium.yuukonstants.GenericPath;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -20,11 +21,7 @@ public class ProcessPath extends GenericPath {
         String[] contents = this.asArray();
 
         if (contents.length < 1) return Optional.empty();
-        return Optional.of(ProcessPath.of(Arrays.copyOf(contents, contents.length - 1)));
-    }
-
-    public int maxIndex() {
-        return length() - 1;
+        return Optional.of(new ProcessPath(Arrays.copyOf(contents, contents.length - 1)));
     }
 
     public static ProcessPath parse(String stringWithSlash) {

@@ -7,6 +7,7 @@ import com.google.flatbuffers.reflection.Object;
 import com.google.flatbuffers.reflection.Schema;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import xyz.auriium.mattlib2.Exceptions;
 import xyz.auriium.mattlib2.utils.BufferUtils;
 import xyz.auriium.mattlib2.foxe.structure.NetworkDescriptionRecord;
 
@@ -41,7 +42,7 @@ public class FlatbufSchemaGenerator {
                 int newFieldName_index = bufferBuilder.createString(record.fieldName());
                 Optional<Byte> possibleTypeOfField = computeBaseTypeIndex(record.fieldType());
                 if (possibleTypeOfField.isEmpty()) {
-                    throw xyz.auriium.mattlib2.Exceptions.BAD_LOG_TYPE(description[i].fieldName(), useClass.getSimpleName(),record.fieldType().getSimpleName());
+                    throw Exceptions.BAD_LOG_TYPE(description[i].fieldName(), useClass.getSimpleName(),record.fieldType().getSimpleName());
                 }
                 byte actualType = possibleTypeOfField.get();
 

@@ -3,7 +3,7 @@ package xyz.auriium.mattlib2.log;
 import xyz.auriium.mattlib2.log.annote.Log;
 import xyz.auriium.mattlib2.log.annote.SelfPath;
 import xyz.auriium.mattlib2.log.annote.Tune;
-import yuukonstants.GenericPath;
+import xyz.auriium.yuukonstants.GenericPath;
 
 /**
  * Extending this grants access

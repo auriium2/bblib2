@@ -1,42 +1,44 @@
 package xyz.auriium.mattlib2.yuukonfig;
 
 
-import edu.wpi.first.units.UnitBuilder;
 import xyz.auriium.mattlib2.Exceptions;
 import xyz.auriium.mattlib2.log.ProcessMap;
 import xyz.auriium.mattlib2.log.ProcessPath;
 import xyz.auriium.mattlib2.log.TypeMap;
-import yuukonfig.core.YuuKonfig;
+import xyz.auriium.yuukonstants.GenericPath;
+import yuukonfig.core.ArrayUtil;
 import yuukonfig.core.err.BadValueException;
+import yuukonfig.core.impl.BaseManipulation;
 import yuukonfig.core.manipulation.Contextual;
-import yuukonfig.core.manipulation.Manipulation;
 import yuukonfig.core.manipulation.Manipulator;
+import yuukonfig.core.manipulation.ManipulatorConstructor;
 import yuukonfig.core.manipulation.Priority;
 import yuukonfig.core.node.Mapping;
 import yuukonfig.core.node.Node;
 import yuukonfig.core.node.RawNodeFactory;
-import yuukonstants.GenericPath;
-import yuukonstants.exception.LocatedException;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * This should return Map < ProcessPath , T > where T is a typed config of ProcessPath P
  */
 public class TypeMapManipulator implements Manipulator {
 
-    final Manipulation manipulation;
+    final BaseManipulation manipulation;
     final Class<?> toCheck;
     final Contextual<Type> typeContextual;
     final RawNodeFactory factory;
     final ProcessMap processMap;
 
+    public static ManipulatorConstructor GENERATE(ProcessMap map) {
+        return (m,t,c,f) -> new TypeMapManipulator(m,t,c,f,map);
+    }
 
-    public TypeMapManipulator(Manipulation manipulation, Class<?> toCheck, Contextual<Type> typeContextual, RawNodeFactory factory, ProcessMap loadAs) {
+
+    public TypeMapManipulator(BaseManipulation manipulation, Class<?> toCheck, Contextual<Type> typeContextual, RawNodeFactory factory, ProcessMap loadAs) {
         this.manipulation = manipulation;
         this.toCheck = toCheck;
         this.typeContextual = typeContextual;
@@ -52,22 +54,18 @@ public class TypeMapManipulator implements Manipulator {
     }
 
     @Override
-    public Object deserialize(Node node, GenericPath exceptionalKey) throws BadValueException {
-
+    public Object deserialize(Node node) throws BadValueException {
         Map<ProcessPath, Object> toReturnMap = new HashMap<>();
         Mapping root = node.asMapping();
 
         for (int i = 0; i < processMap.size(); i++) {
-
             ProcessPath path = processMap.pathArray[i];
             Class<?> type = processMap.clazzArray[i];
 
-            Node drillNode = drillToNode(root, path);
+            Node drillNode = drillToNode(factory, root, path);
             Object configObject = manipulation.deserialize(
                     drillNode,
-                    path,
-                    type,
-                    Contextual.present(null)
+                    type
             );
             toReturnMap.put(path, configObject);
         }
@@ -76,32 +74,30 @@ public class TypeMapManipulator implements Manipulator {
     }
 
     //TODO unit test this
-    Node drillToNode(Mapping root, ProcessPath path) throws BadValueException {
+    public static Node drillToNode(RawNodeFactory factory, Mapping root, ProcessPath pathToMatchWith) throws BadValueException {
+        if (pathToMatchWith.length() == 0) { return root; }
 
-        if (path.length() == 0) {
-            return root;
-        }
-
-        String[] internalArray = path.asArray();
+        String[] internalArray = pathToMatchWith.asArray();
         int useIndex = 0;
 
-        Node closestToTheTruth = null;
+        //The first node MUST be a mapping.
+        Node closestToTheTruth = root.valueGuaranteed(internalArray[0]).asMapping();
 
         while (useIndex < internalArray.length) {
             if (closestToTheTruth == null) {
-                if (root.value(internalArray[useIndex]).type() != Node.Type.MAPPING) {
-                    return factory.notPresentOf(); //TODO another terrible hack
+                //why do we do possiblyMissing again?
+                if (root.valuePossiblyMissing(internalArray[useIndex]).type() != Node.Type.MAPPING) {
+                    return factory.notPresentOf(
+                            new GenericPath(
+                                    Arrays.copyOf(internalArray, useIndex)
+                            )
+                    );
                 }
 
                 closestToTheTruth = root.yamlMapping(internalArray[useIndex]);
             } else {
-                if (closestToTheTruth.asMapping().value(internalArray[useIndex]).type() == Node.Type.NOT_PRESENT) throw Exceptions.NO_TOML(path);
                 closestToTheTruth = closestToTheTruth.asMapping().yamlMapping(internalArray[useIndex]);
             }
-
-            if (closestToTheTruth == null) throw Exceptions.NO_TOML(path);
-
-
 
             useIndex++;
         }
@@ -112,7 +108,7 @@ public class TypeMapManipulator implements Manipulator {
 
 
     @Override
-    public Node serializeObject(Object object, String[] comment) {
+    public Node serializeObject(Object object, GenericPath path) {
         throw new UnsupportedOperationException();
     }
 
@@ -123,11 +119,11 @@ public class TypeMapManipulator implements Manipulator {
         String currentKey = path.asArray()[index];
 
         if (index == path.maxIndex()) {
-            var builder = factory.makeMappingBuilder();
+            var builder = factory.makeMappingBuilder(path);
             builder.add(currentKey, toAdd);
             return builder.build();
         } else {
-            var builder = factory.makeMappingBuilder();
+            var builder = factory.makeMappingBuilder(path);
             builder.add(currentKey, doOtherThing(path, index+1, toAdd));
             return builder.build();
         }
@@ -135,18 +131,18 @@ public class TypeMapManipulator implements Manipulator {
     }
 
     @Override
-    public Node serializeDefault(String[] comment) {
+    public Node serializeDefault(GenericPath rootPath) {
 
 
-        Mapping mappingToWorkWith = factory.makeMappingBuilder().build();
+        Mapping mappingToWorkWith = factory.makeMappingBuilder(rootPath).build();
 
         for (int i = 0; i < processMap.size(); i++) {
             ProcessPath path = processMap.pathArray[i];
             Class<?> type = processMap.clazzArray[i];
 
 
-            Node serializedNode = manipulation.serializeDefault(type, new String[0] );
-            if (serializedNode.type() != Node.Type.MAPPING) throw Exceptions.NODE_NOT_MAP(path); //all serialized should be maps
+            Node serializedNode = manipulation.serializeDefaultCtx(type, rootPath);
+            if (serializedNode.type() != Node.Type.MAPPING) throw Exceptions.NODE_NOT_MAP(rootPath); //all serialized should be maps
 
             mappingToWorkWith = factory.mergeMappings(mappingToWorkWith, doOtherThing(path, 0, serializedNode.asMapping()));
         }

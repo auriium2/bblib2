@@ -1,13 +1,21 @@
 package xyz.auriium.mattlib2.utils;
 
-import xyz.auriium.mattlib2.Mattlib2Exception;
-import xyz.auriium.mattlib2.log.annote.Conf;
-import xyz.auriium.mattlib2.log.annote.Log;
-import xyz.auriium.mattlib2.log.annote.Tune;
+import xyz.auriium.mattlib2.Exceptions;
+import xyz.auriium.mattlib2.log.annote.*;
 
 import java.lang.reflect.Method;
 
+/**
+ * All one-time reflection and init codegen stuff
+ */
 public class ReflectionUtil {
+
+    Ex
+
+
+    static {
+
+    }
 
     public static String getKey(Method method) {
         Conf conf = method.getAnnotation(Conf.class);
@@ -20,56 +28,42 @@ public class ReflectionUtil {
         return method.getName();
     }
 
-    public static void check(Method method) {
+
+    public static void checkMattLog(Method method) {
 
         int quantity = 0;
         Conf conf = method.getAnnotation(Conf.class);
         if (conf != null) quantity++;
         Log log = method.getAnnotation(Log.class);
         if (log != null) quantity++;
+        HasUpdated hasUpdated = method.getAnnotation(HasUpdated.class);
+        if (hasUpdated != null) quantity++;
         Tune tune = method.getAnnotation(Tune.class);
         if (tune != null) quantity++;
+        SelfPath selfPath = method.getAnnotation(SelfPath.class);
+        if (selfPath != null) quantity++;
+
+        String methodName = method.getName();
+        String simpleName = method.getDeclaringClass().getSimpleName();
 
         if (quantity > 1) {
-            throw new Mattlib2Exception(
-                    "tooManyAnnotations",
-                    String.format("too many mattlib2 annotations on method %s in class %s ", method.getName(), method.getDeclaringClass().getSimpleName()),
-                    "please use only one of @log, @tune, or @conf on it"
-            );
+            throw xyz.auriium.mattlib2.Exceptions.TOO_MANY_ANNOTATIONS(methodName, simpleName);
         }
 
-
-        if (method.getAnnotations().length == 0) {
-            throw new Mattlib2Exception(
-                    "noAnnotationOnMethod",
-                    String.format("no mattlib2 annotations on method %s in class %s ", method.getName(), method.getDeclaringClass().getSimpleName()),
-                    "please use one of @log, @tune, or @conf on it"
-            );
+        if (quantity == 0) {
+            throw xyz.auriium.mattlib2.Exceptions.NO_ANNOTATIONS_ON_METHOD(methodName, simpleName);
         }
 
         if ((conf != null || tune != null) && method.getParameterCount() != 0) {
-            throw new Mattlib2Exception(
-                    "badConfOrTune",
-                    String.format("the method %s in class %s cannot have parameters", method.getName(), method.getDeclaringClass().getSimpleName()),
-                    "please remove parameters or do not declare it as @conf or @tune"
-            );
+            throw xyz.auriium.mattlib2.Exceptions.BAD_CONF_OR_TUNE(methodName, simpleName);
         }
 
         if (log != null && method.getParameterCount() == 0) {
-            throw new Mattlib2Exception(
-                    "badLog",
-                    String.format("method %s in class %s must have parameters", method.getName(), method.getDeclaringClass().getSimpleName()),
-                    "please add parameters or do not declare @log"
-            );
+            throw xyz.auriium.mattlib2.Exceptions.BAD_LOG(methodName, simpleName);
         }
 
-
         if (log != null && method.getReturnType() != void.class) {
-            throw new Mattlib2Exception(
-                    "badReturnType",
-                    String.format("return type of method %s in class %s is not void, but is log", method.getName(), method.getDeclaringClass().getSimpleName()),
-                    "please set the return type to void"
-            );
+            throw Exceptions.BAD_RETURN_TYPE(methodName, simpleName);
         }
     }
 

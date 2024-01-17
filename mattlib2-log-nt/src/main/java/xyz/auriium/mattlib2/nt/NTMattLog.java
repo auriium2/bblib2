@@ -21,6 +21,7 @@ import xyz.auriium.mattlib2.log.ProcessMap;
 import xyz.auriium.mattlib2.log.ProcessPath;
 import xyz.auriium.mattlib2.log.TypeMap;
 import xyz.auriium.mattlib2.yuukonfig.TypeMapManipulator;
+import yuukonfig.core.ConfigLoader;
 import yuukonfig.core.YuuKonfig;
 
 import java.io.File;
@@ -62,23 +63,27 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
         ProcessMap finalProcessMap = processMap;
 
         String load = "config.toml";
+        String sim = "sim.toml";
 
         var traj_dir = new File(Filesystem.getDeployDirectory(), "mattlib");
         var traj_file = new File(traj_dir, load);
+        var sim_file = new File(traj_dir, sim);
 
         if (!traj_file.exists()) {
+            throw Exceptions.MATTLIB_FILE_EXCEPTION();
+        }
+        if (!sim_file.exists()) {
             throw Exceptions.MATTLIB_FILE_EXCEPTION();
         }
 
         //System.out.println("has read: " + traj_file.canRead() + " has write: " + traj_file.canWrite());
 
 
-        var loader = YuuKonfig.instance()
+        ConfigLoader<TypeMap> loader = YuuKonfig.instance()
                 .register(
                         (manipulation,clazz,c,factory) -> new LogComponentManipulator(
                                 clazz,
                                 manipulation,
-                                () -> false,
                                 factory,
                                 logger
                         )
@@ -90,9 +95,13 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
 
         TypeMap map;
         if (RobotBase.isSimulation()) {
-            map = loader.load();
+            map = loader
+                    .load()
+                    .writeToFile()
+                    .overrideMainConfigFromFile(sim_file.toPath())
+                    .loadToMemoryConfig();
         } else {
-            map = loader.loadWithoutDefaults();
+            map = loader.loadOnlyUser().loadToMemoryConfig();
         }
 
         for (LoadStruct<?> struct : structs) {

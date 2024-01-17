@@ -5,16 +5,29 @@
     <parent>
         <artifactId>mattlib2</artifactId>
         <groupId>xyz.auriium</groupId>
-        <version>1.1.10-SNAPSHOT</version>
+        <version>1.2.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mattlib2-test</artifactId>
+    <artifactId>mattlib2-auto-wpi</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>xyz.auriium</groupId>
+            <artifactId>mattlib2-auto</artifactId>
+            <version>1.2.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.wpilibNewCommands</groupId>
+            <artifactId>wpilibNewCommands-java</artifactId>
+            <version>2024.1.1</version>
+        </dependency>
+    </dependencies>
 
 </project>

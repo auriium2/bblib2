@@ -1,6 +1,7 @@
 package xyz.auriium.mattlib2;
 
-import yuukonstants.GenericPath;
+
+import xyz.auriium.yuukonstants.GenericPath;
 
 import static java.lang.String.format;
 
@@ -17,7 +18,7 @@ public class Exceptions {
     public static final Mattlib2Exception NODE_NOT_MAP(GenericPath path) {
         throw new Mattlib2Exception(
                 "nodeNotMap",
-                format("the node at position [%s] is expected to be a mapping-like, but it is not.", path.getAsTablePath()),
+                format("the node at position [%s] is expected to be a mapping-like, but it is not.", path.tablePath()),
                 "contact matt"
         );
     }
@@ -81,7 +82,7 @@ public class Exceptions {
     public static Mattlib2Exception NO_TOML(GenericPath path) {
         return new Mattlib2Exception(
                 "noTomlException",
-                format("there is no valid toml for the related path [%s] in config.toml", path.getAsTablePath()),
+                format("there is no valid toml for the related path [%s] in config.toml", path.tablePath()),
                 "please add some toml"
         );
     }
@@ -89,7 +90,7 @@ public class Exceptions {
     public static Mattlib2Exception MULTIPLE_SELF_PATH(GenericPath path) {
         return new Mattlib2Exception(
                 "multipleSelfPath",
-                format("the component at path [%s] already has the @SelfPath annotated function on it. Do not add an extra one", path.getAsTablePath()),
+                format("the component at path [%s] already has the @SelfPath annotated function on it. Do not add an extra one", path.tablePath()),
                 "Remove the extra @selfpath you added"
         );
     }
@@ -97,7 +98,7 @@ public class Exceptions {
     public static Mattlib2Exception NO_SELF_PATH(GenericPath path) {
         return new Mattlib2Exception(
                 "noSelfpath",
-                format("the component at path [%s] somehow has no @SelfPath annotated function on it.", path.getAsTablePath()),
+                format("the component at path [%s] somehow has no @SelfPath annotated function on it.", path.tablePath()),
                 "Contact matt"
         );
     }

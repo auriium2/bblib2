@@ -1,8 +1,8 @@
 package xyz.auriium.mattlib2.log;
 
 import net.bytebuddy.implementation.Implementation;
-import yuukonstants.GenericPath;
-import yuukonstants.exception.ExplainedException;
+import xyz.auriium.yuukonstants.GenericPath;
+import xyz.auriium.yuukonstants.exception.ExplainedException;
 
 import java.util.Optional;
 
@@ -24,7 +24,7 @@ public interface IMethodGenerator {
 
 
     Implementation[] generateLog(int alphabeticIndexPerLog, GenericPath fullPath, Class<?> logType) throws NoSuchMethodException;
-    Implementation[] generateTune(int alphabeticIndexPerLog, GenericPath f);
+    Implementation[] generateTune(int alphabeticIndexPerTune, GenericPath f);
 
 
     Optional<ExplainedException> filterLog(Class<?> logType);

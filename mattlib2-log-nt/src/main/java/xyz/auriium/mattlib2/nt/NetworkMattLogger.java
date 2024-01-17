@@ -28,7 +28,7 @@ public class NetworkMattLogger {
     @SuppressWarnings("unchecked")
     <T> Supplier<T> getCorrectSupplier(ProcessPath path, T defaultValue) {
         Class<?> returnType = defaultValue.getClass();
-        NetworkTableEntry entry =  NetworkTableInstance.getDefault().getTable("mattlib").getEntry(path.getAsTablePath());
+        NetworkTableEntry entry =  NetworkTableInstance.getDefault().getTable("mattlib").getEntry(path.tablePath());
 
 
 
@@ -116,7 +116,7 @@ public class NetworkMattLogger {
 
     public <T> Optional<Consumer<T>> generateLogger(ProcessPath path, Class<T> type) {
 
-        NetworkTableEntry entry = NetworkTableInstance.getDefault().getTable("mattlib").getEntry(path.getAsTablePath());
+        NetworkTableEntry entry = NetworkTableInstance.getDefault().getTable("mattlib").getEntry(path.tablePath());
 
         //do not ask
         if (type == Integer.class || type == int.class || type == Double.class || type == double.class || type == Boolean.class || type == boolean.class || type == String.class || type == Byte.class || type == byte.class || type == Long.class || type == long.class) {

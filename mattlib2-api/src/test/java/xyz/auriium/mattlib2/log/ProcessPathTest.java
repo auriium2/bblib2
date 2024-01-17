@@ -11,7 +11,7 @@ class ProcessPathTest {
     public void testGoOneBackWorks() {
         ProcessPath path = ProcessPath.parse("hi/die");
 
-        Assertions.assertEquals("hi/",path.goOneBack().get().getAsTablePath());
+        Assertions.assertEquals("hi",path.goOneBack().get().tablePath());
 
     }
 

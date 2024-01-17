@@ -12,14 +12,13 @@ import xyz.auriium.mattlib2.IPeriodicLooped;
 import xyz.auriium.mattlib2.foxe.structure.ChannelData;
 import xyz.auriium.mattlib2.foxe.structure.ServerData;
 import xyz.auriium.mattlib2.log.INetworkedComponent;
-import yuukonstants.exception.ExplainedException;
+import xyz.auriium.yuukonstants.exception.ExplainedException;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-
-import static io.undertow.Handlers.path;
-import static io.undertow.Handlers.websocket;
 
 /**
  * This class implements the log feature and tune feature from mattlib2-log allowing you to drop it in when creating
