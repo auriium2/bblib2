@@ -6,7 +6,6 @@ import xyz.auriium.mattlib2.log.ProcessMap;
 import xyz.auriium.mattlib2.log.ProcessPath;
 import xyz.auriium.mattlib2.log.TypeMap;
 import xyz.auriium.yuukonstants.GenericPath;
-import yuukonfig.core.ArrayUtil;
 import yuukonfig.core.err.BadValueException;
 import yuukonfig.core.impl.BaseManipulation;
 import yuukonfig.core.manipulation.Contextual;
@@ -67,43 +66,36 @@ public class TypeMapManipulator implements Manipulator {
                     drillNode,
                     type
             );
+
+            System.out.println(drillNode.path().tablePath() + " loc");
+
             toReturnMap.put(path, configObject);
         }
 
         return new TypeMap(toReturnMap);
     }
 
-    //TODO unit test this
-    public static Node drillToNode(RawNodeFactory factory, Mapping root, ProcessPath pathToMatchWith) throws BadValueException {
+    /**
+     *
+     * @param factory
+     * @param root
+     * @param pathToMatchWith Given a path p this will look inside mapping root to find that node inside of root
+     * @return the node if located, or an empty node with the original (incorrect) path if not located.
+     */
+    public static Node drillToNode(RawNodeFactory factory, Mapping root, ProcessPath pathToMatchWith) {
         if (pathToMatchWith.length() == 0) { return root; }
 
-        String[] internalArray = pathToMatchWith.asArray();
-        int useIndex = 0;
-
-        //The first node MUST be a mapping.
-        Node closestToTheTruth = root.valueGuaranteed(internalArray[0]).asMapping();
+        String[] internalArray = pathToMatchWith.asArray(); int useIndex = 0;
+        Node closestToTheTruth = root.valuePossiblyMissing(internalArray[useIndex]); useIndex++;
 
         while (useIndex < internalArray.length) {
-            if (closestToTheTruth == null) {
-                //why do we do possiblyMissing again?
-                if (root.valuePossiblyMissing(internalArray[useIndex]).type() != Node.Type.MAPPING) {
-                    return factory.notPresentOf(
-                            new GenericPath(
-                                    Arrays.copyOf(internalArray, useIndex)
-                            )
-                    );
-                }
+            if (closestToTheTruth.type() == Node.Type.NOT_PRESENT) return factory.notPresentOf(pathToMatchWith);
 
-                closestToTheTruth = root.yamlMapping(internalArray[useIndex]);
-            } else {
-                closestToTheTruth = closestToTheTruth.asMapping().yamlMapping(internalArray[useIndex]);
-            }
-
+            closestToTheTruth = closestToTheTruth.asMapping().yamlMapping(internalArray[useIndex]);
             useIndex++;
         }
 
         return closestToTheTruth;
-
     }
 
 
@@ -114,8 +106,7 @@ public class TypeMapManipulator implements Manipulator {
 
 
     //we know the 'path is clear' lets spam that fucker
-    Mapping doOtherThing(ProcessPath path, int index, Mapping toAdd) {
-
+    public static Mapping recursivelySerialize(RawNodeFactory factory, ProcessPath path, int index, Mapping toAdd) {
         String currentKey = path.asArray()[index];
 
         if (index == path.maxIndex()) {
@@ -124,27 +115,23 @@ public class TypeMapManipulator implements Manipulator {
             return builder.build();
         } else {
             var builder = factory.makeMappingBuilder(path);
-            builder.add(currentKey, doOtherThing(path, index+1, toAdd));
+            builder.add(currentKey, recursivelySerialize(factory, path, index+1, toAdd));
             return builder.build();
         }
-
     }
 
     @Override
     public Node serializeDefault(GenericPath rootPath) {
-
-
         Mapping mappingToWorkWith = factory.makeMappingBuilder(rootPath).build();
 
         for (int i = 0; i < processMap.size(); i++) {
             ProcessPath path = processMap.pathArray[i];
             Class<?> type = processMap.clazzArray[i];
 
-
             Node serializedNode = manipulation.serializeDefaultCtx(type, rootPath);
             if (serializedNode.type() != Node.Type.MAPPING) throw Exceptions.NODE_NOT_MAP(rootPath); //all serialized should be maps
 
-            mappingToWorkWith = factory.mergeMappings(mappingToWorkWith, doOtherThing(path, 0, serializedNode.asMapping()));
+            mappingToWorkWith = factory.mergeMappings(mappingToWorkWith, recursivelySerialize(factory, path, 0, serializedNode.asMapping()));
         }
 
         return mappingToWorkWith;

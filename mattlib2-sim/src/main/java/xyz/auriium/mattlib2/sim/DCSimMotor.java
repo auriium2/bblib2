@@ -6,7 +6,7 @@ import xyz.auriium.mattlib2.hardware.ILinearMotor;
 import xyz.auriium.mattlib2.hardware.IRotationalMotor;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 import xyz.auriium.mattlib2.utils.AngleUtil;
-import yuukonstants.exception.ExplainedException;
+import xyz.auriium.yuukonstants.exception.ExplainedException;
 
 import java.util.Optional;
 
@@ -28,6 +28,7 @@ public class DCSimMotor implements ILinearMotor, IRotationalMotor, IPeriodicLoop
     @Override
     public Optional<ExplainedException> verifyInit() {
         motorComponent.inverted().ifPresent(b -> inverted = b);
+
 
         return Optional.empty();
     }

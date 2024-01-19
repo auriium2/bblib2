@@ -1,4 +1,4 @@
-package xyz.auriium.mattlib2.yuukonfig;
+package xyz.auriium.mattlib2;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -10,6 +10,7 @@ import xyz.auriium.mattlib2.log.TypeMap;
 import xyz.auriium.mattlib2.log.annote.Conf;
 import xyz.auriium.mattlib2.nt.LogComponentManipulator;
 import xyz.auriium.mattlib2.nt.NetworkMattLogger;
+import xyz.auriium.mattlib2.yuukonfig.TypeMapManipulator;
 import yuukonfig.core.YuuKonfig;
 import yuukonfig.core.node.Node;
 
@@ -42,14 +43,14 @@ class TypeMapManipulatorIT {
                 .register(
                         (manipulation, useClass, useType, factory) -> new TypeMapManipulator(manipulation, useClass, useType, factory,
                                 new ProcessMap()
-                                        .with(ProcessPath.parse("house/cat"), MyConfig.class)
-                                        .with(ProcessPath.parse("house"), MyConfig2.class)
+                                        .with(ProcessPath.of("house/cat"), MyConfig.class)
+                                        .with(ProcessPath.of("house"), MyConfig2.class)
                         )
                 )
                 .test()
                 .serializeTest(TypeMap.class);
 
-        Assertions.assertFalse(node.type() == Node.Type.NOT_PRESENT);
+        Assertions.assertNotSame(node.type(), Node.Type.NOT_PRESENT);
         Assertions.assertSame(node.asMapping().valueGuaranteed("house").type(), Node.Type.MAPPING);
 
         Node cat = node.asMapping()

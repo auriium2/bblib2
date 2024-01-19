@@ -46,12 +46,32 @@ public abstract class BaseFFGenRoutine implements Routine, IPeriodicLooped {
 
 
         double voltage = computeVoltage(curTime_ms, startTime_ms, component.delay_ms(), component.rampRate_voltsPerMS());
+        double velocityOut = emitVelocity_primeUnitsPerSecond();
         actuator.setToVoltage(voltage);
 
         voltageData.add(voltage);
-        velocityData.add(emitVelocity_primeUnitsPerSecond());
+        velocityData.add(velocityOut);
+
+        var pr = new PolynomialRegression(from(velocityData), from(voltageData), 2);
+        var ks = pr.beta(0);
+        var kv = pr.beta(1);
+
+        component.logInputVoltage(voltage);
+        component.logInputVelocity(velocityOut);
+        component.logPredictedStaticConstant(ks);
+        component.logPredictedStaticConstant(kv);
 
         return Outcome.WORKING;
+    }
+
+    static double[] from(List<Double> dubList) {
+        Double[] dbs = dubList.toArray(Double[]::new);
+        double[] result = new double[dbs.length];
+        for (int i = 0; i < dbs.length; i++) {
+            result[i] = dbs[i];
+        }
+        return result;
+
     }
 
     @Override

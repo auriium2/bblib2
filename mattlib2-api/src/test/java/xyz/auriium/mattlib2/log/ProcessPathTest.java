@@ -9,7 +9,7 @@ class ProcessPathTest {
 
     @Test
     public void testGoOneBackWorks() {
-        ProcessPath path = ProcessPath.parse("hi/die");
+        ProcessPath path = ProcessPath.of("hi/die");
 
         Assertions.assertEquals("hi",path.goOneBack().get().tablePath());
 

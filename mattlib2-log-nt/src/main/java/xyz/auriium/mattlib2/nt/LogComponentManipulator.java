@@ -10,13 +10,15 @@ import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.MethodCall;
 import net.bytebuddy.implementation.bytecode.assign.Assigner;
 import net.bytebuddy.matcher.ElementMatchers;
-import xyz.auriium.mattlib2.Exceptions;
 import xyz.auriium.mattlib2.Mattlib2Exception;
 import xyz.auriium.mattlib2.MattlibSettings;
 import xyz.auriium.mattlib2.log.FixedSupplier;
 import xyz.auriium.mattlib2.log.INetworkedComponent;
 import xyz.auriium.mattlib2.log.ProcessPath;
-import xyz.auriium.mattlib2.log.annote.*;
+import xyz.auriium.mattlib2.log.annote.Conf;
+import xyz.auriium.mattlib2.log.annote.HasUpdated;
+import xyz.auriium.mattlib2.log.annote.SelfPath;
+import xyz.auriium.mattlib2.log.annote.Tune;
 import xyz.auriium.mattlib2.utils.ReflectionUtil;
 import xyz.auriium.yuukonstants.GenericPath;
 import yuukonfig.core.err.BadValueException;
@@ -70,6 +72,14 @@ public class LogComponentManipulator implements Manipulator {
         List<Method> hasUpdatedMap = new ArrayList<>();
         Method selfPathMethod = null;
 
+        //System.out.println(node.path().tablePath() + " des");
+
+        try {
+            selfPathMethod = INetworkedComponent.class.getMethod("selfPath");
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+
         for (Method method : useClass.getMethods()) {
             if (Modifier.isStatic(method.getModifiers())) continue;
             if (method.getDeclaringClass() == Objects.class) continue;
@@ -84,8 +94,6 @@ public class LogComponentManipulator implements Manipulator {
             SelfPath selfPath = method.getAnnotation(SelfPath.class);
 
             if (selfPath != null) {
-                if (selfPathMethod != null) throw Exceptions.MULTIPLE_SELF_PATH(newPath);
-                selfPathMethod = method;
                 continue;
             }
 
@@ -142,26 +150,19 @@ public class LogComponentManipulator implements Manipulator {
         }
 
 
-        if (selfPathMethod == null) throw Exceptions.NO_SELF_PATH(node.path());
-
-
         try {
             var builder = BUDDY
-                    .subclass(useClass)
+                    .subclass(Object.class)
+                    .implement(useClass)
                     .name(useClass.getPackageName() + "." + useClass.getSimpleName())
-                    .suffix("Generated_" + Integer.toHexString(hashCode()));
-
-            for (Class<?> anInterface : useClass.getInterfaces()) {
-                builder = builder.implement(anInterface);
-            }
-
+                    .suffix("LCMGen_" + Integer.toHexString(hashCode()));
 
             builder = builder
                     .method(ElementMatchers.isEquals())
                     .intercept(EqualsMethod.isolated());
 
             builder = builder
-                    .method(ElementMatchers.is(selfPathMethod))
+                    .define(selfPathMethod)
                     .intercept(FixedValue.value(node.path()));
 
 
@@ -181,7 +182,7 @@ public class LogComponentManipulator implements Manipulator {
                         .withAssigner(Assigner.DEFAULT, Assigner.Typing.DYNAMIC);
 
                 builder = builder
-                        .method(ElementMatchers.named(values.getKey().getName()))
+                        .define(values.getKey())
                         .intercept(supplierInvoke);
 
 
@@ -196,7 +197,7 @@ public class LogComponentManipulator implements Manipulator {
                         .withAssigner(Assigner.DEFAULT, Assigner.Typing.STATIC); //TODO this needs to be fixed
 
                 builder = builder
-                        .method(ElementMatchers.named(values.getKey().getName()))
+                        .define(values.getKey())
                         .intercept(consumerInvoke);
             }
 

@@ -6,10 +6,7 @@ import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
-import net.bytebuddy.implementation.EqualsMethod;
-import net.bytebuddy.implementation.FieldAccessor;
-import net.bytebuddy.implementation.MethodCall;
-import net.bytebuddy.implementation.MethodDelegation;
+import net.bytebuddy.implementation.*;
 import net.bytebuddy.jar.asm.Opcodes;
 import net.bytebuddy.matcher.ElementMatchers;
 import xyz.auriium.mattlib2.Exceptions;
@@ -70,10 +67,10 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
         var sim_file = new File(traj_dir, sim);
 
         if (!traj_file.exists()) {
-            throw Exceptions.MATTLIB_FILE_EXCEPTION();
+            throw Exceptions.MATTLIB_FILE_EXCEPTION(load);
         }
         if (!sim_file.exists()) {
-            throw Exceptions.MATTLIB_FILE_EXCEPTION();
+            throw Exceptions.MATTLIB_FILE_EXCEPTION(sim);
         }
 
         //System.out.println("has read: " + traj_file.canRead() + " has write: " + traj_file.canWrite());
@@ -97,7 +94,6 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
         if (RobotBase.isSimulation()) {
             map = loader
                     .load()
-                    .writeToFile()
                     .overrideMainConfigFromFile(sim_file.toPath())
                     .loadToMemoryConfig();
         } else {
@@ -144,7 +140,7 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
 
         CompletableFuture<T> uncompleted = new CompletableFuture<>();
 
-        LoadStruct<T> toLoad = new LoadStruct<>(ProcessPath.parse(path), type, uncompleted);
+        LoadStruct<T> toLoad = new LoadStruct<>(ProcessPath.of(path), type, uncompleted);
         structs.add(toLoad);
 
         //Code below will generate a new Java class that implements a delegate which will call the future's join function
@@ -159,10 +155,16 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
                     .invoke(typedJoin)
                     .onField("future");
 
+            var matcher = ElementMatchers.isDeclaredBy(type);
+            for (Class<?> extendedInterface : type.getInterfaces()) {
+                matcher = matcher.or(ElementMatchers.isDeclaredBy(extendedInterface));
+            }
+
+
             var dyn = BUDDY
                     .subclass(type)
                     .name(type.getPackageName() + "." + type.getSimpleName())
-                    .suffix("Delegated_" + Integer.toHexString(toLoad.hashCode()))
+                    .suffix("FXGen_" + Integer.toHexString(toLoad.hashCode()))
                     .defineField("future", gentrifiedFuture, Opcodes.ACC_FINAL | Opcodes.ACC_PUBLIC)
                     .defineConstructor(Opcodes.ACC_PUBLIC)
                     .withParameters(gentrifiedFuture)
@@ -171,7 +173,9 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
                     .intercept(callJoinOnFutureField)
                     .method(ElementMatchers.isEquals())
                     .intercept(EqualsMethod.isolated())
-                    .method(ElementMatchers.isDeclaredBy(type).and(ElementMatchers.isMethod()))
+                    .method(ElementMatchers.isHashCode())
+                    .intercept(HashCodeMethod.usingDefaultOffset())
+                    .method(matcher.and(ElementMatchers.isMethod()))
                     .intercept(MethodDelegation.toMethodReturnOf("getInsideFuture"));
 
             DynamicType.Unloaded<?> unloaded = dyn.make();

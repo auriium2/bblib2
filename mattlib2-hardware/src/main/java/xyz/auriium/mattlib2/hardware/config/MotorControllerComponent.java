@@ -3,8 +3,8 @@ package xyz.auriium.mattlib2.hardware.config;
 import xyz.auriium.mattlib2.log.annote.HasUpdated;
 import xyz.auriium.mattlib2.log.annote.SelfPath;
 import xyz.auriium.mattlib2.log.decorator.Documented;
+import xyz.auriium.yuukonstants.GenericPath;
 import yuukonfig.core.annotate.Key;
-import yuukonstants.GenericPath;
 
 import java.util.Optional;
 

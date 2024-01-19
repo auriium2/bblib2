@@ -16,6 +16,8 @@ public interface FFGenComponent extends INetworkedComponent {
     @Conf("endVoltage") double endVoltage_volts();
     @Conf("rampRate_vPerMs") double rampRate_voltsPerMS();
 
+    @Log("inputVelocity") void logInputVelocity(double iv);
+    @Log("inputVoltage") void logInputVoltage(double iV);
     @Log("predictKS") void logPredictedStaticConstant(double ks);
     @Log("predictKV") void logPredictedVelocityConstant(double kv);
     @Log("state") void printState(State whatHeDoing);

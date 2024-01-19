@@ -1,4 +1,4 @@
-package xyz.auriium.mattlib2;
+package xyz.auriium.mattlib2.utils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

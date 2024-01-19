@@ -7,7 +7,7 @@ import com.revrobotics.SparkMaxPIDController;
 import xyz.auriium.mattlib2.hardware.*;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 import xyz.auriium.mattlib2.hardware.config.PIDComponent;
-import yuukonstants.exception.ExplainedException;
+import xyz.auriium.yuukonstants.exception.ExplainedException;
 
 import java.util.Optional;
 

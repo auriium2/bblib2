@@ -1,7 +1,7 @@
 package xyz.auriium.mattlib2.rev;
 
 import xyz.auriium.mattlib2.Mattlib2Exception;
-import yuukonstants.GenericPath;
+import xyz.auriium.yuukonstants.GenericPath;
 
 import static java.lang.String.format;
 
@@ -31,7 +31,7 @@ public class Exceptions {
     public static final Mattlib2Exception MUST_DEFINE_LIMIT_TYPE(GenericPath path) {
         return new Mattlib2Exception(
                 "rev/mustDefineLimitType",
-                format("the motor at [%s] is using limit switches, but does not define the field <switch_normally> to tell whether the limit switch is normally open or not", path.getAsTablePath()),
+                format("the motor at [%s] is using limit switches, but does not define the field <switch_normally> to tell whether the limit switch is normally open or not", path.tablePath()),
                 "please add the field switch_normally to the config along with whether the limit switch is normally open or not"
         );
     }

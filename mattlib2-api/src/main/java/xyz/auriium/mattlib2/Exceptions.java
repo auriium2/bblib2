@@ -7,10 +7,19 @@ import static java.lang.String.format;
 
 public class Exceptions {
 
-    public static final Mattlib2Exception MATTLIB_FILE_EXCEPTION() {
+
+    public static final Mattlib2Exception CONF_NOT_LOADED() {
+        throw new Mattlib2Exception(
+                "configNotLoaded",
+                format("your code tried to access a component, but it was loaded after preInit was called and therefore wasn't loaded!"),
+                "make sure you declare your component using MattLog before pre-init is called, usually in the static initializer block or as a static inline declaration. Note that due to how the classloader works you probably want to declare your components in the same class as the MattLog preinit call"
+        );
+    }
+
+    public static final Mattlib2Exception MATTLIB_FILE_EXCEPTION(String fileType) {
         throw new Mattlib2Exception(
                 "noConfigFile",
-                "for some reason the config file for mattlib is not present!",
+                format("for some reason the [%s] file for mattlib is not present!", fileType),
                 "contact matt"
         );
     }

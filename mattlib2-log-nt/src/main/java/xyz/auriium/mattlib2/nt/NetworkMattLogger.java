@@ -7,13 +7,16 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableEvent;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 import xyz.auriium.mattlib2.log.ProcessPath;
 import xyz.auriium.mattlib2.nt.consumers.*;
 import xyz.auriium.mattlib2.nt.suppliers.*;
 
+import java.util.EnumSet;
 import java.util.Optional;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -23,6 +26,18 @@ public class NetworkMattLogger {
 
     public <T> Optional<Supplier<T>> generateTuner(ProcessPath path, T defaultValue) {
         return Optional.ofNullable(getCorrectSupplier(path, defaultValue));
+    }
+
+    public BooleanSupplier generateHasUpdatedSupplier(ProcessPath path) {
+
+        var entry = NetworkTableInstance.getDefault().getTable("mattlib")
+                .getEntry(path.tablePath());
+
+        return new BooleanSupplier() {
+            @Override public boolean getAsBoolean() {
+                return false;
+            }
+        };
     }
 
     @SuppressWarnings("unchecked")

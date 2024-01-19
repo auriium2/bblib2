@@ -10,9 +10,6 @@ import java.lang.reflect.Method;
  */
 public class ReflectionUtil {
 
-    Ex
-
-
     static {
 
     }
@@ -58,7 +55,7 @@ public class ReflectionUtil {
             throw xyz.auriium.mattlib2.Exceptions.BAD_CONF_OR_TUNE(methodName, simpleName);
         }
 
-        if (log != null && method.getParameterCount() == 0) {
+        if (log != null && (method.getParameterCount() == 0 || method.getParameterCount() > 1)) {
             throw xyz.auriium.mattlib2.Exceptions.BAD_LOG(methodName, simpleName);
         }
 

@@ -20,7 +20,7 @@ public class TypeMap {
 
     }
 
-    public <T> T request(Class<T> type, String... path) {
+    public <T> T request(Class<T> type, String path) {
         ProcessPath toQuery = ProcessPath.of(path);
 
         Object ob = backingMap.get(toQuery);

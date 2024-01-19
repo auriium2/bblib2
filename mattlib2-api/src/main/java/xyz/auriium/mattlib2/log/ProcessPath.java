@@ -24,14 +24,9 @@ public class ProcessPath extends GenericPath {
         return Optional.of(new ProcessPath(Arrays.copyOf(contents, contents.length - 1)));
     }
 
-    public static ProcessPath parse(String stringWithSlash) {
-        return of(stringWithSlash.split("/"));
+    public static ProcessPath of(String stringWithSlash) {
+        return new ProcessPath(stringWithSlash.split("/"));
     }
-
-    public static ProcessPath of(String... strings) {
-        return new ProcessPath(strings);
-    }
-
 
     public static ProcessPath ofGeneric(GenericPath genericPath) {
         return new ProcessPath(genericPath.asArray());

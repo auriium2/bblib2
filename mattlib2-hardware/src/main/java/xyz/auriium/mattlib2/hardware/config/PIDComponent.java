@@ -1,22 +1,10 @@
 package xyz.auriium.mattlib2.hardware.config;
 
 import xyz.auriium.mattlib2.Mattlib;
-import yuukonstants.GenericPath;
+import xyz.auriium.yuukonstants.GenericPath;
 
 public interface PIDComponent extends CommonPIDComponent, IndividualPIDComponent {
 
-
-    /**
-     * use this instead of loading a motor component
-     * @param path
-     * @return
-     */
-    static PIDComponent workaround(String path) {
-        return ofSpecific(
-                Mattlib.LOG.load(CommonPIDComponent.class, path),
-                Mattlib.LOG.load(IndividualPIDComponent.class, path)
-        );
-    }
     /**
      * Use this when you want to reuse the common pid parameters (p,i,d) but not the special logging stuff
      * @param pidComponent

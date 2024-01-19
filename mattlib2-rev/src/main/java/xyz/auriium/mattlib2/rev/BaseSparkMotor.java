@@ -7,7 +7,7 @@ import xyz.auriium.mattlib2.hardware.IRotationalMotor;
 import xyz.auriium.mattlib2.hardware.config.CommonMotorComponent;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 import xyz.auriium.mattlib2.utils.AngleUtil;
-import yuukonstants.exception.ExplainedException;
+import xyz.auriium.yuukonstants.exception.ExplainedException;
 
 import java.util.Optional;
 
@@ -44,12 +44,12 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
         REVLibError err = sparkMax.restoreFactoryDefaults();
         if (err != REVLibError.kOk) {
-            return Optional.of(Exceptions.GENERIC_REV_ERROR( motorComponent.selfPath().getAsTablePath() ));
+            return Optional.of(Exceptions.GENERIC_REV_ERROR( motorComponent.selfPath().tablePath() ));
         }
 
         REVLibError vcError = sparkMax.enableVoltageCompensation(12);
         if (vcError != REVLibError.kOk) {
-            return Optional.of(Exceptions.VOLTAGE_COMPENSATION_FAILED( motorComponent.selfPath().getAsTablePath() ));
+            return Optional.of(Exceptions.VOLTAGE_COMPENSATION_FAILED( motorComponent.selfPath().tablePath() ));
         }
 
         //cyrrent limits

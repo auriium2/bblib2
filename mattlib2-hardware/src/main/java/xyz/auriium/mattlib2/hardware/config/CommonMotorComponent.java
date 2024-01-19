@@ -26,20 +26,20 @@ public interface CommonMotorComponent extends INetworkedComponent {
      * @return brushless or brushed (look it up)
      */
     @Conf("type") default Type typeOfMotor() { return Type.BRUSHLESS; }
-    @Conf("sensor2mechanism_coef") double encoderToMechanismCoefficient();
+    @Conf("encoderToMechanism") double encoderToMechanismCoefficient();
 
-    @Conf("rot2meter_coef") Optional<Double> rotationToMeterCoefficient();
-    @Conf("current_limit") Optional<Integer> currentLimit();
-    @Conf("forward_limit") Optional<Normally> forwardLimit();
-    @Conf("reverse_limit") Optional<Normally> reverseLimit();
-    @Conf("forward_soft_limit") Optional<Double> forwardSoftLimit_mechanismRot();
-    @Conf("reverse_soft_limit") Optional<Double> reverseSoftLimit_mechanismRot();
+    @Conf("rotationsToMeters") Optional<Double> rotationToMeterCoefficient();
+    @Conf("currentLimit") Optional<Integer> currentLimit();
+    @Conf("forwardLimit") Optional<Normally> forwardLimit();
+    @Conf("reverseLimit") Optional<Normally> reverseLimit();
+    @Conf("forwardSoftLimit") Optional<Double> forwardSoftLimit_mechanismRot();
+    @Conf("reverseSoftLimit") Optional<Double> reverseSoftLimit_mechanismRot();
 
     @Conf("inverted") Optional<Boolean> inverted();
-    @Conf("open_ramp_rate") Optional<Double> openRampRate_seconds();
-    @Conf("closed_ramp_rate") Optional<Double> closedRampRate_seconds();
-    @Conf("break_mode_enabled") Optional<Boolean> breakModeEnabled();
-    @Conf("has_absolute") Optional<Boolean> hasAbsoluteEncoder();
+    @Conf("openRampRate") Optional<Double> openRampRate_seconds();
+    @Conf("closedRampRate") Optional<Double> closedRampRate_seconds();
+    @Conf("breakModeEnabled") Optional<Boolean> breakModeEnabled();
+    @Conf("hasAbsolute") Optional<Boolean> hasAbsoluteEncoder();
 
 
 
