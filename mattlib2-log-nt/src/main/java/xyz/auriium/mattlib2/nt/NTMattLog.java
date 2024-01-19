@@ -30,6 +30,7 @@ import yuukonfig.core.impl.safe.HandlesSafeManipulator;
 import yuukonfig.core.impl.safe.ManipulatorSafe;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,12 +71,21 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
         String load = "config.toml";
         String sim = "sim.toml";
 
-        var traj_dir = new File(Filesystem.getDeployDirectory(), "mattlib");
-        var traj_file = new File(traj_dir, load);
-        var sim_file = new File(traj_dir, sim);
+        var conf_dir = new File(Filesystem.getDeployDirectory(), "mattlib");
+        var conf_file = new File(conf_dir, load);
+        var sim_file = new File(conf_dir, sim);
 
-        if (!traj_file.exists()) {
-            throw Exceptions.MATTLIB_FILE_EXCEPTION(load);
+        boolean isSim = RobotBase.isSimulation();
+        boolean shouldDoFunnyOverwriteOfFile = false;
+
+        if (!conf_file.exists()) {
+            //create
+            shouldDoFunnyOverwriteOfFile = true;
+            try {
+                conf_file.createNewFile();
+            } catch (IOException e) {
+                throw new Mattlib2Exception("localFileCreationFailure", "mattlib2 tried to regenerate your conf file but it couldnt, because of something IOExceptiony!",e, "tbh idk" );
+            }
         }
         if (!sim_file.exists()) {
             throw Exceptions.MATTLIB_FILE_EXCEPTION(sim);
@@ -99,12 +109,16 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
                 .register(HandlesSafeManipulator.ofSpecific(Pose2d.class, Pose2Manipulator::new))
                 .register(HandlesSafeManipulator.ofSpecific(Translation2d.class, Translation2Manipulator::new))
                 .register(HandlesSafeManipulator.ofSpecific(Rotation2d.class, Rotation2Manipulator::new))
-                .loader(TypeMap.class, traj_file.toPath());
+                .loader(TypeMap.class, conf_file.toPath());
 
         TypeMap map;
         if (RobotBase.isSimulation()) {
-            map = loader
-                    .load()
+            var contentBridge = loader.load();
+            if (shouldDoFunnyOverwriteOfFile) {
+                contentBridge = contentBridge.writeToFile();
+            }
+
+            map = contentBridge
                     .overrideMainConfigFromFile(sim_file.toPath())
                     .loadToMemoryConfig();
         } else {
