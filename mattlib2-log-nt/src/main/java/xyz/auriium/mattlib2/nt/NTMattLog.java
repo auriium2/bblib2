@@ -1,5 +1,8 @@
 package xyz.auriium.mattlib2.nt;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import net.bytebuddy.ByteBuddy;
@@ -17,9 +20,14 @@ import xyz.auriium.mattlib2.log.INetworkedComponent;
 import xyz.auriium.mattlib2.log.ProcessMap;
 import xyz.auriium.mattlib2.log.ProcessPath;
 import xyz.auriium.mattlib2.log.TypeMap;
+import xyz.auriium.mattlib2.yuukonfig.Pose2Manipulator;
+import xyz.auriium.mattlib2.yuukonfig.Rotation2Manipulator;
+import xyz.auriium.mattlib2.yuukonfig.Translation2Manipulator;
 import xyz.auriium.mattlib2.yuukonfig.TypeMapManipulator;
 import yuukonfig.core.ConfigLoader;
 import yuukonfig.core.YuuKonfig;
+import yuukonfig.core.impl.safe.HandlesSafeManipulator;
+import yuukonfig.core.impl.safe.ManipulatorSafe;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -88,6 +96,9 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
                 .register(
                         (manipulation, useClass, useType, factory) -> new TypeMapManipulator(manipulation, useClass, useType, factory, finalProcessMap)
                 )
+                .register(HandlesSafeManipulator.ofSpecific(Pose2d.class, Pose2Manipulator::new))
+                .register(HandlesSafeManipulator.ofSpecific(Translation2d.class, Translation2Manipulator::new))
+                .register(HandlesSafeManipulator.ofSpecific(Rotation2d.class, Rotation2Manipulator::new))
                 .loader(TypeMap.class, traj_file.toPath());
 
         TypeMap map;

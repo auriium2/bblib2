@@ -236,6 +236,8 @@ public class LogComponentManipulator implements Manipulator {
                 }
         );
 
+        int configQuantity = 0;
+
         RawNodeFactory.MappingBuilder builder = factory.makeMappingBuilder(path);
 
         for (Method method : useClass.getMethods()) {
@@ -248,6 +250,7 @@ public class LogComponentManipulator implements Manipulator {
             if (!method.isAnnotationPresent(Conf.class) && !method.isAnnotationPresent(Tune.class)) {
                 continue;
             } else {
+                configQuantity++;
                 if (method.isDefault()) {
                     serialized = manipulation.serialize(
                             new ProxyForwarder2(method, proxy).invoke(),
@@ -265,6 +268,9 @@ public class LogComponentManipulator implements Manipulator {
             builder.add(key, serialized);
         }
 
+        if (configQuantity == 0) {
+            return factory.notPresentOf(path); //fuck you
+        }
         return builder.build();
     }
 

@@ -5,17 +5,21 @@ import xyz.auriium.yuukonstants.GenericPath;
 import yuukonfig.core.err.BadValueException;
 import yuukonfig.core.impl.BaseManipulation;
 import yuukonfig.core.impl.safe.ManipulatorSafe;
+import yuukonfig.core.manipulation.Contextual;
 import yuukonfig.core.node.Node;
 import yuukonfig.core.node.RawNodeFactory;
+
+import java.lang.reflect.Type;
 
 public class Translation2Manipulator implements ManipulatorSafe<Translation2d> {
 
     final RawNodeFactory factory;
     final BaseManipulation manipulation;
 
-    public Translation2Manipulator(RawNodeFactory factory, BaseManipulation manipulation) {
-        this.factory = factory;
-        this.manipulation = manipulation;
+
+    public Translation2Manipulator(BaseManipulation baseManipulation, Class<?> aClass, Contextual<Type> typeContextual, RawNodeFactory rawNodeFactory) {
+        this.factory = rawNodeFactory;
+        this.manipulation = baseManipulation;
     }
 
     @Override

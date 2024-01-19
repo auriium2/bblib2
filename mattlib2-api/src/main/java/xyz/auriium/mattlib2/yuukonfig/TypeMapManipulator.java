@@ -67,7 +67,6 @@ public class TypeMapManipulator implements Manipulator {
                     type
             );
 
-            System.out.println(drillNode.path().tablePath() + " loc");
 
             toReturnMap.put(path, configObject);
         }
@@ -83,17 +82,28 @@ public class TypeMapManipulator implements Manipulator {
      * @return the node if located, or an empty node with the original (incorrect) path if not located.
      */
     public static Node drillToNode(RawNodeFactory factory, Mapping root, ProcessPath pathToMatchWith) {
-        if (pathToMatchWith.length() == 0) { return root; }
+        if (pathToMatchWith.length() == 0) {return root; }
 
         String[] internalArray = pathToMatchWith.asArray(); int useIndex = 0;
         Node closestToTheTruth = root.valuePossiblyMissing(internalArray[useIndex]); useIndex++;
 
-        while (useIndex < internalArray.length) {
-            if (closestToTheTruth.type() == Node.Type.NOT_PRESENT) return factory.notPresentOf(pathToMatchWith);
+        System.out.println(closestToTheTruth.type() + " is origin type");
+        if (closestToTheTruth.type() == Node.Type.NOT_PRESENT) {
+            System.out.println("strange happenings: " +pathToMatchWith.tablePath());
+            return factory.notPresentOf(pathToMatchWith);
+        }
 
-            closestToTheTruth = closestToTheTruth.asMapping().yamlMapping(internalArray[useIndex]);
+        while (useIndex < internalArray.length) {
+            closestToTheTruth = closestToTheTruth.asMapping().valuePossiblyMissing(internalArray[useIndex]);
+            if (closestToTheTruth.type() == Node.Type.NOT_PRESENT) {
+
+                System.out.println("strange happenings: " +pathToMatchWith.tablePath());
+                return factory.notPresentOf(pathToMatchWith);
+            }
             useIndex++;
         }
+
+        System.out.println(closestToTheTruth.path().tablePath() + " at, located " + pathToMatchWith.tablePath() + " with index of " + useIndex + " with type " + closestToTheTruth.type().name());
 
         return closestToTheTruth;
     }
@@ -106,7 +116,7 @@ public class TypeMapManipulator implements Manipulator {
 
 
     //we know the 'path is clear' lets spam that fucker
-    public static Mapping recursivelySerialize(RawNodeFactory factory, ProcessPath path, int index, Mapping toAdd) {
+    public static Mapping recursivelySerialize(RawNodeFactory factory, ProcessPath path, int index, Node toAdd) {
         String currentKey = path.asArray()[index];
 
         if (index == path.maxIndex()) {
@@ -124,14 +134,15 @@ public class TypeMapManipulator implements Manipulator {
     public Node serializeDefault(GenericPath rootPath) {
         Mapping mappingToWorkWith = factory.makeMappingBuilder(rootPath).build();
 
+        //DONT USE THE FUCKING ROOT PATH
         for (int i = 0; i < processMap.size(); i++) {
             ProcessPath path = processMap.pathArray[i];
             Class<?> type = processMap.clazzArray[i];
 
-            Node serializedNode = manipulation.serializeDefaultCtx(type, rootPath);
-            if (serializedNode.type() != Node.Type.MAPPING) throw Exceptions.NODE_NOT_MAP(rootPath); //all serialized should be maps
+            Node serializedNode = manipulation.serializeDefaultCtx(type, path);
+            if (serializedNode.type() != Node.Type.MAPPING && serializedNode.type() != Node.Type.NOT_PRESENT) throw Exceptions.NODE_NOT_MAP(path); //all serialized should be maps
 
-            mappingToWorkWith = factory.mergeMappings(mappingToWorkWith, recursivelySerialize(factory, path, 0, serializedNode.asMapping()));
+            mappingToWorkWith = factory.mergeMappings(mappingToWorkWith, recursivelySerialize(factory, path, 0, serializedNode));
         }
 
         return mappingToWorkWith;
