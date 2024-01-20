@@ -87,9 +87,9 @@ public class TypeMapManipulator implements Manipulator {
         String[] internalArray = pathToMatchWith.asArray(); int useIndex = 0;
         Node closestToTheTruth = root.valuePossiblyMissing(internalArray[useIndex]); useIndex++;
 
-        System.out.println(closestToTheTruth.type() + " is origin type");
+        //System.out.println(closestToTheTruth.type() + " is origin type");
         if (closestToTheTruth.type() == Node.Type.NOT_PRESENT) {
-            System.out.println("strange happenings: " +pathToMatchWith.tablePath());
+            //System.out.println("strange happenings: " +pathToMatchWith.tablePath());
             return factory.notPresentOf(pathToMatchWith);
         }
 
@@ -97,13 +97,13 @@ public class TypeMapManipulator implements Manipulator {
             closestToTheTruth = closestToTheTruth.asMapping().valuePossiblyMissing(internalArray[useIndex]);
             if (closestToTheTruth.type() == Node.Type.NOT_PRESENT) {
 
-                System.out.println("strange happenings: " +pathToMatchWith.tablePath());
+                //System.out.println("strange happenings: " +pathToMatchWith.tablePath());
                 return factory.notPresentOf(pathToMatchWith);
             }
             useIndex++;
         }
 
-        System.out.println(closestToTheTruth.path().tablePath() + " at, located " + pathToMatchWith.tablePath() + " with index of " + useIndex + " with type " + closestToTheTruth.type().name());
+      //  System.out.println(closestToTheTruth.path().tablePath() + " at, located " + pathToMatchWith.tablePath() + " with index of " + useIndex + " with type " + closestToTheTruth.type().name());
 
         return closestToTheTruth;
     }
