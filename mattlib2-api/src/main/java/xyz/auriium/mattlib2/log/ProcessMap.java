@@ -1,5 +1,6 @@
 package xyz.auriium.mattlib2.log;
 
+import xyz.auriium.mattlib2.Exceptions;
 import xyz.auriium.mattlib2.utils.BufferUtils;
 
 public class ProcessMap {
@@ -22,6 +23,12 @@ public class ProcessMap {
     }
 
     public ProcessMap with(ProcessPath path, Class<?> clazz) {
+        for (ProcessPath existing : pathArray) {
+            if (path.equals(existing)) {
+                throw Exceptions.DUPLICATE_IDS(path);
+            }
+        }
+
         return new ProcessMap(BufferUtils.add(pathArray, path), BufferUtils.add(clazzArray, clazz));
     }
 }

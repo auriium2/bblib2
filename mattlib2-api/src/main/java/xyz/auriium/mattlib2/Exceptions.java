@@ -24,6 +24,14 @@ public class Exceptions {
         );
     }
 
+    public static final Mattlib2Exception DUPLICATE_IDS(GenericPath path) {
+        throw new Mattlib2Exception(
+                "duplicateIds",
+                format("multiple config nodes/mattlib components share the name [%s].", path.tablePath()),
+                "remove the duplicates"
+        );
+    }
+
     public static final Mattlib2Exception NODE_NOT_MAP(GenericPath path) {
         throw new Mattlib2Exception(
                 "nodeNotMap",
