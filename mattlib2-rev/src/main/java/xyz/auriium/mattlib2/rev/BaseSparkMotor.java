@@ -27,7 +27,6 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
         this.encoder = encoder;
 
         mattRegister();
-        //System.out.println("register called on " + " with inverted: " + motorComponent.selfPath());
     }
 
     boolean isInverted = false;
@@ -40,10 +39,6 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
     @Override
     public Optional<ExplainedException> verifyInit() {
-
-        System.out.println("ITS BEING RUN YAAAAAAY");
-
-        //if (true) throw new IllegalStateException("VERY SURE ITS BEING RUN");
 
         isInverted = motorComponent.inverted().orElse(false);
         System.out.println(motorComponent.selfPath().tablePath() + " is inverted?: " + isInverted);
@@ -117,9 +112,9 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
     @Override
     public void logPeriodic() {
 
-        System.out.println("PENIS GUY");
         motorComponent.reportCurrentDraw(outputCurrent);
         motorComponent.reportVoltageGiven(outputVoltage);
+        motorComponent.reportTemperature(outputVoltage);
     }
 
     //Other stuff

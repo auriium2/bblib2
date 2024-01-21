@@ -34,8 +34,15 @@ public class DCSimMotor implements ILinearMotor, IRotationalMotor, IPeriodicLoop
     }
 
     @Override
+    public void logPeriodic() {
+
+        motorComponent.reportCurrentDraw(motorSim.getCurrentDrawAmps());
+        motorComponent.reportVoltageGiven(voltageNow);
+        motorComponent.reportTemperature(0);
+    }
+
+    @Override
     public void logicPeriodic() {
-        motorSim.setInputVoltage(voltageNow);
         motorSim.update(0.02);
     }
 
@@ -49,6 +56,7 @@ public class DCSimMotor implements ILinearMotor, IRotationalMotor, IPeriodicLoop
 
     @Override
     public void setToPercent(double percent_zeroToOne) {
+        voltageNow = percent_zeroToOne * 12;
         motorSim.setInputVoltage(percent_zeroToOne * 12);
     }
 
@@ -71,8 +79,8 @@ public class DCSimMotor implements ILinearMotor, IRotationalMotor, IPeriodicLoop
     @Override
     public void forceLinearOffset(double linearOffset_mechanismMeters) {
         rotationalOffset_encoderRotations = linearOffset_mechanismMeters
-                / motorComponent.rotationToMeterCoefficient().orElseThrow(() -> xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath()))
-                / motorComponent.encoderToMechanismCoefficient();
+                / motorComponent.rotationToMeterCoefficient().orElseThrow(() -> xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath()));
+                //  / motorComponent.encoderToMechanismCoefficient(); WHAT THE FUCK
     }
 
     @Override
@@ -80,7 +88,7 @@ public class DCSimMotor implements ILinearMotor, IRotationalMotor, IPeriodicLoop
         double rot2linear = motorComponent.rotationToMeterCoefficient().orElseThrow(() -> xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath()));
 
         return motorSim.getAngularPositionRotations()
-                * motorComponent.encoderToMechanismCoefficient()
+                * 1 //motorComponent.encoderToMechanismCoefficient() WHAT THE FUCK
                 * rot2linear;
     }
 
@@ -89,15 +97,14 @@ public class DCSimMotor implements ILinearMotor, IRotationalMotor, IPeriodicLoop
         double rot2linear = motorComponent.rotationToMeterCoefficient().orElseThrow(() -> xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath()));
 
         return motorSim.getAngularVelocityRPM()
-                * motorComponent.encoderToMechanismCoefficient()
+                * 1 //motorComponent.encoderToMechanismCoefficient() WHAT THE FUCK
                 * rot2linear
                 / 60.0; //rpm -> rps
     }
 
     @Override
     public void forceRotationalOffset(double offset_mechanismRotations) {
-        rotationalOffset_encoderRotations = offset_mechanismRotations
-                / motorComponent.encoderToMechanismCoefficient();
+        rotationalOffset_encoderRotations = offset_mechanismRotations; //motorComponent.encoderToMechanismCoefficient(); //WHAT THE FUCK
     }
 
     @Override
@@ -107,7 +114,7 @@ public class DCSimMotor implements ILinearMotor, IRotationalMotor, IPeriodicLoop
 
     @Override
     public double angularPosition_mechanismRotations() {
-        return angularPosition_encoderRotations() * motorComponent.encoderToMechanismCoefficient();
+        return angularPosition_encoderRotations() * 1; //motorComponent.encoderToMechanismCoefficient(); //WHAT
     }
 
     @Override
@@ -122,7 +129,8 @@ public class DCSimMotor implements ILinearMotor, IRotationalMotor, IPeriodicLoop
 
     @Override
     public double angularVelocity_mechanismRotationsPerSecond() {
-        return motorSim.getAngularVelocityRPM() * motorComponent.encoderToMechanismCoefficient() / 60d;
+        return motorSim.getAngularVelocityRPM() * 1 / 60d; //WHAT THE FUCK
+        //return motorSim.getAngularVelocityRPM() * motorComponent.encoderToMechanismCoefficient() / 60d;
     }
 
     @Override

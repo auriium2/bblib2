@@ -87,6 +87,7 @@ public class HardwareSIM {
                 motorComponent.positionStandardDeviation().orElse(0d),
                 motorComponent.velocityStandardDeviation().orElse(0d)
         );
+
         DCMotorSim motorSim = new DCMotorSim(
                 gearbox,
                 1d / motorComponent.encoderToMechanismCoefficient(),

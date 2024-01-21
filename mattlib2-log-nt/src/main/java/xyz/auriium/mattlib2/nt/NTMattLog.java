@@ -1,8 +1,6 @@
 package xyz.auriium.mattlib2.nt;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import net.bytebuddy.ByteBuddy;
@@ -110,6 +108,8 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
                 .register(HandlesSafeManipulator.ofSpecific(Pose2d.class, Pose2Manipulator::new))
                 .register(HandlesSafeManipulator.ofSpecific(Translation2d.class, Translation2Manipulator::new))
                 .register(HandlesSafeManipulator.ofSpecific(Rotation2d.class, Rotation2Manipulator::new))
+                .register(HandlesSafeManipulator.ofSpecific(Pose3d.class, Pose3Manipulator::new))
+                .register(HandlesSafeManipulator.ofSpecific(Rotation3d.class, Rotation3Manipulator::new))
                 .register(HandlesPrimitiveManipulator.ofSpecific(Long.class, long.class, LongManipulator::new))
                 .loader(TypeMap.class, conf_file.toPath());
 

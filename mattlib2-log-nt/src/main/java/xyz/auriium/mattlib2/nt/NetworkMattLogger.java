@@ -132,8 +132,46 @@ public class NetworkMattLogger {
         NetworkTableEntry entry = NetworkTableInstance.getDefault().getTable("mattlib").getEntry(path.tablePath());
 
         //do not ask
-        if (type == Integer.class || type == int.class || type == Double.class || type == double.class || type == Boolean.class || type == boolean.class || type == String.class || type == Byte.class || type == byte.class || type == Long.class || type == long.class) {
-            return Optional.of(new NetworkTableConsumer<>(entry));
+        if (type == Integer.class || type == int.class) {
+            Consumer<Integer> cs = new NetworkTableConsumer<>(entry);
+            cs.accept(0);
+
+            return Optional.of((Consumer<T>)cs);
+        }
+
+        if (type == Long.class || type == long.class) {
+            Consumer<Long> cs = new NetworkTableConsumer<>(entry);
+            cs.accept(0L);
+
+            return Optional.of((Consumer<T>)cs);
+        }
+
+        if (type == Byte.class || type == byte.class) {
+            Consumer<Byte> cs = new NetworkTableConsumer<>(entry);
+            cs.accept((byte)0);
+
+            return Optional.of((Consumer<T>)cs);
+        }
+
+        if (type == Double.class || type == double.class) {
+            Consumer<Double> cs = new NetworkTableConsumer<>(entry);
+            cs.accept(0d);
+
+            return Optional.of((Consumer<T>)cs);
+        }
+
+        if (type == Boolean.class || type == boolean.class) {
+            Consumer<Boolean> cs = new NetworkTableConsumer<>(entry);
+            cs.accept(false);
+
+            return Optional.of((Consumer<T>)cs);
+        }
+
+        if (type == String.class) {
+            Consumer<String> cs = new NetworkTableConsumer<>(entry);
+            cs.accept("");
+
+            return Optional.of((Consumer<T>)cs);
         }
 
         if (type == int[].class || type == Integer[].class) {
@@ -141,32 +179,52 @@ public class NetworkMattLogger {
         }
 
         if (type == double[].class || type == Double[].class) {
-            return Optional.of((Consumer<T>) new DoubleArrayConsumer(entry));
+            Consumer<double[]> cs = new DoubleArrayConsumer(entry);
+            cs.accept(new double[0]);
+
+            return Optional.of((Consumer<T>)cs);
         }
 
         if (type == boolean[].class || type == Boolean[].class) {
-            return Optional.of((Consumer<T>) new BooleanArrayConsumer(entry));
+            Consumer<boolean[]> cs = new BooleanArrayConsumer(entry);
+            cs.accept(new boolean[0]);
+
+            return Optional.of((Consumer<T>)cs);
         }
 
         if (type == Pose2d.class) {
-            return Optional.of((Consumer<T>) new PoseConsumer(entry));
+            Consumer<Pose2d> cs = new PoseConsumer(entry);
+            cs.accept(new Pose2d());
+
+            return Optional.of((Consumer<T>)cs);
         }
 
         if (type == Pose3d.class) {
-            return Optional.of((Consumer<T>) new Pose3Consumer(entry));
+            Consumer<Pose3d> cs = new Pose3Consumer(entry);
+            cs.accept(new Pose3d());
+
+            return Optional.of((Consumer<T>)cs);
         }
 
         if (type == Translation2d.class) {
-            return Optional.of((Consumer<T>) new TranslationConsumer(entry));
-        }
+            Consumer<Translation2d> cs = new TranslationConsumer(entry);
+            cs.accept(new Translation2d());
+
+            return Optional.of((Consumer<T>)cs);        }
 
 
         if (type == SwerveModulePosition[].class) {
-            return Optional.of((Consumer<T>) new SwervePosConsumer(entry));
+            Consumer<SwerveModulePosition[]> cs = new SwervePosConsumer(entry);
+            cs.accept(new SwerveModulePosition[]{ new SwerveModulePosition(), new SwerveModulePosition(), new SwerveModulePosition(), new SwerveModulePosition()});
+
+            return Optional.of((Consumer<T>)cs);
         }
 
         if (type == SwerveModuleState[].class) {
-            return Optional.of((Consumer<T>) new SwerveStateConsumer(entry));
+            Consumer<SwerveModuleState[]> cs = new SwerveStateConsumer(entry);
+            cs.accept(new SwerveModuleState[]{ new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState()});
+
+            return Optional.of((Consumer<T>)cs);
         }
 
 
