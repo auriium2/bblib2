@@ -21,15 +21,16 @@ public class HardwareSIM {
 
         Matrix<N2, N1> mat = VecBuilder.fill(
                 motorComponent.positionStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.POSITION_STDV)),
-                motorComponent.positionStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.VELOCITY_STDV))
+                motorComponent.velocityStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.VELOCITY_STDV))
         );
 
         DCMotorSim motorSim = new DCMotorSim(
                 gearbox,
                 1d / motorComponent.encoderToMechanismCoefficient(),
-                motorComponent.positionStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.ROTATIONAL_INERTIA)),
+                motorComponent.massMomentInertia().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.ROTATIONAL_INERTIA)),
                 mat
         );
+
 
         return new DCSimMotor(motorSim, motorComponent);
     }
@@ -37,15 +38,16 @@ public class HardwareSIM {
     public static IRotationalMotor rotationalSIM_noPID(MotorComponent motorComponent, DCMotor gearbox) {
         Matrix<N2, N1> mat = VecBuilder.fill(
                 motorComponent.positionStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.POSITION_STDV)),
-                motorComponent.positionStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.VELOCITY_STDV))
+                motorComponent.velocityStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.VELOCITY_STDV))
         );
 
         DCMotorSim motorSim = new DCMotorSim(
                 gearbox,
                 1d / motorComponent.encoderToMechanismCoefficient(),
-                motorComponent.positionStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.ROTATIONAL_INERTIA)),
+                motorComponent.massMomentInertia().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.ROTATIONAL_INERTIA)),
                 mat
         );
+
 
         return new DCSimMotor(motorSim, motorComponent);
     }
@@ -57,15 +59,16 @@ public class HardwareSIM {
 
         Matrix<N2, N1> mat = VecBuilder.fill(
                 motorComponent.positionStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.POSITION_STDV)),
-                motorComponent.positionStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.VELOCITY_STDV))
+                motorComponent.velocityStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.VELOCITY_STDV))
         );
 
         DCMotorSim motorSim = new DCMotorSim(
                 gearbox,
                 1d / motorComponent.encoderToMechanismCoefficient(),
-                motorComponent.positionStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.ROTATIONAL_INERTIA)),
+                motorComponent.massMomentInertia().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.ROTATIONAL_INERTIA)),
                 mat
         );
+
 
         return new DCSimController(
                 motorSim,
@@ -82,13 +85,13 @@ public class HardwareSIM {
 
         Matrix<N2, N1> mat = VecBuilder.fill(
                 motorComponent.positionStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.POSITION_STDV)),
-                motorComponent.positionStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.VELOCITY_STDV))
+                motorComponent.velocityStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.VELOCITY_STDV))
         );
 
         DCMotorSim motorSim = new DCMotorSim(
                 gearbox,
                 1d / motorComponent.encoderToMechanismCoefficient(),
-                motorComponent.positionStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.ROTATIONAL_INERTIA)),
+                motorComponent.massMomentInertia().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.ROTATIONAL_INERTIA)),
                 mat
         );
 
