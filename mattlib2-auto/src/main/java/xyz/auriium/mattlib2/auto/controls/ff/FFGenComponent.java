@@ -6,11 +6,7 @@ import xyz.auriium.mattlib2.log.annote.Log;
 
 public interface FFGenComponent extends INetworkedComponent {
 
-    enum State {
-        OFFLINE,
-        RAMPING,
-        FINISHED
-    }
+
 
     @Conf("startDelay_ms") long delay_ms();
     @Conf("endVoltage") double endVoltage_volts();
@@ -20,7 +16,6 @@ public interface FFGenComponent extends INetworkedComponent {
     @Log("inputVoltage") void logInputVoltage(double iV);
     @Log("predictKS") void logPredictedStaticConstant(double ks);
     @Log("predictKV") void logPredictedVelocityConstant(double kv);
-    @Log("state") void printState(State whatHeDoing);
 
 
 }

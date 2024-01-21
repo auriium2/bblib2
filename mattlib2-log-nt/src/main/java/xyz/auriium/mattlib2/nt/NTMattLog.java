@@ -20,12 +20,10 @@ import xyz.auriium.mattlib2.log.INetworkedComponent;
 import xyz.auriium.mattlib2.log.ProcessMap;
 import xyz.auriium.mattlib2.log.ProcessPath;
 import xyz.auriium.mattlib2.log.TypeMap;
-import xyz.auriium.mattlib2.yuukonfig.Pose2Manipulator;
-import xyz.auriium.mattlib2.yuukonfig.Rotation2Manipulator;
-import xyz.auriium.mattlib2.yuukonfig.Translation2Manipulator;
-import xyz.auriium.mattlib2.yuukonfig.TypeMapManipulator;
+import xyz.auriium.mattlib2.yuukonfig.*;
 import yuukonfig.core.ConfigLoader;
 import yuukonfig.core.YuuKonfig;
+import yuukonfig.core.impl.safe.HandlesPrimitiveManipulator;
 import yuukonfig.core.impl.safe.HandlesSafeManipulator;
 import yuukonfig.core.impl.safe.ManipulatorSafe;
 
@@ -109,6 +107,7 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
                 .register(HandlesSafeManipulator.ofSpecific(Pose2d.class, Pose2Manipulator::new))
                 .register(HandlesSafeManipulator.ofSpecific(Translation2d.class, Translation2Manipulator::new))
                 .register(HandlesSafeManipulator.ofSpecific(Rotation2d.class, Rotation2Manipulator::new))
+                .register(HandlesPrimitiveManipulator.ofSpecific(Long.class, long.class, LongManipulator::new))
                 .loader(TypeMap.class, conf_file.toPath());
 
         TypeMap map;

@@ -5,6 +5,7 @@ import net.bytebuddy.TypeCache;
 import net.bytebuddy.description.modifier.Visibility;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.scaffold.subclass.ConstructorStrategy;
+import net.bytebuddy.implementation.FixedValue;
 import net.bytebuddy.implementation.MethodCall;
 import net.bytebuddy.implementation.StubMethod;
 import net.bytebuddy.matcher.ElementMatchers;
@@ -76,6 +77,8 @@ public class MockingUtil {
                 )
                 .method(ElementMatchers.any())
                 .intercept(StubMethod.INSTANCE)
+                .method(ElementMatchers.returns(Optional.class))
+                .intercept(FixedValue.value(Optional.empty()))
                 .make();
 
 

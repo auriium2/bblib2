@@ -24,6 +24,7 @@ import xyz.auriium.yuukonstants.GenericPath;
 import yuukonfig.core.err.BadValueException;
 import yuukonfig.core.err.YuuKonfigException;
 import yuukonfig.core.impl.BaseManipulation;
+import yuukonfig.core.manipulation.Contextual;
 import yuukonfig.core.manipulation.Manipulator;
 import yuukonfig.core.manipulation.Priority;
 import yuukonfig.core.node.Mapping;
@@ -112,9 +113,13 @@ public class LogComponentManipulator implements Manipulator {
                     subNode = mp.valueGuaranteed(key);
                 }
 
+
                 Object confObject = manipulation.deserialize(
                         subNode,
-                        returnType
+                        returnType,
+                        Contextual.present(
+                                method.getGenericReturnType()
+                        )
                 );
 
                 Supplier<Object> objectSupplier;
