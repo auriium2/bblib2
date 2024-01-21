@@ -20,8 +20,8 @@ public class HardwareSIM {
         }
 
         Matrix<N2, N1> mat = VecBuilder.fill(
-                motorComponent.positionStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.POSITION_STDV)),
-                motorComponent.velocityStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.VELOCITY_STDV))
+                motorComponent.positionStandardDeviation().orElse(0d),
+                motorComponent.velocityStandardDeviation().orElse(0d)
         );
 
         DCMotorSim motorSim = new DCMotorSim(
@@ -37,8 +37,8 @@ public class HardwareSIM {
 
     public static IRotationalMotor rotationalSIM_noPID(MotorComponent motorComponent, DCMotor gearbox) {
         Matrix<N2, N1> mat = VecBuilder.fill(
-                motorComponent.positionStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.POSITION_STDV)),
-                motorComponent.velocityStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.VELOCITY_STDV))
+                motorComponent.positionStandardDeviation().orElse(0d),
+                motorComponent.velocityStandardDeviation().orElse(0d)
         );
 
         DCMotorSim motorSim = new DCMotorSim(
@@ -58,8 +58,8 @@ public class HardwareSIM {
         }
 
         Matrix<N2, N1> mat = VecBuilder.fill(
-                motorComponent.positionStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.POSITION_STDV)),
-                motorComponent.velocityStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.VELOCITY_STDV))
+                motorComponent.positionStandardDeviation().orElse(0d),
+                motorComponent.velocityStandardDeviation().orElse(0d)
         );
 
         DCMotorSim motorSim = new DCMotorSim(
@@ -84,10 +84,9 @@ public class HardwareSIM {
     public static IRotationalController rotationalSIM_pid(MotorComponent motorComponent, PIDComponent pidComponent, DCMotor gearbox) {
 
         Matrix<N2, N1> mat = VecBuilder.fill(
-                motorComponent.positionStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.POSITION_STDV)),
-                motorComponent.velocityStandardDeviation().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.VELOCITY_STDV))
+                motorComponent.positionStandardDeviation().orElse(0d),
+                motorComponent.velocityStandardDeviation().orElse(0d)
         );
-
         DCMotorSim motorSim = new DCMotorSim(
                 gearbox,
                 1d / motorComponent.encoderToMechanismCoefficient(),
