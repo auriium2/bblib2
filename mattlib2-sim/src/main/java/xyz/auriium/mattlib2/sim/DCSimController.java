@@ -35,17 +35,13 @@ public class DCSimController extends DCSimMotor implements ILinearController, IR
 
     @Override
     public void controlToLinearReference(double setpointMechanism_meters) {
-        if (pidController.isContinuousInputEnabled()) {
-            pidController.disableContinuousInput();
-        }
-
         double coef = motorComponent.rotationToMeterCoefficient().orElseThrow(() -> Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath()));
 
         double controlEffort = pidController.calculate(
                 this.angularPosition_encoderRotations(),
                 setpointMechanism_meters
                 / coef
-                / motorComponent.encoderToMechanismCoefficient()
+                // / motorComponent.encoderToMechanismCoefficient() WHAT THE FUCK
         );
 
         this.setToVoltage(controlEffort);
@@ -53,17 +49,13 @@ public class DCSimController extends DCSimMotor implements ILinearController, IR
 
     @Override
     public void controlToLinearReference(double setpointMechanism_meters, double measurementMechanism_meters) {
-        if (pidController.isContinuousInputEnabled()) {
-            pidController.disableContinuousInput();
-        }
-
 
         double coef = motorComponent.rotationToMeterCoefficient().orElseThrow(() -> Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath()));
         double controlEffort = pidController.calculate(
                 angularPosition_encoderRotations(),
                 setpointMechanism_meters
                 / coef
-                / motorComponent.encoderToMechanismCoefficient()
+                // / motorComponent.encoderToMechanismCoefficient() WHAT THE FUCK
         );
 
         this.setToVoltage(controlEffort);
@@ -71,45 +63,40 @@ public class DCSimController extends DCSimMotor implements ILinearController, IR
 
     @Override
     public void controlToNormalizedReference(double setpoint_mechanismNormalizedRotations) {
-        if (!pidController.isContinuousInputEnabled()) {
-            pidController.enableContinuousInput(0,1);
-        }
-
-        double controlEffort = pidController.calculate(
-                this.angularPosition_encoderRotations(),
-                setpoint_mechanismNormalizedRotations
-                        / motorComponent.encoderToMechanismCoefficient()
-        );
-
-        this.setToVoltage(controlEffort);
-
+        controlToNormalizedReference(setpoint_mechanismNormalizedRotations, angularPosition_mechanismRotations());
     }
 
     @Override
     public void controlToNormalizedReference(double setpoint_mechanismNormalizedRotations, double measurement_mechanismNormalizedRotations) {
-        if (!pidController.isContinuousInputEnabled()) {
-            pidController.enableContinuousInput(0,1);
+
+        double currentAngle_mechanismNormalizedRotations = measurement_mechanismNormalizedRotations % 1d;
+        if (currentAngle_mechanismNormalizedRotations < 0d) {
+            currentAngle_mechanismNormalizedRotations += 1d; //no idea why this works
         }
 
-        double controlEffort = pidController.calculate(
-                measurement_mechanismNormalizedRotations,
-                setpoint_mechanismNormalizedRotations
-                        / motorComponent.encoderToMechanismCoefficient()
-        );
+        // take (infinite - normalized) for (current offset) then add (setpoint normalized) for (setpoint infinite)
+        double reference_mechanismInfiniteRotations = setpoint_mechanismNormalizedRotations
+                + measurement_mechanismNormalizedRotations
+                - currentAngle_mechanismNormalizedRotations;
 
-        this.setToVoltage(controlEffort);
+
+        // more modulus code i don't understand
+        if (setpoint_mechanismNormalizedRotations - currentAngle_mechanismNormalizedRotations > 0.5) {
+            reference_mechanismInfiniteRotations -= 1d;
+        } else if (setpoint_mechanismNormalizedRotations - currentAngle_mechanismNormalizedRotations < -0.5) {
+            reference_mechanismInfiniteRotations += 1d;
+        }
+
+        controlToInfiniteReference(reference_mechanismInfiniteRotations);
+
     }
 
     @Override
     public void controlToInfiniteReference(double setpoint_mechanismRotations) {
-        if (pidController.isContinuousInputEnabled()) {
-            pidController.disableContinuousInput();
-        }
-
         double controlEffort = pidController.calculate(
                 this.angularPosition_encoderRotations(),
                 setpoint_mechanismRotations
-                        / motorComponent.encoderToMechanismCoefficient()
+                       //  / motorComponent.encoderToMechanismCoefficient() WHAT THE FUCK
         );
 
         this.setToVoltage(controlEffort);
@@ -117,14 +104,10 @@ public class DCSimController extends DCSimMotor implements ILinearController, IR
 
     @Override
     public void controlToInfiniteReference(double setpoint_mechanismRotations, double measurement_mechanismRotations) {
-        if (pidController.isContinuousInputEnabled()) {
-            pidController.disableContinuousInput();
-        }
-
         double controlEffort = pidController.calculate(
                 measurement_mechanismRotations,
                 setpoint_mechanismRotations
-                        / motorComponent.encoderToMechanismCoefficient()
+                     //   / motorComponent.encoderToMechanismCoefficient() WHAT THE FUCK
         );
 
         this.setToVoltage(controlEffort);
