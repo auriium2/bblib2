@@ -6,11 +6,14 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.description.ByteCodeElement;
+import net.bytebuddy.description.type.TypeDefinition;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import net.bytebuddy.implementation.*;
 import net.bytebuddy.jar.asm.Opcodes;
+import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
 import xyz.auriium.mattlib2.Exceptions;
 import xyz.auriium.mattlib2.IMattLog;
@@ -150,6 +153,17 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
         return uncompleted; //will be completed... later!
     }
 
+    ElementMatcher.Junction<ByteCodeElement> recursivelyGenerateMatcher(Class<?> superclass, ElementMatcher.Junction<ByteCodeElement> lastMatcher) {
+        ElementMatcher.Junction<ByteCodeElement> matcher = lastMatcher;
+
+        for (Class<?> clz : superclass.getInterfaces()) {
+            matcher = matcher.or(ElementMatchers.isDeclaredBy(clz));
+            matcher = recursivelyGenerateMatcher(clz, matcher);
+        }
+
+        return matcher;
+    }
+
     /**
      * Gets a component using bytecode compiler
      * @param type the type of component you want
@@ -179,11 +193,8 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
                     .invoke(typedJoin)
                     .onField("future");
 
-            var matcher = ElementMatchers.isDeclaredBy(type);
-            for (Class<?> extendedInterface : type.getInterfaces()) {
-                matcher = matcher.or(ElementMatchers.isDeclaredBy(extendedInterface));
-            }
-
+            ElementMatcher.Junction<ByteCodeElement> initialMatcher = ElementMatchers.isDeclaredBy(type);
+            var matcher = recursivelyGenerateMatcher(type, initialMatcher);
 
             var dyn = BUDDY
                     .subclass(type)

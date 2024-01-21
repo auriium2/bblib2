@@ -10,6 +10,8 @@ import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.MethodCall;
 import net.bytebuddy.implementation.bytecode.assign.Assigner;
 import net.bytebuddy.matcher.ElementMatchers;
+import org.apache.commons.lang3.StringUtils;
+import xyz.auriium.mattlib2.Exceptions;
 import xyz.auriium.mattlib2.Mattlib2Exception;
 import xyz.auriium.mattlib2.MattlibSettings;
 import xyz.auriium.mattlib2.log.FixedSupplier;
@@ -35,6 +37,7 @@ import java.lang.reflect.*;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static xyz.auriium.mattlib2.utils.ReflectionUtil.getKey;
 
@@ -64,22 +67,51 @@ public class LogComponentManipulator implements Manipulator {
 
     static final ByteBuddy BUDDY = new ByteBuddy();
 
+    public static Optional<String> getTheClosestMatch(List<String> collection, String target) {
+        int distance = Integer.MAX_VALUE;
+        String closest = null;
+        for (String compareObject : collection) {
+            int currentDistance = StringUtils.getLevenshteinDistance(compareObject, target);
+            if(currentDistance < distance) {
+                distance = currentDistance;
+                closest = compareObject;
+            }
+        }
+        return Optional.ofNullable(closest);
+    }
+
 
     @Override
     public Object deserialize(Node node) throws BadValueException {
+
+        boolean nodeIsMapping = node.type() == Node.Type.MAPPING;
+
+
+        Map<String, Boolean> hasBeenHandled = new HashMap<>();
+
+        if (nodeIsMapping) {
+            node.asMapping().getMap().forEach((s,n) -> {
+                if (n.type() != Node.Type.SCALAR && n.type() != Node.Type.SEQUENCE) return;
+                hasBeenHandled.put(s, false);
+            });
+
+        }
+
+
+
+        //other shit
 
         Map<Method, Supplier<Object>> configOrTuneMap = new HashMap<>();
         Map<Method, Consumer<Object>> loggerMap = new HashMap<>();
         List<Method> hasUpdatedMap = new ArrayList<>();
         Method selfPathMethod = null;
 
-        //System.out.println(node.path().tablePath() + " des");
-
         try {
             selfPathMethod = INetworkedComponent.class.getMethod("selfPath");
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
+
 
         for (Method method : useClass.getMethods()) {
             if (Modifier.isStatic(method.getModifiers())) continue;
@@ -88,6 +120,10 @@ public class LogComponentManipulator implements Manipulator {
 
             String key = getKey(method);
             GenericPath newPath = node.path().append(key);
+
+            if (nodeIsMapping && hasBeenHandled.containsKey(key)) {
+                hasBeenHandled.put(key, true);
+            }
 
             Conf conf = method.getAnnotation(Conf.class);
             Tune tune = method.getAnnotation(Tune.class);
@@ -154,6 +190,18 @@ public class LogComponentManipulator implements Manipulator {
             }
         }
 
+        //handle data not being present
+
+        List<String> allMethods = Arrays.stream(useClass.getMethods()).map(ReflectionUtil::getKey).collect(Collectors.toList());
+
+
+        if (nodeIsMapping) {
+            hasBeenHandled.forEach((s,b) -> {
+                if (!b) {
+                    throw Exceptions.UNUSED_CONF_DATA(s, getTheClosestMatch(allMethods, s).orElse("i couldnt actually find an alternative"), node.path(), useClass);
+                }
+            });
+        }
 
         try {
             var builder = BUDDY

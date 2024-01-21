@@ -3,17 +3,38 @@ package xyz.auriium.mattlib2.rev;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.jni.CANSparkMaxJNI;
 import xyz.auriium.mattlib2.hardware.*;
+import xyz.auriium.mattlib2.hardware.Exceptions;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 import xyz.auriium.mattlib2.hardware.config.PIDComponent;
+import xyz.auriium.mattlib2.utils.ArbitraryIDUtil;
+import xyz.auriium.yuukonstants.GenericPath;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class HardwareREV {
 
+    static final Map<Integer, GenericPath> IDS_ALREADY_SEEN = new HashMap<>();
+
 
     static CANSparkMax createSparkmax(MotorComponent commonMotorComponent) {
+
+        int canId = commonMotorComponent.id();
+        GenericPath possiblyNullPath = IDS_ALREADY_SEEN.get(canId);
+        GenericPath pathOfComponent  = commonMotorComponent.selfPath();
+
+        if (possiblyNullPath != null) {
+            Exceptions.DUPLICATE_IDS_FOUND(pathOfComponent, canId, possiblyNullPath);
+        }
+
+
         try {
             return new CANSparkMax(
-                    commonMotorComponent.id(),
+                    canId,
                     CANSparkLowLevel.MotorType.kBrushless
             );
         } catch (IllegalStateException e) {
@@ -27,6 +48,14 @@ public class HardwareREV {
      * @return linear motor
      */
     public static ILinearMotor linearSpark_noPID(MotorComponent motorComponent) {
+        int canId = motorComponent.id();
+        GenericPath possiblyNullPath = IDS_ALREADY_SEEN.get(canId);
+        GenericPath pathOfComponent  = motorComponent.selfPath();
+
+        if (possiblyNullPath != null) {
+            Exceptions.DUPLICATE_IDS_FOUND(pathOfComponent, canId, possiblyNullPath);
+        }
+
         if (motorComponent.rotationToMeterCoefficient().isEmpty()) {
             throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
         }
@@ -42,6 +71,15 @@ public class HardwareREV {
      * @return rotational motor
      */
     public static IRotationalMotor rotationalSpark_noPID(MotorComponent motorComponent) {
+        int canId = motorComponent.id();
+        GenericPath possiblyNullPath = IDS_ALREADY_SEEN.get(canId);
+        GenericPath pathOfComponent  = motorComponent.selfPath();
+
+        if (possiblyNullPath != null) {
+            Exceptions.DUPLICATE_IDS_FOUND(pathOfComponent, canId, possiblyNullPath);
+        }
+
+
         CANSparkMax sparkMax = createSparkmax(motorComponent);
         RelativeEncoder relativeEncoder = sparkMax.getEncoder();
 
@@ -55,6 +93,15 @@ public class HardwareREV {
      * @return
      */
     public static ILinearController linearSpark_builtInPID(MotorComponent motorComponent, PIDComponent pdConfig) {
+        int canId = motorComponent.id();
+        GenericPath possiblyNullPath = IDS_ALREADY_SEEN.get(canId);
+        GenericPath pathOfComponent  = motorComponent.selfPath();
+
+        if (possiblyNullPath != null) {
+            Exceptions.DUPLICATE_IDS_FOUND(pathOfComponent, canId, possiblyNullPath);
+        }
+
+
         if (motorComponent.rotationToMeterCoefficient().isEmpty()) {
             throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
         }
@@ -72,6 +119,15 @@ public class HardwareREV {
      * @return
      */
     public static IRotationalController rotationalSpark_builtInPID(MotorComponent motorComponent, PIDComponent pdConfig) {
+        int canId = motorComponent.id();
+        GenericPath possiblyNullPath = IDS_ALREADY_SEEN.get(canId);
+        GenericPath pathOfComponent  = motorComponent.selfPath();
+
+        if (possiblyNullPath != null) {
+            Exceptions.DUPLICATE_IDS_FOUND(pathOfComponent, canId, possiblyNullPath);
+        }
+
+
         CANSparkMax sparkMax = createSparkmax(motorComponent);
         RelativeEncoder relativeEncoder = sparkMax.getEncoder();
 
@@ -87,6 +143,14 @@ public class HardwareREV {
      * @return
      */
     public static ILinearController linearSpark_builtInVelocityPID(MotorComponent motorComponent, PIDComponent pdConfig) {
+        int canId = motorComponent.id();
+        GenericPath possiblyNullPath = IDS_ALREADY_SEEN.get(canId);
+        GenericPath pathOfComponent  = motorComponent.selfPath();
+
+        if (possiblyNullPath != null) {
+            Exceptions.DUPLICATE_IDS_FOUND(pathOfComponent, canId, possiblyNullPath);
+        }
+
         if (motorComponent.rotationToMeterCoefficient().isEmpty()) {
             throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
         }
@@ -106,6 +170,14 @@ public class HardwareREV {
      * @return
      */
     public static IRotationalVelocityController rotationalSpark_builtInVelocityPID(MotorComponent motorComponent, PIDComponent pdConfig) {
+        int canId = motorComponent.id();
+        GenericPath possiblyNullPath = IDS_ALREADY_SEEN.get(canId);
+        GenericPath pathOfComponent  = motorComponent.selfPath();
+
+        if (possiblyNullPath != null) {
+            Exceptions.DUPLICATE_IDS_FOUND(pathOfComponent, canId, possiblyNullPath);
+        }
+
         CANSparkMax sparkMax = createSparkmax(motorComponent);
         RelativeEncoder relativeEncoder = sparkMax.getEncoder();
 
@@ -121,6 +193,14 @@ public class HardwareREV {
      * @return
      */
     public static ILinearController linearSpark_externalPID(MotorComponent motorComponent, ILinearPositionControl pidControl) {
+        int canId = motorComponent.id();
+        GenericPath possiblyNullPath = IDS_ALREADY_SEEN.get(canId);
+        GenericPath pathOfComponent  = motorComponent.selfPath();
+
+        if (possiblyNullPath != null) {
+            Exceptions.DUPLICATE_IDS_FOUND(pathOfComponent, canId, possiblyNullPath);
+        }
+
         if (motorComponent.rotationToMeterCoefficient().isEmpty()) {
             throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
         }
@@ -141,6 +221,14 @@ public class HardwareREV {
      * @return
      */
     public static IRotationalController rotationalSpark_externalPID(MotorComponent motorComponent, IRotationalPositionControl pidControl) {
+        int canId = motorComponent.id();
+        GenericPath possiblyNullPath = IDS_ALREADY_SEEN.get(canId);
+        GenericPath pathOfComponent  = motorComponent.selfPath();
+
+        if (possiblyNullPath != null) {
+            Exceptions.DUPLICATE_IDS_FOUND(pathOfComponent, canId, possiblyNullPath);
+        }
+
         if (motorComponent.rotationToMeterCoefficient().isEmpty()) {
             throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
         }

@@ -12,7 +12,6 @@ public class MattlibLooper {
 
     public void register(IPeriodicLooped runnable) {
         if (orderedThingsToBeLooped.contains(runnable)) return;
-
         orderedThingsToBeLooped.add(runnable);
     }
 

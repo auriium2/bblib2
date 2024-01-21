@@ -5,16 +5,13 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableEvent;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 import xyz.auriium.mattlib2.log.ProcessPath;
 import xyz.auriium.mattlib2.nt.consumers.*;
 import xyz.auriium.mattlib2.nt.suppliers.*;
 
-import java.util.EnumSet;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
@@ -48,31 +45,32 @@ public class NetworkMattLogger {
 
 
         if (returnType == Double.class || returnType == double.class) { //handle doubles
-            Supplier<Double> supplier = new NTValueSupplier<>(entry, double.class);
+
+            Supplier<Double> supplier = new NTValueSupplier<>(entry, double.class, (double) defaultValue);
 
             return (Supplier<T>) supplier;
         }
 
         if (returnType == Long.class || returnType == long.class) { //handle longs
-            Supplier<Long> supplier = new NTValueSupplier<>(entry, long.class);
+            Supplier<Long> supplier = new NTValueSupplier<>(entry, long.class, (long) defaultValue);
 
             return (Supplier<T>) supplier;
         }
 
         if (returnType == Integer.class || returnType == int.class) {
-            Supplier<Integer> supplier = new NTValueSupplier<>(entry, int.class);
+            Supplier<Integer> supplier = new NTValueSupplier<>(entry, int.class, (int) defaultValue);
 
             return (Supplier<T>) supplier;
         }
 
         if (returnType == String.class) {
-            Supplier<String> supplier = new NTValueSupplier<>(entry, String.class);
+            Supplier<String> supplier = new NTValueSupplier<>(entry, String.class, (String) defaultValue);
 
             return (Supplier<T>) supplier;
         }
 
         if (returnType == Boolean.class || returnType == boolean.class) {
-            Supplier<Boolean> supplier = new NTValueSupplier<>(entry, boolean.class);
+            Supplier<Boolean> supplier = new NTValueSupplier<>(entry, boolean.class, (boolean) defaultValue);
 
             return (Supplier<T>) supplier;
         }

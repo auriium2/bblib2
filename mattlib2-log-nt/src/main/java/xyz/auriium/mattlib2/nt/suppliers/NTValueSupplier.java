@@ -16,14 +16,25 @@ public class NTValueSupplier<T> implements Supplier<T> {
 
     final NetworkTableEntry entry;
     final Class<T> castTo;
+    final T useIfNot;
 
-    public NTValueSupplier(NetworkTableEntry entry, Class<T> castTo) {
+    public NTValueSupplier(NetworkTableEntry entry, Class<T> castTo, T useIfNot) {
         this.entry = entry;
         this.castTo = castTo;
+        this.useIfNot = useIfNot;
     }
 
     @Override
     public T get() {
-        return castTo.cast(entry.getValue().getValue());
+        var value1 = entry.getValue();
+        if (value1 == null) {
+            return useIfNot;
+        }
+        var value2 = value1.getValue();
+        if (value2 == null) {
+            return useIfNot;
+        }
+
+        return castTo.cast(value2);
     }
 }

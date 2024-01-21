@@ -33,6 +33,23 @@ public abstract class BaseFFGenRoutine implements Routine, IPeriodicLooped {
 
     @Override
     public void awaken() {
+        velocityData.add(0d);
+        voltageData.add(0d);
+        velocityData.add(0d);
+        voltageData.add(0d);
+        velocityData.add(0d);
+        voltageData.add(0d);
+        velocityData.add(0d);
+        voltageData.add(0d);
+        velocityData.add(0d);
+        voltageData.add(0d);
+        velocityData.add(0d);
+        voltageData.add(0d);
+        velocityData.add(0d);
+        voltageData.add(0d);
+        velocityData.add(0d);
+        voltageData.add(0d);
+
         startTime_ms = System.currentTimeMillis();
         endTime_ms = computeEndTimeInMS(System.currentTimeMillis(), component.endVoltage_volts(), component.rampRate_voltsPerMS());
     }
@@ -52,7 +69,7 @@ public abstract class BaseFFGenRoutine implements Routine, IPeriodicLooped {
         voltageData.add(voltage);
         velocityData.add(velocityOut);
 
-        var pr = new PolynomialRegression(from(velocityData), from(voltageData), 2);
+        var pr = new PolynomialRegression(from(velocityData), from(voltageData), 1);
         var ks = pr.beta(0);
         var kv = pr.beta(1);
 

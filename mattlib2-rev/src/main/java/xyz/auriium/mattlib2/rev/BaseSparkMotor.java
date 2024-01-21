@@ -27,6 +27,7 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
         this.encoder = encoder;
 
         mattRegister();
+        //System.out.println("register called on " + " with inverted: " + motorComponent.selfPath());
     }
 
     boolean isInverted = false;
@@ -40,7 +41,12 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
     @Override
     public Optional<ExplainedException> verifyInit() {
 
+        System.out.println("ITS BEING RUN YAAAAAAY");
+
+        //if (true) throw new IllegalStateException("VERY SURE ITS BEING RUN");
+
         isInverted = motorComponent.inverted().orElse(false);
+        System.out.println(motorComponent.selfPath().tablePath() + " is inverted?: " + isInverted);
 
         REVLibError err = sparkMax.restoreFactoryDefaults();
         if (err != REVLibError.kOk) {
@@ -110,6 +116,8 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
     @Override
     public void logPeriodic() {
+
+        System.out.println("PENIS GUY");
         motorComponent.reportCurrentDraw(outputCurrent);
         motorComponent.reportVoltageGiven(outputVoltage);
     }
@@ -118,17 +126,17 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
     @Override
     public void setToVoltage(double voltage) {
-        sparkMax.setVoltage(voltage);
+        double sign = isInverted ? -1d : 1d;
+
+        sparkMax.setVoltage(sign * voltage);
     }
 
 
     @Override
     public void setToPercent(double percent_zeroToOne) {
-        if (percent_zeroToOne > 1 || percent_zeroToOne < 0) {
-            sparkMax.set(percent_zeroToOne);
-        }
+        double sign = isInverted ? -1d : 1d;
 
-        sparkMax.setVoltage(percent_zeroToOne * 12);
+        sparkMax.setVoltage(sign * percent_zeroToOne * 12);
     }
 
     @Override

@@ -7,6 +7,18 @@ import static java.lang.String.format;
 
 public class Exceptions {
 
+    public static Mattlib2Exception UNUSED_CONF_DATA(String unusedKey, String suggestedKey, GenericPath path, Class<?> type) {
+
+
+        throw new Mattlib2Exception(
+            "unusedConfData",
+            format("you defined a value [%s] in config section [%s], but the config type [%s] does not need that value. Maybe you meant to name it [%s] instead?", unusedKey, path.tablePath(), type.getSimpleName(), suggestedKey),
+            format("possibly: rename [%s] to [%s]?", unusedKey, suggestedKey)
+        );
+
+
+    }
+
 
     public static final Mattlib2Exception CONF_NOT_LOADED() {
         throw new Mattlib2Exception(
