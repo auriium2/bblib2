@@ -10,9 +10,9 @@ import yuukonfig.core.annotate.Key;
  */
 public interface CommonPIDComponent extends INetworkedComponent {
 
-    @Tune("p") int pConstant();
-    @Tune("i") int iConstant();
-    @Tune("d") int dConstant();
+    @Tune("p") double pConstant();
+    @Tune("i") double iConstant();
+    @Tune("d") double dConstant();
 
 
     @HasUpdated(keysToCheck = {"p", "i", "d"}) boolean hasUpdated();
