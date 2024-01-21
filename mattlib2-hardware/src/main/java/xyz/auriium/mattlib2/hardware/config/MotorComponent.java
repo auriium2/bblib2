@@ -132,6 +132,18 @@ public interface MotorComponent extends IndividualMotorComponent, CommonMotorCom
             return commonMotorComponent.hasAbsoluteEncoder();
         }
 
+        @Override public Optional<Double> massMomentInertia() {
+            return commonMotorComponent.massMomentInertia();
+        }
+
+        @Override public Optional<Double> positionStandardDeviation() {
+            return commonMotorComponent.positionStandardDeviation();
+        }
+
+        @Override public Optional<Double> velocityStandardDeviation() {
+            return commonMotorComponent.velocityStandardDeviation();
+        }
+
         @Override
         public GenericPath selfPath() {
             return individualMotorComponent.selfPath();
