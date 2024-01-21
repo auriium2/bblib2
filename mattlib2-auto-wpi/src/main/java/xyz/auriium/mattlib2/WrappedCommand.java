@@ -7,6 +7,8 @@ public class WrappedCommand extends Command {
 
     final Routine routine;
 
+    Routine.Outcome lastCorder = Routine.Outcome.WORKING;
+
     public WrappedCommand(Routine routine) {
         this.routine = routine;
     }
@@ -16,7 +18,11 @@ public class WrappedCommand extends Command {
     }
 
     @Override public void execute() {
-        routine.runLogic(Routine.Orders.CONTINUE);
+        lastCorder = routine.runLogic(Routine.Orders.CONTINUE);
+    }
+
+    @Override public boolean isFinished() {
+        return lastCorder != Routine.Outcome.WORKING;
     }
 
     @Override public void end(boolean interrupted) {

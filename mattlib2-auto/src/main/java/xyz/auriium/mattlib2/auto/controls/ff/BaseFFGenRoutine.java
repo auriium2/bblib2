@@ -33,6 +33,8 @@ public abstract class BaseFFGenRoutine implements Routine, IPeriodicLooped {
 
     @Override
     public void awaken() {
+        System.out.println("MAKE SURE AWAKEN IS BEING CALLED");
+
         velocityData.add(0d);
         voltageData.add(0d);
         velocityData.add(0d);
@@ -51,7 +53,7 @@ public abstract class BaseFFGenRoutine implements Routine, IPeriodicLooped {
         voltageData.add(0d);
 
         startTime_ms = System.currentTimeMillis();
-        endTime_ms = computeEndTimeInMS(System.currentTimeMillis(), component.endVoltage_volts(), component.rampRate_voltsPerMS());
+        endTime_ms = computeEndTimeInMS(System.currentTimeMillis(), component.delay_ms(), component.endVoltage_volts(), component.rampRate_voltsPerMS());
     }
 
     @Override
@@ -76,7 +78,7 @@ public abstract class BaseFFGenRoutine implements Routine, IPeriodicLooped {
         component.logInputVoltage(voltage);
         component.logInputVelocity(velocityOut);
         component.logPredictedStaticConstant(ks);
-        component.logPredictedStaticConstant(kv);
+        component.logPredictedVelocityConstant(kv);
 
         return Outcome.WORKING;
     }
@@ -99,7 +101,7 @@ public abstract class BaseFFGenRoutine implements Routine, IPeriodicLooped {
     }
 
     public static double computeVoltage(long currentTimeMS, long startTimeMS, long delayTimeMS, double rampRateVoltPerMS) {
-        long timePassedMS = (currentTimeMS - startTimeMS) * 1000;
+        long timePassedMS = (currentTimeMS - startTimeMS);
         if (timePassedMS < delayTimeMS) {
             return 0d;
         } else {
@@ -109,12 +111,11 @@ public abstract class BaseFFGenRoutine implements Routine, IPeriodicLooped {
 
     }
 
-    public static long computeEndTimeInMS(long startTimeMS, double endVoltage, double rampRateVoltagePerSecond) {
-        double invertedRampRateSecondsPerVolts = (1/rampRateVoltagePerSecond);
-        double durationToReachEndVoltage_seconds = invertedRampRateSecondsPerVolts * endVoltage;
-        double durationToReachEndVoltage_miliSeconds = durationToReachEndVoltage_seconds * 1000L;
+    public static long computeEndTimeInMS(long currentTimeOffset_ms, long delayTimeMS, double endVoltage, double rampRateVoltPerMS) {
+        double invertedRampRateMSPerVolts = (1/rampRateVoltPerMS);
+        double durationToReachEndVoltage_ms = invertedRampRateMSPerVolts * endVoltage;
 
-        return startTimeMS + (long) durationToReachEndVoltage_miliSeconds;
+        return currentTimeOffset_ms + delayTimeMS + (long) durationToReachEndVoltage_ms;
     }
 
 }

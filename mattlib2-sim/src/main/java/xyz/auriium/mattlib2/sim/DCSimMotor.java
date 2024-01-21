@@ -14,12 +14,16 @@ public class DCSimMotor implements ILinearMotor, IRotationalMotor, IPeriodicLoop
 
     final DCMotorSim motorSim;
     final MotorComponent motorComponent;
+    double invertedCoef = 1;
 
     public DCSimMotor(DCMotorSim motorSim, MotorComponent motorComponent) {
         this.motorSim = motorSim;
         this.motorComponent = motorComponent;
 
         mattRegister();
+        if (motorComponent.inverted().orElse(false)) {
+            invertedCoef = -1;
+        }
     }
 
     boolean inverted = false;
@@ -50,14 +54,14 @@ public class DCSimMotor implements ILinearMotor, IRotationalMotor, IPeriodicLoop
 
     @Override
     public void setToVoltage(double voltage) {
-        voltageNow = voltage;
-        motorSim.setInputVoltage(voltage);
+        voltageNow = invertedCoef * voltage;
+        motorSim.setInputVoltage(voltageNow);
     }
 
     @Override
     public void setToPercent(double percent_zeroToOne) {
-        voltageNow = percent_zeroToOne * 12;
-        motorSim.setInputVoltage(percent_zeroToOne * 12);
+        voltageNow = invertedCoef * percent_zeroToOne * 12;
+        motorSim.setInputVoltage(voltageNow);
     }
 
     @Override

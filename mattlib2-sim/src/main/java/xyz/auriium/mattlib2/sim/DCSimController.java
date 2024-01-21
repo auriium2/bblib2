@@ -17,10 +17,12 @@ public class DCSimController extends DCSimMotor implements ILinearController, IR
     final PIDController pidController;
     final PIDComponent pidComponent;
 
+
     public DCSimController(DCMotorSim motorSim, MotorComponent motorComponent, PIDController pidController, PIDComponent pidComponent) {
         super(motorSim, motorComponent);
         this.pidController = pidController; //
         this.pidComponent = pidComponent;
+
     }
 
     @Override
