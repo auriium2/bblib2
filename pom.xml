@@ -65,6 +65,10 @@
 
     <repositories>
         <repository>
+            <id>superyuuki-snap</id>
+            <url>https://repo.superyuuki.com/snapshots</url>
+        </repository>
+        <repository>
             <id>superyuuki</id>
             <url>https://repo.superyuuki.com/releases</url>
         </repository>
