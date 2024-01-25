@@ -71,14 +71,11 @@ public abstract class BaseFFGenRoutine implements Routine, IPeriodicLooped {
         voltageData.add(voltage);
         velocityData.add(velocityOut);
 
-        var pr = new PolynomialRegression(from(velocityData), from(voltageData), 1);
-        var ks = pr.beta(0);
-        var kv = pr.beta(1);
+
 
         component.logInputVoltage(voltage);
         component.logInputVelocity(velocityOut);
-        component.logPredictedStaticConstant(ks);
-        component.logPredictedVelocityConstant(kv);
+
 
         return Outcome.WORKING;
     }
@@ -95,6 +92,12 @@ public abstract class BaseFFGenRoutine implements Routine, IPeriodicLooped {
 
     @Override
     public void cleanup() {
+        var pr = new PolynomialRegression(from(voltageData), from(velocityData), 1);
+        var ks = pr.beta(0);
+        var kv = pr.beta(1);
+        component.logPredictedStaticConstant(ks);
+        component.logPredictedVelocityConstant(kv);
+
         actuator.setToVoltage(0);
         velocityData.clear();
         voltageData.clear();

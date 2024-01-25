@@ -30,11 +30,11 @@ public class Exceptions {
             "either use the withEncoder constructor or call moveToReference with an encoder readout"
     );
 
-    public static final Mattlib2Exception MOTOR_NOT_LINEAR(GenericPath motor) {
+    public static Mattlib2Exception MOTOR_NOT_LINEAR(GenericPath motor) {
         return new Mattlib2Exception(
                 "hardware/motorNotLinear",
-                format("Motor [%s] was configured as purely rotational, and did not have a rotationsToMeters coefficient, however, somebody tried to use a function with the word Linear in it, which needs the rotationsToMeters coefficient to convert correctly.", motor.tablePath()),
-                "either add a rotationsToMeters coefficient to allow the motor to be considered for linear functions, or use purely rotational functions instead"
+                format("Motor [%s] is linear. This means it needs to rotationToMeterCoef", motor.tablePath()),
+                "either add a rotationToMeter coefficient to allow the motor to be considered for linear functions, or use purely rotational functions instead"
         );
     }
 
