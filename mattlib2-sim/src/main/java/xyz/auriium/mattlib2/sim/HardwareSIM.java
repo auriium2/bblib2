@@ -58,8 +58,8 @@ public class HardwareSIM {
         }
 
         Matrix<N2, N1> mat = VecBuilder.fill(
-                motorComponent.positionStandardDeviation().orElse(0d),
-                motorComponent.velocityStandardDeviation().orElse(0d)
+                motorComponent.positionStandardDeviation().orElse(0.1d),
+                motorComponent.velocityStandardDeviation().orElse(0.1d)
         );
 
         DCMotorSim motorSim = new DCMotorSim(
@@ -84,8 +84,8 @@ public class HardwareSIM {
     public static IRotationalController rotationalSIM_pid(MotorComponent motorComponent, PIDComponent pidComponent, DCMotor gearbox) {
 
         Matrix<N2, N1> mat = VecBuilder.fill(
-                motorComponent.positionStandardDeviation().orElse(0d),
-                motorComponent.velocityStandardDeviation().orElse(0d)
+                motorComponent.positionStandardDeviation().orElse(0.1d),
+                motorComponent.velocityStandardDeviation().orElse(0.1d)
         );
 
         DCMotorSim motorSim = new DCMotorSim(

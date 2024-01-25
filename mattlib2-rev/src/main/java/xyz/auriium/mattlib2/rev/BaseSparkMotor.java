@@ -43,6 +43,7 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
         isInverted = motorComponent.inverted().orElse(false);
         System.out.println(motorComponent.selfPath().tablePath() + " is inverted?: " + isInverted);
 
+        sparkMax.setInverted(isInverted);
         REVLibError err = sparkMax.restoreFactoryDefaults();
         if (err != REVLibError.kOk) {
             return Optional.of(Exceptions.GENERIC_REV_ERROR( motorComponent.selfPath().tablePath() ));
@@ -121,17 +122,13 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
     @Override
     public void setToVoltage(double voltage) {
-        double sign = isInverted ? -1d : 1d;
-
-        sparkMax.setVoltage(sign * voltage);
+        sparkMax.setVoltage(voltage);
     }
 
 
     @Override
     public void setToPercent(double percent_zeroToOne) {
-        double sign = isInverted ? -1d : 1d;
-
-        sparkMax.setVoltage(sign * percent_zeroToOne * 12);
+        sparkMax.setVoltage(percent_zeroToOne * 12);
     }
 
     @Override

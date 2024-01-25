@@ -93,7 +93,8 @@ public class DCSimMotor implements ILinearMotor, IRotationalMotor, IPeriodicLoop
 
         return motorSim.getAngularPositionRotations()
                 * 1 //motorComponent.encoderToMechanismCoefficient() WHAT THE FUCK
-                * rot2linear;
+                * rot2linear
+                * invertedCoef;
     }
 
     @Override
@@ -113,12 +114,12 @@ public class DCSimMotor implements ILinearMotor, IRotationalMotor, IPeriodicLoop
 
     @Override
     public double angularPosition_encoderRotations() {
-        return motorSim.getAngularPositionRotations() + rotationalOffset_encoderRotations;
+        return motorSim.getAngularPositionRotations() + rotationalOffset_encoderRotations * invertedCoef;
     }
 
     @Override
     public double angularPosition_mechanismRotations() {
-        return angularPosition_encoderRotations() * 1; //motorComponent.encoderToMechanismCoefficient(); //WHAT
+        return angularPosition_encoderRotations() * 1 * invertedCoef; //motorComponent.encoderToMechanismCoefficient(); //WHAT
     }
 
     @Override
