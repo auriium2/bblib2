@@ -117,7 +117,7 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
 
         TypeMap map;
         if (RobotBase.isSimulation()) {
-            var contentBridge = loader.load();
+            var contentBridge = loader.loadOnlyUser();
             if (shouldDoFunnyOverwriteOfFile) {
                 contentBridge = contentBridge.writeToFile();
             }

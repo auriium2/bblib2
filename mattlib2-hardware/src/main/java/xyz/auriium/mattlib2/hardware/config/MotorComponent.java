@@ -67,6 +67,14 @@ public interface MotorComponent extends IndividualMotorComponent, CommonMotorCom
             individualMotorComponent.reportTemperature(temperatureCelsius);
         }
 
+        @Override public void reportMechanismRotations(double mechanismRotations) {
+            individualMotorComponent.reportMechanismRotations(mechanismRotations);
+        }
+
+        @Override public void reportMechanismRotationsBound(double mechanismRotationsBound) {
+            individualMotorComponent.reportMechanismRotationsBound(mechanismRotationsBound);
+        }
+
         @Override
         public Type typeOfMotor() {
             return commonMotorComponent.typeOfMotor();

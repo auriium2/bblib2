@@ -30,4 +30,7 @@ public interface IndividualMotorComponent extends INetworkedComponent {
 
     @Log("temperature_celsius") void reportTemperature(double temperatureCelsius);
 
+    @Log("mechanismRotationsUnbound") void reportMechanismRotations(double mechanismRotations);
+    @Log("mechanismRotationsBound") void reportMechanismRotationsBound(double mechanismRotationsBound);
+
 }

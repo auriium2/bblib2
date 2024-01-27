@@ -146,7 +146,10 @@ public class LogComponentManipulator implements Manipulator {
                 if (returnType == Optional.class) {
                     subNode = mp.valuePossiblyMissing(key);
                 } else {
+
+                    //System.out.println(key + " is evaluated as " + mp.valueGuaranteed(key).asScalar().value());
                     subNode = mp.valueGuaranteed(key);
+
                 }
 
 

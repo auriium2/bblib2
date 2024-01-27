@@ -3,18 +3,14 @@ package xyz.auriium.mattlib2.rev;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.jni.CANSparkMaxJNI;
 import xyz.auriium.mattlib2.hardware.*;
 import xyz.auriium.mattlib2.hardware.Exceptions;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 import xyz.auriium.mattlib2.hardware.config.PIDComponent;
-import xyz.auriium.mattlib2.utils.ArbitraryIDUtil;
 import xyz.auriium.yuukonstants.GenericPath;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class HardwareREV {
 
@@ -109,7 +105,7 @@ public class HardwareREV {
         CANSparkMax sparkMax = createSparkmax(motorComponent);
         RelativeEncoder relativeEncoder = sparkMax.getEncoder();
 
-        return new BuiltInSparkController(sparkMax, motorComponent, pdConfig,  relativeEncoder);
+        return new BaseSparkController(sparkMax, motorComponent, pdConfig,  relativeEncoder);
     }
 
     /**
@@ -131,7 +127,7 @@ public class HardwareREV {
         CANSparkMax sparkMax = createSparkmax(motorComponent);
         RelativeEncoder relativeEncoder = sparkMax.getEncoder();
 
-        return new BuiltInSparkController(sparkMax, motorComponent, pdConfig, relativeEncoder);
+        return new BaseSparkController(sparkMax, motorComponent, pdConfig, relativeEncoder);
 
     }
 
@@ -158,7 +154,7 @@ public class HardwareREV {
         CANSparkMax sparkMax = createSparkmax(motorComponent);
         RelativeEncoder relativeEncoder = sparkMax.getEncoder();
 
-        return new BuiltInSparkController(sparkMax, motorComponent, pdConfig,  relativeEncoder);
+        return new BaseSparkController(sparkMax, motorComponent, pdConfig,  relativeEncoder);
     }
 
 
@@ -181,7 +177,7 @@ public class HardwareREV {
         CANSparkMax sparkMax = createSparkmax(motorComponent);
         RelativeEncoder relativeEncoder = sparkMax.getEncoder();
 
-        return new BuiltInSparkController(sparkMax, motorComponent, pdConfig, relativeEncoder);
+        return new BaseSparkController(sparkMax, motorComponent, pdConfig, relativeEncoder);
 
     }
 
