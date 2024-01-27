@@ -83,7 +83,6 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
             sparkMax.getReverseLimitSwitch(type).enableLimitSwitch(true);
         });
 
-
         motorComponent.forwardSoftLimit_mechanismRot().ifPresent(limit -> {
             sparkMax.setSoftLimit(CANSparkBase.SoftLimitDirection.kForward, (float) (limit * motorComponent.encoderToMechanismCoefficient()));
             sparkMax.enableSoftLimit(CANSparkBase.SoftLimitDirection.kForward, true);
@@ -102,7 +101,6 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
         Optional<Double> coefOptional = motorComponent.rotationToMeterCoefficient();
         if (coefOptional.isEmpty()) throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
         linearCoef = coefOptional.get();
-
 
         return Optional.empty();
     }

@@ -8,7 +8,6 @@ import xyz.auriium.yuukonstants.exception.ExplainedException;
 
 import java.util.Optional;
 
-@SuppressWarnings({"deprecated", "deprecation"})
 public class BaseSparkController extends BaseSparkMotor implements ILinearController, IRotationalController, IRotationalVelocityController, ILinearVelocityController {
 
     final SparkPIDController localPidController;

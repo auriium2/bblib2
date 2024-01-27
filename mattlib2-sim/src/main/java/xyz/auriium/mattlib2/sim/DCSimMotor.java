@@ -43,6 +43,8 @@ public class DCSimMotor implements ILinearMotor, IRotationalMotor, IPeriodicLoop
         motorComponent.reportCurrentDraw(motorSim.getCurrentDrawAmps());
         motorComponent.reportVoltageGiven(voltageNow);
         motorComponent.reportTemperature(0);
+        motorComponent.reportMechanismRotations(angularPosition_mechanismRotations());
+        motorComponent.reportMechanismRotationsBound(angularPosition_normalizedMechanismRotations());
     }
 
     @Override
