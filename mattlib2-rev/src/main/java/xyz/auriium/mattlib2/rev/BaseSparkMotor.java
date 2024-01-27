@@ -30,12 +30,24 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
     }
 
     double linearCoef = 0;
+    boolean linearCoefSet = false;
 
     //PeriodicLooped stuff
 
     double outputCurrent = 0;
     double outputVoltage = 0;
     double temperature = 0;
+
+    double loadLinearCoef() {
+        if (!linearCoefSet) {
+            linearCoefSet = true;
+            Optional<Double> coefOptional = motorComponent.rotationToMeterCoefficient();
+            if (coefOptional.isEmpty()) throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
+            linearCoef = coefOptional.get();
+        }
+
+        return linearCoef;
+    }
 
     @Override
     public Optional<ExplainedException> verifyInit() {
@@ -98,10 +110,6 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
         motorComponent.openRampRate_seconds().ifPresent(sparkMax::setOpenLoopRampRate);
         motorComponent.closedRampRate_seconds().ifPresent(sparkMax::setClosedLoopRampRate);
 
-        Optional<Double> coefOptional = motorComponent.rotationToMeterCoefficient();
-        if (coefOptional.isEmpty()) throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
-        linearCoef = coefOptional.get();
-
         return Optional.empty();
     }
 
@@ -109,7 +117,7 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
     @Override
     public void logicPeriodic() {
-        outputVoltage = sparkMax.getBusVoltage();
+        outputVoltage = sparkMax.getAppliedOutput();
         outputCurrent = sparkMax.getOutputCurrent();
         temperature = sparkMax.getMotorTemperature();
     }
@@ -161,7 +169,7 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
     @Override
     public void forceLinearOffset(double linearOffset_mechanismMeters) {
-        double convertedEncoderPosition = linearOffset_mechanismMeters / linearCoef;
+        double convertedEncoderPosition = linearOffset_mechanismMeters / loadLinearCoef();
         encoder.setPosition(convertedEncoderPosition);
     }
 
@@ -197,12 +205,12 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
     @Override
     public double linearPosition_mechanismMeters() {
-        return encoder.getPosition() * linearCoef;
+        return encoder.getPosition() * loadLinearCoef();
     }
 
     @Override
     public double linearVelocity_mechanismMetersPerSecond() {
-        return angularVelocity_mechanismRotationsPerSecond() * linearCoef;
+        return angularVelocity_mechanismRotationsPerSecond() * loadLinearCoef();
     }
 
     @Override

@@ -60,7 +60,7 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
             localPidController.setPositionPIDWrappingEnabled(false);
         }
 
-        double convertedMechanismRotations = setpointMechanism_meters / linearCoef;
+        double convertedMechanismRotations = setpointMechanism_meters / loadLinearCoef();
         localPidController.setReference(convertedMechanismRotations, CANSparkMax.ControlType.kPosition);
     }
 
@@ -106,7 +106,7 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
 
     @Override
     public void controlToLinearVelocityReference(double setPointMechanism_metersPerSecond) {
-        double nativeRPS = setPointMechanism_metersPerSecond / linearCoef;
+        double nativeRPS = setPointMechanism_metersPerSecond / loadLinearCoef();
         localPidController.setReference(nativeRPS, CANSparkBase.ControlType.kVelocity);
     }
 
