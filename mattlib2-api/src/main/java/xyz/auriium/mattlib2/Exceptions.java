@@ -7,6 +7,14 @@ import static java.lang.String.format;
 
 public class Exceptions {
 
+    public static Mattlib2Exception BAD_NAME(String path) {
+        throw new Mattlib2Exception(
+                "badName",
+                format("YOU CANNOT PUT A FUCKING SPACE IN A MATTLIB PATH [%s]", path),
+                "remove the space"
+        );
+    }
+
     public static Mattlib2Exception UNUSED_CONF_DATA(String unusedKey, String suggestedKey, GenericPath path, Class<?> type) {
 
 

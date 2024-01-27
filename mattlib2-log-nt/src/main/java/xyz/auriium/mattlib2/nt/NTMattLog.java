@@ -34,6 +34,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Silly logging/configuration/tuning solution
@@ -164,6 +166,8 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
         return matcher;
     }
 
+    static final Pattern pattern = Pattern.compile("\\s");
+
     /**
      * Gets a component using bytecode compiler
      * @param type the type of component you want
@@ -174,6 +178,7 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
      *           WARNING: CALLING ANYTHING OFF OF THE GENERATED COMPONENT BEFORE {@link #preInit()} is called will BREAK YOUR CODE
      */
     public <T extends INetworkedComponent> T load(Class<T> type, String path) {
+        if (pattern.matcher(path).find()) throw Exceptions.BAD_NAME(path);
         if (hasBeenInitialized) throw Exceptions.ALREADY_INITIALIZED();
 
         CompletableFuture<T> uncompleted = new CompletableFuture<>();
