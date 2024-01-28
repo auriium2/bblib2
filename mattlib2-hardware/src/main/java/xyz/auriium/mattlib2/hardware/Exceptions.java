@@ -38,10 +38,10 @@ public class Exceptions {
         );
     }
 
-    public static Mattlib2Exception NO_CAN_ID(GenericPath path, int id) {
+    public static Mattlib2Exception NO_CAN_ID(GenericPath path, int id, String error) {
         return new Mattlib2Exception(
                 "hardware/noSuchCanID",
-                "The motor at path [" + path.tablePath() + "] was configured to use can id " + id +", but no such can id could be found on the can bus",
+                "The motor at path [" + path.tablePath() + "] was configured to use can id " + id +", but no such can id could be found on the can bus, the error was [" + error + "]",
                 "fix the can id of the device, or find the actual id of the device and change the config to this"
         );
     }

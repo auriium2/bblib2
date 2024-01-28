@@ -34,7 +34,7 @@ public class HardwareREV {
                     CANSparkLowLevel.MotorType.kBrushless
             );
         } catch (IllegalStateException e) {
-            throw xyz.auriium.mattlib2.hardware.Exceptions.NO_CAN_ID(commonMotorComponent.selfPath(), commonMotorComponent.id());
+            throw xyz.auriium.mattlib2.hardware.Exceptions.NO_CAN_ID(commonMotorComponent.selfPath(), commonMotorComponent.id(), e.getMessage());
         }
     }
 
