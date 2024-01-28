@@ -30,7 +30,7 @@ public interface CommonMotorComponent extends INetworkedComponent {
      *
      * @return brushless or brushed (look it up)
      */
-    @Conf("type") default Type typeOfMotor() { return Type.BRUSHLESS; }
+    @Conf("type") default Optional<Type> typeOfMotor() { return Optional.of(Type.BRUSHLESS); }
     @Conf("encoderToMechanismCoef") double encoderToMechanismCoefficient();
 
     @Conf("rotationToMeterCoef") Optional<Double> rotationToMeterCoefficient();

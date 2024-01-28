@@ -76,7 +76,7 @@ public interface MotorComponent extends IndividualMotorComponent, CommonMotorCom
         }
 
         @Override
-        public Type typeOfMotor() {
+        public Optional<Type> typeOfMotor() {
             return commonMotorComponent.typeOfMotor();
         }
 
