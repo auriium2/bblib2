@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.ByteCodeElement;
-import net.bytebuddy.description.type.TypeDefinition;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
@@ -13,10 +12,7 @@ import net.bytebuddy.implementation.*;
 import net.bytebuddy.jar.asm.Opcodes;
 import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
-import xyz.auriium.mattlib2.Exceptions;
-import xyz.auriium.mattlib2.IMattLog;
-import xyz.auriium.mattlib2.IPeriodicLooped;
-import xyz.auriium.mattlib2.Mattlib2Exception;
+import xyz.auriium.mattlib2.*;
 import xyz.auriium.mattlib2.log.INetworkedComponent;
 import xyz.auriium.mattlib2.log.ProcessMap;
 import xyz.auriium.mattlib2.log.ProcessPath;
@@ -26,7 +22,6 @@ import yuukonfig.core.ConfigLoader;
 import yuukonfig.core.YuuKonfig;
 import yuukonfig.core.impl.safe.HandlesPrimitiveManipulator;
 import yuukonfig.core.impl.safe.HandlesSafeManipulator;
-import yuukonfig.core.impl.safe.ManipulatorSafe;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +29,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -71,10 +65,15 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
 
         String load = "config.toml";
         String sim = "sim.toml";
+        String cary = "cary.toml";
+        String mcr = "mcr.toml";
 
         var conf_dir = new File(Filesystem.getDeployDirectory(), "mattlib");
         var conf_file = new File(conf_dir, load);
         var sim_file = new File(conf_dir, sim);
+        var cary_file = new File(conf_dir, cary);
+        var mcr_file = new File(conf_dir, mcr);
+
 
         boolean isSim = RobotBase.isSimulation();
         boolean shouldDoFunnyOverwriteOfFile = false;
@@ -91,6 +90,8 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
         if (!sim_file.exists()) {
             throw Exceptions.MATTLIB_FILE_EXCEPTION(sim);
         }
+        if (!cary_file.exists()) throw Exceptions.MATTLIB_FILE_EXCEPTION(cary);
+        if (!mcr_file.exists()) throw Exceptions.MATTLIB_FILE_EXCEPTION(mcr);
 
         //System.out.println("has read: " + traj_file.canRead() + " has write: " + traj_file.canWrite());
 
@@ -126,7 +127,20 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
                     .overrideMainConfigFromFile(sim_file.toPath())
                     .loadToMemoryConfig();
         } else {
-            map = loader.loadOnlyUser().loadToMemoryConfig();
+            var contentBridge = loader.loadOnlyUser();
+
+            if (MattlibSettings.ROBOT == MattlibSettings.Robot.CARY) {
+                map = contentBridge
+                        .overrideMainConfigFromFile(cary_file.toPath())
+                        .loadToMemoryConfig();
+            } else if (MattlibSettings.ROBOT == MattlibSettings.Robot.MCR) {
+                map = contentBridge
+                        .overrideMainConfigFromFile(mcr_file.toPath())
+                        .loadToMemoryConfig();
+            } else {
+                map = contentBridge.loadToMemoryConfig();
+            }
+
         }
 
         for (LoadStruct<?> struct : structs) {
