@@ -29,9 +29,9 @@ public class Pose3Manipulator implements ManipulatorSafe<Pose3d> {
         Mapping mp = node.asMapping();
 
         return new Pose3d(
-                manipulation.safeDeserialize(mp.valueGuaranteed("x"), double.class),
-                manipulation.safeDeserialize(mp.valueGuaranteed("y"), double.class),
-                manipulation.safeDeserialize(mp.valueGuaranteed("z"), double.class),
+                manipulation.safeDeserialize(mp.valueGuaranteed("x"), Double.class),
+                manipulation.safeDeserialize(mp.valueGuaranteed("y"), Double.class),
+                manipulation.safeDeserialize(mp.valueGuaranteed("z"), Double.class),
                 manipulation.safeDeserialize(mp.valueGuaranteed("rot"), Rotation3d.class)
         );
     }

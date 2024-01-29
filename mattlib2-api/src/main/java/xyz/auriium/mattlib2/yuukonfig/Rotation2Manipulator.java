@@ -27,7 +27,7 @@ public class Rotation2Manipulator implements ManipulatorSafe<Rotation2d> {
 
     @Override
     public Rotation2d deserialize(Node node) throws BadValueException {
-        double theta_rotations = manipulation.safeDeserialize(node, double.class);
+        double theta_rotations = manipulation.safeDeserialize(node, Double.class);
 
         return Rotation2d.fromRotations(theta_rotations);
     }

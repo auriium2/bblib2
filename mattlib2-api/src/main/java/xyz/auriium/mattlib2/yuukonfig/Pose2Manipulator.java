@@ -28,8 +28,8 @@ public class Pose2Manipulator implements ManipulatorSafe<Pose2d> {
     public Pose2d deserialize(Node node) throws BadValueException {
         Mapping mp = node.asMapping();
 
-        double x = manipulation.safeDeserialize(mp.valueGuaranteed("x"), double.class);
-        double y = manipulation.safeDeserialize(mp.valueGuaranteed("y"), double.class);
+        double x = manipulation.safeDeserialize(mp.valueGuaranteed("x"), Double.class);
+        double y = manipulation.safeDeserialize(mp.valueGuaranteed("y"), Double.class);
         Rotation2d theta_rotations = manipulation.safeDeserialize(mp.valueGuaranteed("theta"), Rotation2d.class);
 
 

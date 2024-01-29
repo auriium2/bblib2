@@ -8,6 +8,7 @@ import xyz.auriium.mattlib2.log.annote.Log;
  */
 public interface IndividualPIDComponent extends INetworkedComponent {
 
+    @Log("pidReference") void reportReference(double ref);
     @Log("pidError") void reportError(double error);
     @Log("pidOutput") void reportOutput(double output);
 

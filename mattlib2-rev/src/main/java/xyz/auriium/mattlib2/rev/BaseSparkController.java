@@ -48,10 +48,13 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
     @Override
     public void logPeriodic() {
         super.logPeriodic();
+        PIDNetworkedConfig.reportReference(reference);
     }
 
     boolean cachedIsNormalized = false;
     //Controller stuff
+
+    double reference = 0;
 
     @Override
     public void controlToLinearReference(double setpointMechanism_meters) {
@@ -61,6 +64,7 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
         }
 
         double convertedMechanismRotations = setpointMechanism_meters / loadLinearCoef();
+        reference = convertedMechanismRotations;
         localPidController.setReference(convertedMechanismRotations, CANSparkMax.ControlType.kPosition);
     }
 
@@ -78,6 +82,7 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
             localPidController.setPositionPIDWrappingMinInput(0);
         }
 
+        reference = setpoint_mechanismNormalizedRotations;
         localPidController.setReference(setpoint_mechanismNormalizedRotations, CANSparkBase.ControlType.kPosition);
     }
 
@@ -93,6 +98,7 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
             localPidController.setPositionPIDWrappingEnabled(false);
         }
 
+        reference = setpoint_mechanismRotations;
         localPidController.setReference(
                 setpoint_mechanismRotations,
                 CANSparkBase.ControlType.kPosition
@@ -107,6 +113,7 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
     @Override
     public void controlToLinearVelocityReference(double setPointMechanism_metersPerSecond) {
         double nativeRPS = setPointMechanism_metersPerSecond / loadLinearCoef();
+
         localPidController.setReference(nativeRPS, CANSparkBase.ControlType.kVelocity);
     }
 

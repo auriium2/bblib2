@@ -25,8 +25,8 @@ public class Translation2Manipulator implements ManipulatorSafe<Translation2d> {
     @Override
     public Translation2d deserialize(Node node) throws BadValueException {
         return new Translation2d(
-                manipulation.safeDeserialize(node.asMapping().valueGuaranteed("x"), double.class),
-                manipulation.safeDeserialize(node.asMapping().valueGuaranteed("y"), double.class)
+                manipulation.safeDeserialize(node.asMapping().valueGuaranteed("x"), Double.class),
+                manipulation.safeDeserialize(node.asMapping().valueGuaranteed("y"), Double.class)
         );
     }
 

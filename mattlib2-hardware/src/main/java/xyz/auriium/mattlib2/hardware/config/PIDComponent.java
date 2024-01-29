@@ -61,6 +61,11 @@ public interface PIDComponent extends CommonPIDComponent, IndividualPIDComponent
         }
 
         @Override
+        public void reportReference(double ref) {
+            individualPIDComponent.reportReference(ref);
+        }
+
+        @Override
         
         public void reportError(double error) {
             individualPIDComponent.reportError(error);

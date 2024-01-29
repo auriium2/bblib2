@@ -30,10 +30,10 @@ public class Rotation3Manipulator implements ManipulatorSafe<Rotation3d> {
 
         return new Rotation3d(
                 new Quaternion(
-                        manipulation.safeDeserialize(mp.valueGuaranteed("x"), double.class),
-                        manipulation.safeDeserialize(mp.valueGuaranteed("y"), double.class),
-                        manipulation.safeDeserialize(mp.valueGuaranteed("z"), double.class),
-                        manipulation.safeDeserialize(mp.valueGuaranteed("w"), double.class)
+                        manipulation.safeDeserialize(mp.valueGuaranteed("x"), Double.class),
+                        manipulation.safeDeserialize(mp.valueGuaranteed("y"), Double.class),
+                        manipulation.safeDeserialize(mp.valueGuaranteed("z"), Double.class),
+                        manipulation.safeDeserialize(mp.valueGuaranteed("w"), Double.class)
                 )
         );
     }
