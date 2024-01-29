@@ -65,13 +65,11 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
 
         String load = "config.toml";
         String sim = "sim.toml";
-        String cary = "cary.toml";
         String mcr = "mcr.toml";
 
         var conf_dir = new File(Filesystem.getDeployDirectory(), "mattlib");
         var conf_file = new File(conf_dir, load);
         var sim_file = new File(conf_dir, sim);
-        var cary_file = new File(conf_dir, cary);
         var mcr_file = new File(conf_dir, mcr);
 
 
@@ -90,7 +88,6 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
         if (!sim_file.exists()) {
             throw Exceptions.MATTLIB_FILE_EXCEPTION(sim);
         }
-        if (!cary_file.exists()) throw Exceptions.MATTLIB_FILE_EXCEPTION(cary);
         if (!mcr_file.exists()) throw Exceptions.MATTLIB_FILE_EXCEPTION(mcr);
 
         //System.out.println("has read: " + traj_file.canRead() + " has write: " + traj_file.canWrite());
@@ -130,9 +127,7 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
             var contentBridge = loader.loadOnlyUser();
 
             if (MattlibSettings.ROBOT == MattlibSettings.Robot.CARY) {
-                map = contentBridge
-                        .overrideMainConfigFromFile(cary_file.toPath())
-                        .loadToMemoryConfig();
+                map = contentBridge.loadToMemoryConfig();
             } else if (MattlibSettings.ROBOT == MattlibSettings.Robot.MCR) {
                 map = contentBridge
                         .overrideMainConfigFromFile(mcr_file.toPath())
