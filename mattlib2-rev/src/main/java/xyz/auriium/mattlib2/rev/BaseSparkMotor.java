@@ -122,7 +122,7 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
     @Override
     public void logicPeriodic() {
-        outputVoltage = sparkMax.getAppliedOutput();
+        outputVoltage = sparkMax.getAppliedOutput() * 12;
         outputCurrent = sparkMax.getOutputCurrent();
         temperature = sparkMax.getMotorTemperature();
     }
@@ -132,7 +132,7 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
         motorComponent.reportCurrentDraw(outputCurrent);
         motorComponent.reportVoltageGiven(outputVoltage);
-        motorComponent.reportTemperature(outputVoltage);
+        motorComponent.reportTemperature(temperature);
         motorComponent.reportMechanismRotations(angularPosition_mechanismRotations());
         motorComponent.reportMechanismRotationsBound(angularPosition_normalizedMechanismRotations());
 
