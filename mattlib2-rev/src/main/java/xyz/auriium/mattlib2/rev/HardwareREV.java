@@ -138,7 +138,7 @@ public class HardwareREV {
      * @param pdConfig controls
      * @return
      */
-    public static ILinearController linearSpark_builtInVelocityPID(MotorComponent motorComponent, PIDComponent pdConfig) {
+    public static ILinearVelocityController linearSpark_builtInVelocityPID(MotorComponent motorComponent, PIDComponent pdConfig) {
         int canId = motorComponent.id();
         GenericPath possiblyNullPath = IDS_ALREADY_SEEN.get(canId);
         GenericPath pathOfComponent  = motorComponent.selfPath();
