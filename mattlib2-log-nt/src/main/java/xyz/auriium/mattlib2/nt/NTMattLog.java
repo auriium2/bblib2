@@ -111,6 +111,7 @@ public class NTMattLog implements IMattLog, IPeriodicLooped {
                 .register(HandlesSafeManipulator.ofSpecific(Pose3d.class, Pose3Manipulator::new))
                 .register(HandlesSafeManipulator.ofSpecific(Rotation3d.class, Rotation3Manipulator::new))
                 .register(HandlesPrimitiveManipulator.ofSpecific(Long.class, long.class, LongManipulator::new))
+                .register(HandlesSafeManipulator.ofSpecific(Translation3d.class, Translation3Manipulator::new))
                 .loader(TypeMap.class, conf_file.toPath());
 
         TypeMap map;
