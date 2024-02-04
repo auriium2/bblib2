@@ -29,6 +29,7 @@ public interface IPeriodicLooped {
     }
 
 
+
     /**
      * This fn should be called probably in robotInit
      * It is intended to run ONCE after init. It's body should make sure the class it is attached to is running ok
@@ -36,6 +37,12 @@ public interface IPeriodicLooped {
      */
     default Optional<ExplainedException> verifyInit() {
         return Optional.empty();
+    }
+
+
+    //Stop gap
+    default void verify2Init() {
+
     }
 
     /**

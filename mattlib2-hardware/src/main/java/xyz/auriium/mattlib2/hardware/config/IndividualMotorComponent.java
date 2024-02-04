@@ -33,4 +33,5 @@ public interface IndividualMotorComponent extends INetworkedComponent {
     @Log("mechanismRotationsUnbound") void reportMechanismRotations(double mechanismRotations);
     @Log("mechanismRotationsBound") void reportMechanismRotationsBound(double mechanismRotationsBound);
 
+
 }

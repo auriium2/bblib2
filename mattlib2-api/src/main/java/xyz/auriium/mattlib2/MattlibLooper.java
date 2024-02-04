@@ -25,6 +25,7 @@ public class MattlibLooper {
     public void runPostInit() {
         for (IPeriodicLooped runnable : orderedThingsToBeLooped) {
             runnable.verifyInit(); //TODO send those exceptions somewhere
+            runnable.verify2Init();
         }
     }
 

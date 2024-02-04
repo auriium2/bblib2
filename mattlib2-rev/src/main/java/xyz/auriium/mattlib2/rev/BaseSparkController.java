@@ -35,6 +35,9 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
         return Optional.empty();
     }
 
+    @Override public void verify2Init() {
+        super.verify2Init();
+    }
 
     @Override
     public void tunePeriodic() {

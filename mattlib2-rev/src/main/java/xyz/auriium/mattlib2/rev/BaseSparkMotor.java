@@ -103,17 +103,22 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
             sparkMax.setSoftLimit(CANSparkBase.SoftLimitDirection.kReverse, (float) (limit * motorComponent.encoderToMechanismCoefficient()));
             sparkMax.enableSoftLimit(CANSparkBase.SoftLimitDirection.kReverse, true);
         });
-        motorComponent.breakModeEnabled().ifPresentOrElse(breakMode -> {
-            sparkMax.setIdleMode(breakMode ? CANSparkBase.IdleMode.kBrake : CANSparkBase.IdleMode.kCoast);
-        }, () -> sparkMax.setIdleMode(CANSparkBase.IdleMode.kCoast));
+        motorComponent.breakModeEnabled().ifPresentOrElse(
+                breakMode -> sparkMax.setIdleMode(breakMode ? CANSparkBase.IdleMode.kBrake : CANSparkBase.IdleMode.kCoast),
+                () -> sparkMax.setIdleMode(CANSparkBase.IdleMode.kCoast)
+        );
 
         motorComponent.openRampRate_seconds().ifPresent(sparkMax::setOpenLoopRampRate);
         motorComponent.closedRampRate_seconds().ifPresent(sparkMax::setClosedLoopRampRate);
 
+
         return Optional.empty();
     }
 
-
+    @Override
+    public void verify2Init() {
+        sparkMax.burnFlash();
+    }
 
     @Override
     public void logicPeriodic() {
