@@ -52,6 +52,7 @@ public class HardwareSIM {
         return new DCSimMotor(motorSim, motorComponent);
     }
 
+
     public static ILinearController linearSIM_pid(MotorComponent motorComponent, PIDComponent pidComponent, DCMotor gearbox) {
         if (motorComponent.rotationToMeterCoefficient().isEmpty()) {
             throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
@@ -81,6 +82,36 @@ public class HardwareSIM {
                 pidComponent);
     }
 
+
+    public static ILinearVelocityController linearSIM_velocityPid(MotorComponent motorComponent, PIDComponent pidComponent, DCMotor gearbox) {
+        if (motorComponent.rotationToMeterCoefficient().isEmpty()) {
+            throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
+        }
+
+        Matrix<N2, N1> mat = VecBuilder.fill(
+                motorComponent.positionStandardDeviation().orElse(0.001d),
+                motorComponent.velocityStandardDeviation().orElse(0.001d)
+        );
+
+        DCMotorSim motorSim = new DCMotorSim(
+                gearbox,
+                1d / motorComponent.encoderToMechanismCoefficient(),
+                motorComponent.massMomentInertia().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.ROTATIONAL_INERTIA)),
+                mat
+        );
+
+
+        return new DCSimVelocityController(
+                motorSim,
+                motorComponent,
+                new PIDController(
+                        pidComponent.pConstant(),
+                        pidComponent.iConstant(),
+                        pidComponent.dConstant()
+                ),
+                pidComponent);
+    }
+
     public static IRotationalController rotationalSIM_pid(MotorComponent motorComponent, PIDComponent pidComponent, DCMotor gearbox) {
 
         Matrix<N2, N1> mat = VecBuilder.fill(
@@ -96,6 +127,33 @@ public class HardwareSIM {
         );
 
         return new DCSimController(
+                motorSim,
+                motorComponent,
+                new PIDController(
+                        pidComponent.pConstant(),
+                        pidComponent.iConstant(),
+                        pidComponent.dConstant()
+                ),
+                pidComponent
+        );
+    }
+
+
+    public static IRotationalVelocityController rotationalSIM_velocityPid(MotorComponent motorComponent, PIDComponent pidComponent, DCMotor gearbox) {
+
+        Matrix<N2, N1> mat = VecBuilder.fill(
+                motorComponent.positionStandardDeviation().orElse(0.001d),
+                motorComponent.velocityStandardDeviation().orElse(0.001d)
+        );
+
+        DCMotorSim motorSim = new DCMotorSim(
+                gearbox,
+                1d / motorComponent.encoderToMechanismCoefficient(),
+                motorComponent.massMomentInertia().orElseThrow(() -> Exceptions.NO_SIMULATION_COEFFICIENTS(motorComponent.selfPath(), CommonMotorComponent.ROTATIONAL_INERTIA)),
+                mat
+        );
+
+        return new DCSimVelocityController(
                 motorSim,
                 motorComponent,
                 new PIDController(
