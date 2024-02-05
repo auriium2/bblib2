@@ -51,6 +51,7 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
     @Override
     public void logPeriodic() {
         super.logPeriodic();
+
         PIDNetworkedConfig.reportReference(reference);
     }
 
@@ -117,11 +118,14 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
     public void controlToLinearVelocityReference(double setPointMechanism_metersPerSecond) {
         double nativeRPS = setPointMechanism_metersPerSecond / loadLinearCoef();
 
+        reference = nativeRPS;
         localPidController.setReference(nativeRPS, CANSparkBase.ControlType.kVelocity);
     }
 
     @Override
     public void controlToRotationalVelocityReference(double setPointMechanism_rotationsPerSecond) {
+
+        reference = setPointMechanism_rotationsPerSecond;
         localPidController.setReference(setPointMechanism_rotationsPerSecond, CANSparkBase.ControlType.kVelocity);
     }
 }

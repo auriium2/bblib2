@@ -112,6 +112,7 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
         motorComponent.closedRampRate_seconds().ifPresent(sparkMax::setClosedLoopRampRate);
 
 
+
         return Optional.empty();
     }
 
@@ -135,7 +136,11 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
         motorComponent.reportTemperature(temperature);
         motorComponent.reportMechanismRotations(angularPosition_mechanismRotations());
         motorComponent.reportMechanismRotationsBound(angularPosition_normalizedMechanismRotations());
+        motorComponent.reportMechanismVelocity(angularVelocity_mechanismRotationsPerSecond());
 
+        if (motorComponent.rotationToMeterCoefficient().isPresent()) {
+            motorComponent.reportMechanismLinearVelocity(linearVelocity_mechanismMetersPerSecond());
+        }
     }
 
     //Other stuff
