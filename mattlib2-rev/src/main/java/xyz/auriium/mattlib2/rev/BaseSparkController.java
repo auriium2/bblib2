@@ -7,19 +7,25 @@ import xyz.auriium.mattlib2.hardware.config.PIDComponent;
 import xyz.auriium.yuukonstants.exception.ExplainedException;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 public class BaseSparkController extends BaseSparkMotor implements ILinearController, IRotationalController, IRotationalVelocityController, ILinearVelocityController {
 
     final SparkPIDController localPidController;
-    final PIDComponent PIDNetworkedConfig;
+    final PIDComponent pidConfig;
 
     BaseSparkController(CANSparkMax sparkMax, MotorComponent motorComponent, PIDComponent pdConfig, RelativeEncoder encoder) {
         super(sparkMax, motorComponent, encoder);
         localPidController = sparkMax.getPIDController();
-        PIDNetworkedConfig = pdConfig;
+        pidConfig = pdConfig;
     }
 
     //logging stuff
+
+
+    boolean cachedIsNormalized = false;
+    double reference_primeUnits = 0;
+    double state_primeUnits = 0;
 
     @Override
     public Optional<ExplainedException> verifyInit() {
@@ -28,9 +34,9 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
 
         localPidController.setFeedbackDevice(encoder);
 
-        localPidController.setP(PIDNetworkedConfig.pConstant());
-        localPidController.setI(PIDNetworkedConfig.iConstant());
-        localPidController.setD(PIDNetworkedConfig.dConstant());
+        localPidController.setP(pidConfig.pConstant(), 0);
+        localPidController.setI(pidConfig.iConstant(), 0);
+        localPidController.setD(pidConfig.dConstant(), 0);
 
         return Optional.empty();
     }
@@ -41,10 +47,10 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
 
     @Override
     public void tunePeriodic() {
-        if (PIDNetworkedConfig.hasUpdated()) {
-            localPidController.setP(PIDNetworkedConfig.pConstant());
-            localPidController.setI(PIDNetworkedConfig.iConstant());
-            localPidController.setD(PIDNetworkedConfig.dConstant());
+        if (pidConfig.hasUpdated()) {
+            localPidController.setP(pidConfig.pConstant(), 0);
+            localPidController.setI(pidConfig.iConstant(), 0);
+            localPidController.setD(pidConfig.dConstant(), 0);
         }
     }
 
@@ -52,33 +58,48 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
     public void logPeriodic() {
         super.logPeriodic();
 
-        PIDNetworkedConfig.reportReference(reference);
+        pidConfig.reportReference(reference_primeUnits);
+        switch (mode) {
+            default -> {}
+            case LINEAR_POS -> pidConfig.reportState(linearPosition_mechanismMeters());
+            case INFINITE_ROTATIONAL_POS -> pidConfig.reportState(angularPosition_mechanismRotations());
+            case NORM_ROTATIONAL_POS -> pidConfig.reportState(angularPosition_normalizedMechanismRotations());
+            case LINEAR_VEL -> pidConfig.reportState(linearVelocity_mechanismMetersPerSecond());
+            case ROTATIONAL_VEL -> pidConfig.reportState(angularVelocity_mechanismRotationsPerSecond());
+        }
+
     }
 
-    boolean cachedIsNormalized = false;
-    //Controller stuff
-
-    double reference = 0;
 
     @Override
     public void controlToLinearReference(double setpointMechanism_meters) {
+        controlToLinearReferenceArbitrary(setpointMechanism_meters, 0);
+    }
+
+    @Override
+    public void controlToLinearReferenceArbitrary(double setpointMechanism_meters, double arbitraryFF_volts) {
+        mode = OperationMode.LINEAR_POS;
+        reference_primeUnits = setpointMechanism_meters;
+
         if (cachedIsNormalized) {
             cachedIsNormalized = false;
             localPidController.setPositionPIDWrappingEnabled(false);
         }
 
-        double convertedMechanismRotations = setpointMechanism_meters / loadLinearCoef();
-        reference = convertedMechanismRotations;
-        localPidController.setReference(convertedMechanismRotations, CANSparkMax.ControlType.kPosition);
+        localPidController.setReference(setpointMechanism_meters / loadLinearCoef(), CANSparkBase.ControlType.kPosition, 0, arbitraryFF_volts, SparkPIDController.ArbFFUnits.kVoltage);
     }
 
-    @Override
-    public void controlToLinearReference(double setpointMechanism_meters, double measurementMechanism_meters) {
-        throw Exceptions.CANNOT_EXTERNAL_FEEDBACK_INTERNAL;
-    }
 
     @Override
     public void controlToNormalizedReference(double setpoint_mechanismNormalizedRotations) {
+       controlToNormalizedReferenceArbitrary(setpoint_mechanismNormalizedRotations,0);
+    }
+
+    @Override
+    public void controlToNormalizedReferenceArbitrary(double setpoint_mechanismNormalizedRotations, double arbitraryFF_volts) {
+        mode = OperationMode.NORM_ROTATIONAL_POS;
+        reference_primeUnits = setpoint_mechanismNormalizedRotations;
+
         if (!cachedIsNormalized) {
             cachedIsNormalized = true;
             localPidController.setPositionPIDWrappingEnabled(true);
@@ -86,46 +107,58 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
             localPidController.setPositionPIDWrappingMinInput(0);
         }
 
-        reference = setpoint_mechanismNormalizedRotations;
-        localPidController.setReference(setpoint_mechanismNormalizedRotations, CANSparkBase.ControlType.kPosition);
-    }
-
-    @Override
-    public void controlToNormalizedReference(double setpoint_mechanismNormalizedRotations, double measurement_mechanismNormalizedRotations) {
-        throw Exceptions.CANNOT_EXTERNAL_FEEDBACK_INTERNAL;
+        localPidController.setReference(setpoint_mechanismNormalizedRotations, CANSparkBase.ControlType.kPosition, 0, arbitraryFF_volts, SparkPIDController.ArbFFUnits.kVoltage);
     }
 
     @Override
     public void controlToInfiniteReference(double setpoint_mechanismRotations) {
+        controlToInfiniteReferenceArbitrary(setpoint_mechanismRotations,0);
+    }
+
+    @Override
+    public void controlToInfiniteReferenceArbitrary(double setpoint_mechanismRotations, double arbitraryFF_volts) {
+        mode = OperationMode.INFINITE_ROTATIONAL_POS;
+        reference_primeUnits = setpoint_mechanismRotations;
+
         if (cachedIsNormalized) {
             cachedIsNormalized = false;
             localPidController.setPositionPIDWrappingEnabled(false);
         }
 
-        reference = setpoint_mechanismRotations;
         localPidController.setReference(
                 setpoint_mechanismRotations,
-                CANSparkBase.ControlType.kPosition
+                CANSparkBase.ControlType.kPosition,
+                0,
+                arbitraryFF_volts,
+                SparkPIDController.ArbFFUnits.kVoltage
         );
     }
 
     @Override
-    public void controlToInfiniteReference(double setpoint_mechanismRotations, double measurement_mechanismRotations) {
-        throw Exceptions.CANNOT_EXTERNAL_FEEDBACK_INTERNAL;
+    public void controlToLinearVelocityReference(double setPointMechanism_metersPerSecond) {
+        controlToLinearVelocityReferenceArbitrary(setPointMechanism_metersPerSecond, 0);
     }
 
     @Override
-    public void controlToLinearVelocityReference(double setPointMechanism_metersPerSecond) {
-        double nativeRPS = setPointMechanism_metersPerSecond / loadLinearCoef();
+    public void controlToLinearVelocityReferenceArbitrary(double setPointMechanism_metersPerSecond, double arbitraryFF_voltage) {
+        mode = OperationMode.LINEAR_VEL;
+        reference_primeUnits = setPointMechanism_metersPerSecond;
 
-        reference = nativeRPS;
-        localPidController.setReference(nativeRPS, CANSparkBase.ControlType.kVelocity);
+        double nativeReference_rotationsPerSecond = setPointMechanism_metersPerSecond / loadLinearCoef();
+        localPidController.setReference(nativeReference_rotationsPerSecond, CANSparkBase.ControlType.kVelocity, 0, arbitraryFF_voltage, SparkPIDController.ArbFFUnits.kVoltage);
     }
 
     @Override
     public void controlToRotationalVelocityReference(double setPointMechanism_rotationsPerSecond) {
+        controlToRotationalVelocityReferenceArbitrary(setPointMechanism_rotationsPerSecond, 0);
 
-        reference = setPointMechanism_rotationsPerSecond;
+    }
+
+    @Override
+    public void controlToRotationalVelocityReferenceArbitrary(double setPointMechanism_rotationsPerSecond, double arbitraryFF_voltage) {
+        mode = OperationMode.ROTATIONAL_VEL;
+        reference_primeUnits = setPointMechanism_rotationsPerSecond;
+
         localPidController.setReference(setPointMechanism_rotationsPerSecond, CANSparkBase.ControlType.kVelocity);
     }
 }

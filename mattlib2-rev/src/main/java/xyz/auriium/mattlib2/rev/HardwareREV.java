@@ -181,61 +181,6 @@ public class HardwareREV {
 
     }
 
-    /**
-     * Sets up a mattlib SparkMax device that is tasked with controlling linear motion;
-     * useful for things that need to move controlled, like an elevator
-     * it is controlled by a local controller and not the onboard pid controller
-     * @param pidControl an external pid controller which will be used to control this motor
-     * @return
-     */
-    public static ILinearController linearSpark_externalPID(MotorComponent motorComponent, ILinearPositionControl pidControl) {
-        int canId = motorComponent.id();
-        GenericPath possiblyNullPath = IDS_ALREADY_SEEN.get(canId);
-        GenericPath pathOfComponent  = motorComponent.selfPath();
-
-        if (possiblyNullPath != null) {
-            Exceptions.DUPLICATE_IDS_FOUND(pathOfComponent, canId, possiblyNullPath);
-        }
-
-        if (motorComponent.rotationToMeterCoefficient().isEmpty()) {
-            throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
-        }
-
-        CANSparkMax sparkMax = createSparkmax(motorComponent);
-        RelativeEncoder relativeEncoder = sparkMax.getEncoder();
-
-        return new ExternalLinearSparkController(sparkMax, relativeEncoder, motorComponent, pidControl);
-
-    }
-
-
-    /**
-     * Sets up a mattlib SparkMax device that is tasked with controlling rotational motion;
-     * useful for things that need to move controlled, like a turret
-     * it is controlled by a local controller and not the onboard pid controller
-     * @param pidControl an external pid controller which will be used to control this motor
-     * @return
-     */
-    public static IRotationalController rotationalSpark_externalPID(MotorComponent motorComponent, IRotationalPositionControl pidControl) {
-        int canId = motorComponent.id();
-        GenericPath possiblyNullPath = IDS_ALREADY_SEEN.get(canId);
-        GenericPath pathOfComponent  = motorComponent.selfPath();
-
-        if (possiblyNullPath != null) {
-            Exceptions.DUPLICATE_IDS_FOUND(pathOfComponent, canId, possiblyNullPath);
-        }
-
-        if (motorComponent.rotationToMeterCoefficient().isEmpty()) {
-            throw xyz.auriium.mattlib2.hardware.Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath());
-        }
-
-        CANSparkMax sparkMax = createSparkmax(motorComponent);
-        RelativeEncoder relativeEncoder = sparkMax.getEncoder();
-
-        return new ExternalRotationalSparkController(sparkMax, relativeEncoder, motorComponent, pidControl);
-
-    }
-
 
 
 

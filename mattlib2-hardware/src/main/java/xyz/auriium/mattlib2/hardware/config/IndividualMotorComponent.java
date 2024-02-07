@@ -1,5 +1,6 @@
 package xyz.auriium.mattlib2.hardware.config;
 
+import xyz.auriium.mattlib2.hardware.OperationMode;
 import xyz.auriium.mattlib2.log.INetworkedComponent;
 import xyz.auriium.mattlib2.log.annote.Conf;
 import xyz.auriium.mattlib2.log.annote.Log;
@@ -29,9 +30,9 @@ public interface IndividualMotorComponent extends INetworkedComponent {
     @Log("current") void reportCurrentDraw(double current);
 
     @Log("temperature_celsius") void reportTemperature(double temperatureCelsius);
+    //@Log("operation_mode") void reportOpMode(OperationMode opMode);
 
-    @Log("mechanismRotationsUnbound") void reportMechanismRotations(double mechanismRotations);
-    @Log("mechanismRotationsBound") void reportMechanismRotationsBound(double mechanismRotationsBound);
+    @Log("position_mechanismRotations") void reportMechanismRotations(double mechanismRotations);
     @Log("velocity_mechanismRotationsPerSecond") void reportMechanismVelocity(double mechanismRotationsPerSecond);
-    @Log("velocity_linearMechanismRotationsPerSecond") void reportMechanismLinearVelocity(double mechanismMetersPerSecond);
+
 }

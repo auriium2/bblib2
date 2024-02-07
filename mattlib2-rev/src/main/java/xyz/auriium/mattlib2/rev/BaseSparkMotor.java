@@ -1,9 +1,11 @@
 package xyz.auriium.mattlib2.rev;
 
 import com.revrobotics.*;
+import edu.wpi.first.units.Measure;
 import xyz.auriium.mattlib2.IPeriodicLooped;
 import xyz.auriium.mattlib2.hardware.ILinearMotor;
 import xyz.auriium.mattlib2.hardware.IRotationalMotor;
+import xyz.auriium.mattlib2.hardware.OperationMode;
 import xyz.auriium.mattlib2.hardware.config.CommonMotorComponent;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 import xyz.auriium.mattlib2.utils.AngleUtil;
@@ -29,6 +31,7 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
         mattRegister();
     }
 
+    OperationMode mode = OperationMode.NOT_SET;
     double linearCoef = 0;
     boolean linearCoefSet = false;
 
@@ -61,6 +64,7 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
         boolean isInverted = motorComponent.inverted().orElse(false);
         sparkMax.setInverted(isInverted);
+
 
         encoder.setPositionConversionFactor(motorComponent.encoderToMechanismCoefficient());
         encoder.setVelocityConversionFactor(motorComponent.encoderToMechanismCoefficient() / 60.0); //divide by 60 to get rotations per second
@@ -134,25 +138,24 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
         motorComponent.reportCurrentDraw(outputCurrent);
         motorComponent.reportVoltageGiven(outputVoltage);
         motorComponent.reportTemperature(temperature);
+
         motorComponent.reportMechanismRotations(angularPosition_mechanismRotations());
-        motorComponent.reportMechanismRotationsBound(angularPosition_normalizedMechanismRotations());
         motorComponent.reportMechanismVelocity(angularVelocity_mechanismRotationsPerSecond());
 
-        if (motorComponent.rotationToMeterCoefficient().isPresent()) {
-            motorComponent.reportMechanismLinearVelocity(linearVelocity_mechanismMetersPerSecond());
-        }
     }
 
     //Other stuff
 
     @Override
     public void setToVoltage(double voltage) {
+        mode = OperationMode.VOLTAGE;
         sparkMax.setVoltage(voltage);
     }
 
 
     @Override
     public void setToPercent(double percent_zeroToOne) {
+        mode = OperationMode.DUTY;
         sparkMax.setVoltage(percent_zeroToOne * 12);
     }
 
@@ -210,7 +213,7 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped 
 
     @Override
     public double angularVelocity_encoderRotationsPerSecond() {
-        throw new UnsupportedOperationException("cant tell you bc factor");
+        return encoder.getVelocity() / motorComponent.encoderToMechanismCoefficient(); //pre-converted in init, so we actually work backwards
     }
 
     @Override

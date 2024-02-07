@@ -43,6 +43,9 @@ public class NetworkMattLogger {
         NetworkTableEntry entry =  NetworkTableInstance.getDefault().getTable("mattlib").getEntry(path.tablePath());
 
 
+        if (returnType.isEnum()) {
+
+        }
 
         if (returnType == Double.class || returnType == double.class) { //handle doubles
 

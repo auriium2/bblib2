@@ -71,17 +71,11 @@ public interface MotorComponent extends IndividualMotorComponent, CommonMotorCom
             individualMotorComponent.reportMechanismRotations(mechanismRotations);
         }
 
-        @Override public void reportMechanismRotationsBound(double mechanismRotationsBound) {
-            individualMotorComponent.reportMechanismRotationsBound(mechanismRotationsBound);
-        }
 
         @Override public void reportMechanismVelocity(double mechanismRotationsPerSecond) {
             individualMotorComponent.reportMechanismVelocity(mechanismRotationsPerSecond);
         }
 
-        @Override public void reportMechanismLinearVelocity(double mechanismMetersPerSecond) {
-            individualMotorComponent.reportMechanismLinearVelocity(mechanismMetersPerSecond);
-        }
 
         @Override
         public Optional<Type> typeOfMotor() {

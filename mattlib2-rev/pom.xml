@@ -27,7 +27,7 @@
     <dependencies>
         <dependency>
             <groupId>xyz.auriium</groupId>
-            <artifactId>mattlib2-api</artifactId>
+            <artifactId>mattlib2-core</artifactId>
             <version>1.3.27-SNAPSHOT</version>
         </dependency>
         <dependency>

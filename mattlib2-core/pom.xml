@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mattlib2-log-foxe</artifactId>
+    <artifactId>mattlib2-core</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -18,36 +18,37 @@
     </properties>
 
     <dependencies>
+
         <dependency>
-            <groupId>io.undertow</groupId>
-            <artifactId>undertow-core</artifactId>
-            <version>2.3.10.Final</version>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>1.14.11</version>
         </dependency>
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.10.1</version>
+            <groupId>javax.measure</groupId>
+            <artifactId>unit-api</artifactId>
+            <version>2.2</version>
         </dependency>
         <dependency>
-            <groupId>com.google.flatbuffers</groupId>
-            <artifactId>flatbuffers-java</artifactId>
-            <version>23.5.26</version>
+            <groupId>tech.units</groupId>
+            <artifactId>indriya</artifactId>
+            <version>2.2</version>
         </dependency>
         <dependency>
-            <groupId>it.unimi.dsi</groupId>
-            <artifactId>fastutil</artifactId>
-            <version>8.5.12</version>
+            <groupId>com.superyuuki</groupId>
+            <artifactId>yuukonfig-core</artifactId>
+            <version>3.2.5-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>xyz.auriium</groupId>
-            <artifactId>mattlib2-core</artifactId>
-            <version>1.3.27-SNAPSHOT</version>
+            <groupId>com.superyuuki</groupId>
+            <artifactId>yuukonfig-toml</artifactId>
+            <version>3.2.5-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>edu.wpi.first.wpilibj</groupId>
             <artifactId>wpilibj-java</artifactId>
-            <version>2024.1.1</version>
+            <version>${mattlib2.wpi.versionTag}</version>
         </dependency>
         <dependency>
             <groupId>edu.wpi.first.wpiunits</groupId>
@@ -64,8 +65,13 @@
             <artifactId>wpiutil-java</artifactId>
             <version>${mattlib2.wpi.versionTag}</version>
         </dependency>
-
+        <dependency>
+            <groupId>edu.wpi.first.wpilibNewCommands</groupId>
+            <artifactId>wpilibNewCommands-java</artifactId>
+            <version>${mattlib2.wpi.versionTag}</version>
+        </dependency>
 
     </dependencies>
+
 
 </project>

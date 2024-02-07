@@ -8,8 +8,17 @@ import xyz.auriium.mattlib2.log.annote.Log;
  */
 public interface IndividualPIDComponent extends INetworkedComponent {
 
-    @Log("pidReference") void reportReference(double ref);
-    @Log("pidError") void reportError(double error);
-    @Log("pidOutput") void reportOutput(double output);
+    /**
+     * The reference (u or control) value that the PID controller is currently operating with
+     * @param reference_primeUnits a reference value in "prime units", arbitrary number that is only guarunteed to be
+     *                             the same as the units used by the state report
+     */
+    @Log("reference") void reportReference(double reference_primeUnits);
+
+    /**
+     * The state (x or state) value that the PID controller is operating with
+     * @param state_primeUnits a reference value in "prime units" arbitrary number that is only guarunteed to be the same as units used by state report
+     */
+    @Log("state") void reportState(double state_primeUnits);
 
 }
