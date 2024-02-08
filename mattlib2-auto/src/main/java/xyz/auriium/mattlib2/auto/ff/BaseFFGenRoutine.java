@@ -1,8 +1,10 @@
 package xyz.auriium.mattlib2.auto.ff;
 
-import xyz.auriium.mattlib2.IPeriodicLooped;
-import xyz.auriium.mattlib2.loop.IRoutine;
+import xyz.auriium.mattlib2.loop.IMattlibHooked;
+import xyz.auriium.mattlib2.loop.ISubroutine;
 import xyz.auriium.mattlib2.hardware.IActuator;
+import xyz.auriium.mattlib2.loop.Outcome;
+import xyz.auriium.mattlib2.loop.simple.ISimpleSubroutine;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.List;
 /**
  * Base routine that while active will calculate the desired ff and print it to console/push to blackboard
  */
-public abstract class BaseFFGenRoutine implements IRoutine, IPeriodicLooped {
+public abstract class BaseFFGenRoutine implements ISimpleSubroutine, IMattlibHooked {
 
     final FFGenComponent component;
     final IActuator actuator;
@@ -32,17 +34,33 @@ public abstract class BaseFFGenRoutine implements IRoutine, IPeriodicLooped {
     long startTime_ms;
 
     @Override
-    public Outcome runLogic(Orders ctx) {
-        return switch (ctx) {
-            case AWAKEN -> {
-                startTime_ms = System.currentTimeMillis();
-                endTime_ms = computeEndTimeInMS(System.currentTimeMillis(), component.delay_ms(), component.endVoltage_volts(), component.rampRate_voltsPerMS());
+    public void runSetup(SetupOrders orders) {
+        if (orders == SetupOrders.AWAKEN) {
+            startTime_ms = System.currentTimeMillis();
+            endTime_ms = computeEndTimeInMS(System.currentTimeMillis(), component.delay_ms(), component.endVoltage_volts(), component.rampRate_voltsPerMS());
 
-                yield Outcome.SUCCESS;
-            }
+            return;
+        }
+
+        if (orders == SetupOrders.DIE) {
+            var pr = new PolynomialRegression(from(velocityData), from(voltageData), 1);
+            var ks = pr.beta(0);
+            var kv = pr.beta(1);
+            component.logPredictedStaticConstant(ks);
+            component.logPredictedVelocityConstant(kv);
+
+            actuator.setToVoltage(0);
+            velocityData.clear();
+            voltageData.clear();
+        }
+    }
+
+    @Override
+    public Outcome<Void> runLogic(Orders ctx, Void vd) {
+        return switch (ctx) {
             case CONTINUE -> {
                 long curTime_ms = System.currentTimeMillis();
-                if (curTime_ms > endTime_ms) yield Outcome.SUCCESS;
+                if (curTime_ms > endTime_ms) yield Outcome.success();
 
                 double voltage = computeVoltage(curTime_ms, startTime_ms, component.delay_ms(), component.rampRate_voltsPerMS());
                 double velocityOut = emitVelocity_primeUnitsPerSecond();
@@ -54,22 +72,9 @@ public abstract class BaseFFGenRoutine implements IRoutine, IPeriodicLooped {
                 component.logInputVoltage(voltage);
                 component.logInputVelocity(velocityOut);
 
-                yield Outcome.WORKING;
+                yield Outcome.working();
             }
-            case CLEANUP -> {
-                var pr = new PolynomialRegression(from(velocityData), from(voltageData), 1);
-                var ks = pr.beta(0);
-                var kv = pr.beta(1);
-                component.logPredictedStaticConstant(ks);
-                component.logPredictedVelocityConstant(kv);
-
-                actuator.setToVoltage(0);
-                velocityData.clear();
-                voltageData.clear();
-
-                yield Outcome.SUCCESS;
-            }
-            case CANCEL -> Outcome.SUCCESS; //allow proceed to cleanup
+            case CANCEL -> Outcome.success(); //allow proceed to cleanup
         };
 
     }

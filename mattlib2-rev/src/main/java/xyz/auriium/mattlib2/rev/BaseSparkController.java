@@ -4,10 +4,10 @@ import com.revrobotics.*;
 import xyz.auriium.mattlib2.hardware.*;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 import xyz.auriium.mattlib2.hardware.config.PIDComponent;
+import xyz.auriium.mattlib2.loop.simple.ISimpleSubroutine;
 import xyz.auriium.yuukonstants.exception.ExplainedException;
 
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 public class BaseSparkController extends BaseSparkMotor implements ILinearController, IRotationalController, IRotationalVelocityController, ILinearVelocityController {
 
@@ -20,12 +20,10 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
         pidConfig = pdConfig;
     }
 
-    //logging stuff
-
-
     boolean cachedIsNormalized = false;
     double reference_primeUnits = 0;
     double state_primeUnits = 0;
+
 
     @Override
     public Optional<ExplainedException> verifyInit() {
@@ -70,12 +68,6 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
 
     }
 
-
-    @Override
-    public void controlToLinearReference(double setpointMechanism_meters) {
-        controlToLinearReferenceArbitrary(setpointMechanism_meters, 0);
-    }
-
     @Override
     public void controlToLinearReferenceArbitrary(double setpointMechanism_meters, double arbitraryFF_volts) {
         mode = OperationMode.LINEAR_POS;
@@ -91,11 +83,6 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
 
 
     @Override
-    public void controlToNormalizedReference(double setpoint_mechanismNormalizedRotations) {
-       controlToNormalizedReferenceArbitrary(setpoint_mechanismNormalizedRotations,0);
-    }
-
-    @Override
     public void controlToNormalizedReferenceArbitrary(double setpoint_mechanismNormalizedRotations, double arbitraryFF_volts) {
         mode = OperationMode.NORM_ROTATIONAL_POS;
         reference_primeUnits = setpoint_mechanismNormalizedRotations;
@@ -108,11 +95,6 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
         }
 
         localPidController.setReference(setpoint_mechanismNormalizedRotations, CANSparkBase.ControlType.kPosition, 0, arbitraryFF_volts, SparkPIDController.ArbFFUnits.kVoltage);
-    }
-
-    @Override
-    public void controlToInfiniteReference(double setpoint_mechanismRotations) {
-        controlToInfiniteReferenceArbitrary(setpoint_mechanismRotations,0);
     }
 
     @Override
@@ -134,10 +116,6 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
         );
     }
 
-    @Override
-    public void controlToLinearVelocityReference(double setPointMechanism_metersPerSecond) {
-        controlToLinearVelocityReferenceArbitrary(setPointMechanism_metersPerSecond, 0);
-    }
 
     @Override
     public void controlToLinearVelocityReferenceArbitrary(double setPointMechanism_metersPerSecond, double arbitraryFF_voltage) {
@@ -146,12 +124,6 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
 
         double nativeReference_rotationsPerSecond = setPointMechanism_metersPerSecond / loadLinearCoef();
         localPidController.setReference(nativeReference_rotationsPerSecond, CANSparkBase.ControlType.kVelocity, 0, arbitraryFF_voltage, SparkPIDController.ArbFFUnits.kVoltage);
-    }
-
-    @Override
-    public void controlToRotationalVelocityReference(double setPointMechanism_rotationsPerSecond) {
-        controlToRotationalVelocityReferenceArbitrary(setPointMechanism_rotationsPerSecond, 0);
-
     }
 
     @Override

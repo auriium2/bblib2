@@ -1,6 +1,9 @@
-package xyz.auriium.mattlib2;
+package xyz.auriium.mattlib2.loop;
 
 
+import xyz.auriium.mattlib2.Mattlib;
+import xyz.auriium.mattlib2.MattlibLooper;
+import xyz.auriium.mattlib2.loop.simple.ISimpleSubroutine;
 import xyz.auriium.yuukonstants.exception.ExplainedException;
 
 import java.util.Optional;
@@ -11,15 +14,7 @@ import java.util.Optional;
  *
  * This interface defines that something has looping requirements in order to function
  */
-public interface IPeriodicLooped {
-
-
-    /**
-     * This function should be called before mattlog is registered
-     */
-    default void preInit() {
-
-    }
+public interface IMattlibHooked {
 
     /**
      * Registers the PeriodicLoop. This must be called.
@@ -28,6 +23,20 @@ public interface IPeriodicLooped {
         Mattlib.LOOPER.register(this);
     }
 
+    enum RoutineContext {
+        PRE_BOOT,
+        CORE_BOOT,
+        VERIFY_BOOT,
+    }
+
+
+
+    /**
+     * This function should be called before mattlog is registered
+     */
+    default void preInit() {
+
+    }
 
 
     /**

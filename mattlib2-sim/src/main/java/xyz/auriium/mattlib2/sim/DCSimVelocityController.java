@@ -33,14 +33,14 @@ public class DCSimVelocityController extends DCSimMotor implements ILinearVeloci
         }
     }
 
-    @Override public void controlToLinearVelocityReference(double setPointMechanism_metersPerSecond) {
+    @Override public void controlToLinearVelocityReferenceArbitrary(double setPointMechanism_metersPerSecond, double arbFF) {
         var u = pidController.calculate(linearVelocity_mechanismMetersPerSecond(), setPointMechanism_metersPerSecond);
-        setToVoltage(u);
+        setToVoltage(u + arbFF);
     }
 
-    @Override public void controlToRotationalVelocityReference(double setPointMechanism_rotationsPerSecond) {
+    @Override public void controlToRotationalVelocityReferenceArbitrary(double setPointMechanism_rotationsPerSecond, double arbFF) {
         var u =pidController.calculate(angularVelocity_mechanismRotationsPerSecond(),setPointMechanism_rotationsPerSecond);
-        setToVoltage(u);
+        setToVoltage(u + arbFF);
     }
 }
 

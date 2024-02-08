@@ -5,7 +5,9 @@ public interface ILinearVelocityController extends ILinearMotor {
     /**
      * @param setPointMechanism_metersPerSecond a desired velocity to maintain, in terms of mechanism meters per second
      */
-    void controlToLinearVelocityReference(double setPointMechanism_metersPerSecond);
+    default void controlToLinearVelocityReference(double setPointMechanism_metersPerSecond) {
+        controlToLinearVelocityReferenceArbitrary(setPointMechanism_metersPerSecond, 0);
+    }
 
 
     /**

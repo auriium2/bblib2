@@ -1,15 +1,17 @@
 package xyz.auriium.mattlib2.hardware;
 
-import xyz.auriium.mattlib2.IPeriodicLooped;
+import xyz.auriium.mattlib2.loop.IMattlibHooked;
 
-public interface ILinearController extends ILinearMotor, IPeriodicLooped {
+public interface ILinearController extends ILinearMotor, IMattlibHooked {
 
 
     /**
      * You should call this every frame. Don't call the other version if you call this one.
      * @param setpointMechanism_meters desired position of the mechanism in meters
      */
-    void controlToLinearReference(double setpointMechanism_meters);
+    default void controlToLinearReference(double setpointMechanism_meters) {
+        controlToLinearReferenceArbitrary(setpointMechanism_meters, 0);
+    }
 
     /**
      * does pid but adds a feedforward first, for stability or something

@@ -5,7 +5,9 @@ public interface IRotationalVelocityController extends IRotationalMotor {
     /**
      * @param setPointMechanism_rotationsPerSecond a desired velocity to maintain, in terms of rotations meters per second
      */
-    void controlToRotationalVelocityReference(double setPointMechanism_rotationsPerSecond);
+    default void controlToRotationalVelocityReference(double setPointMechanism_rotationsPerSecond) {
+        controlToRotationalVelocityReferenceArbitrary(setPointMechanism_rotationsPerSecond, 0);
+    }
 
     /**
      * @param setPointMechanism_rotationsPerSecond a desired velocity to maintain, in terms of rotations meters per second

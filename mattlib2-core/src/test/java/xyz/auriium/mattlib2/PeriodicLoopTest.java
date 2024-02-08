@@ -1,12 +1,12 @@
 package xyz.auriium.mattlib2;
 
-import com.sun.source.tree.AssertTree;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import xyz.auriium.mattlib2.loop.IMattlibHooked;
 
 public class PeriodicLoopTest {
 
-    public class LoopImplementor implements IPeriodicLooped {
+    public class LoopImplementor implements IMattlibHooked {
 
         public boolean isTrigger = false;
         public LoopImplementor() {
@@ -19,7 +19,7 @@ public class PeriodicLoopTest {
         }
     }
 
-    public class LoopImplementor2 implements IPeriodicLooped {
+    public class LoopImplementor2 implements IMattlibHooked {
 
         public boolean isTrigger = false;
         public LoopImplementor2() {

@@ -30,22 +30,6 @@ public interface PIDComponent extends CommonPIDComponent, IndividualPIDComponent
         return motorComponents;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     class Impl implements PIDComponent {
         final CommonPIDComponent commonPIDComponent;
         final IndividualPIDComponent individualPIDComponent;
@@ -65,17 +49,10 @@ public interface PIDComponent extends CommonPIDComponent, IndividualPIDComponent
             individualPIDComponent.reportReference(ref);
         }
 
-        @Override
-        
-        public void reportError(double error) {
-            individualPIDComponent.reportError(error);
+        @Override public void reportState(double state_primeUnits) {
+            individualPIDComponent.reportState(state_primeUnits);
         }
 
-        @Override
-        
-        public void reportOutput(double output) {
-            individualPIDComponent.reportOutput(output);
-        }
 
         @Override
         public double pConstant() {

@@ -8,7 +8,7 @@ import io.undertow.websockets.core.protocol.version13.Hybi13Handshake;
 import io.undertow.websockets.extensions.PerMessageDeflateHandshake;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import xyz.auriium.mattlib2.IMattLog;
-import xyz.auriium.mattlib2.IPeriodicLooped;
+import xyz.auriium.mattlib2.loop.IMattlibHooked;
 import xyz.auriium.mattlib2.foxe.structure.ChannelData;
 import xyz.auriium.mattlib2.foxe.structure.ServerData;
 import xyz.auriium.mattlib2.log.INetworkedComponent;
@@ -24,7 +24,7 @@ import java.util.function.Consumer;
  * This class implements the log feature and tune feature from mattlib2-log allowing you to drop it in when creating
  * a Mattlog
  */
-public class FoxgloveMattLog implements IMattLog, IPeriodicLooped {
+public class FoxgloveMattLog implements IMattLog, IMattlibHooked {
 
     Undertow server;
 

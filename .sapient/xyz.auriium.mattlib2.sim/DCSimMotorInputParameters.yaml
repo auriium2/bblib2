@@ -1,0 +1,1706 @@
+---
+modelFingerprint: "33EFC4BDAFA8F8F1EF3EEAAB748234F3"
+methods:
+- method:
+    name: "verifyInit"
+    returnType: "java.util.Optional"
+    signature: "verifyInit() : java.util.Optional<xyz.auriium.yuukonstants.exception.ExplainedException>"
+    instructionFingerprint: "D40890BEE10895968220F90EA5458D81"
+    parametersTypes: []
+  paths:
+  - pathId: "path1"
+    pathIdForUser: "path1"
+    testPathName: "verifyInitTest"
+    nameDefinedByUser: false
+    constructorSignature: "<init>(edu.wpi.first.wpilibj.simulation.DCMotorSim,xyz.auriium.mattlib2.hardware.config.MotorComponent)\
+      \ : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "BDD4E5D147B3B00913BCE227F4ECC1E9"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "CONSTRUCTOR"
+      modelFingerprint: "DAA630F280CF3D3FB4DE95C47420DB56"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "OBJECT"
+        content: !<new>
+          target: "xyz.auriium.mattlib2.sim.DCSimMotor"
+          parameters:
+          - name: "motorSim"
+            value:
+              sapientType: "MOCK"
+              valueType: "edu.wpi.first.wpilibj.simulation.DCMotorSim"
+              uuid: "<init>_dCMotorSim1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          - name: "motorComponent"
+            value:
+              sapientType: "MOCK"
+              suggestedContent: !<unknown_object>
+                target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+                onlyPojoFunctions: false
+                builderPattern: false
+              valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+              uuid: "<init>_motorComponent1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          privateConstructor: false
+          createdByTargetCode: false
+        suggestedContent: !<new>
+          target: "xyz.auriium.mattlib2.sim.DCSimMotor"
+          parameters:
+          - name: "motorSim"
+            value:
+              sapientType: "UNKNOWN"
+              valueType: "edu.wpi.first.wpilibj.simulation.DCMotorSim"
+              uuid: "<init>_dCMotorSim1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          - name: "motorComponent"
+            value:
+              sapientType: "UNKNOWN"
+              suggestedContent: !<unknown_object>
+                target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+                onlyPojoFunctions: false
+                builderPattern: false
+              valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+              uuid: "<init>_motorComponent1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          privateConstructor: false
+          createdByTargetCode: false
+        valueType: "xyz.auriium.mattlib2.sim.DCSimMotor"
+        uuid: "target"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "LOCAL_VARIABLE"
+      name: "motorComponent"
+      modelFingerprint: "087012BFB7877B68492BD4B0E0315894"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+        uuid: "<init>_motorComponent1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "motorComponent"
+        name: "inverted"
+        parameters: []
+        signature: "inverted(): Optional"
+        returnValue:
+          sapientType: "OPTIONAL"
+          content: !<optional>
+            value:
+              sapientType: "NULL"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+            target: "java.util.Optional"
+          valueType: "java.util.Optional"
+          genericValueType: "java.lang.Boolean"
+          uuid: "<init>_optional1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 1025
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "FIELD"
+      name: "motorComponent"
+      modelFingerprint: "3CFC5C4752FE8F83D50CC9CE5DAF5C9F"
+      index: 3
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+        uuid: "<init>_motorComponent1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "this.motorComponent"
+        name: "inverted"
+        parameters: []
+        signature: "inverted(): Optional"
+        returnValue:
+          sapientType: "OPTIONAL"
+          content: !<optional>
+            value:
+              sapientType: "BASIC"
+              content: !<regular>
+                value: false
+              suggestedContent: !<regular>
+                value: false
+              valueType: "java.lang.Boolean"
+              uuid: "verifyInit_boolean1"
+              fixed: false
+              collectionUuid: "verifyInit_optional1"
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+            target: "java.util.Optional"
+          valueType: "java.util.Optional"
+          genericValueType: "java.lang.Boolean"
+          uuid: "verifyInit_optional1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 1025
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "34971F48747DEDEABE908A80B3D03EB5"
+      index: 4
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "OPTIONAL"
+        content: !<optional>
+          value:
+            sapientType: "NULL"
+            fixed: false
+            equalsMethodPresent: false
+            explicitCastNeeded: false
+          target: "java.util.Optional"
+        valueType: "java.util.Optional"
+        genericValueType: "xyz.auriium.yuukonstants.exception.ExplainedException"
+        uuid: "verifyInit_optional2"
+        fixed: false
+        equalsMethodPresent: true
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "a15a4f99-fda8-3e3c-ab5d-897abff614b5"
+    deleted: false
+    disabled: true
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: true
+- method:
+    name: "reportVoltageNow"
+    returnType: "double"
+    signature: "reportVoltageNow() : double"
+    instructionFingerprint: "98A3D5EEC817ABA5DF537F0BF94434EA"
+    parametersTypes: []
+  paths:
+  - pathId: "path1"
+    pathIdForUser: "path1"
+    testPathName: "reportVoltageNowTest"
+    nameDefinedByUser: false
+    constructorSignature: "<init>(edu.wpi.first.wpilibj.simulation.DCMotorSim,xyz.auriium.mattlib2.hardware.config.MotorComponent)\
+      \ : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "922100702424FFDF29478751D49AC9DB"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "CONSTRUCTOR"
+      modelFingerprint: "DAA630F280CF3D3FB4DE95C47420DB56"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "OBJECT"
+        content: !<new>
+          target: "xyz.auriium.mattlib2.sim.DCSimMotor"
+          parameters:
+          - name: "motorSim"
+            value:
+              sapientType: "MOCK"
+              valueType: "edu.wpi.first.wpilibj.simulation.DCMotorSim"
+              uuid: "<init>_dCMotorSim1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          - name: "motorComponent"
+            value:
+              sapientType: "MOCK"
+              suggestedContent: !<unknown_object>
+                target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+                onlyPojoFunctions: false
+                builderPattern: false
+              valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+              uuid: "<init>_motorComponent1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          privateConstructor: false
+          createdByTargetCode: false
+        suggestedContent: !<new>
+          target: "xyz.auriium.mattlib2.sim.DCSimMotor"
+          parameters:
+          - name: "motorSim"
+            value:
+              sapientType: "UNKNOWN"
+              valueType: "edu.wpi.first.wpilibj.simulation.DCMotorSim"
+              uuid: "<init>_dCMotorSim1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          - name: "motorComponent"
+            value:
+              sapientType: "UNKNOWN"
+              suggestedContent: !<unknown_object>
+                target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+                onlyPojoFunctions: false
+                builderPattern: false
+              valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+              uuid: "<init>_motorComponent1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          privateConstructor: false
+          createdByTargetCode: false
+        valueType: "xyz.auriium.mattlib2.sim.DCSimMotor"
+        uuid: "target"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "LOCAL_VARIABLE"
+      name: "motorComponent"
+      modelFingerprint: "087012BFB7877B68492BD4B0E0315894"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+        uuid: "<init>_motorComponent1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "motorComponent"
+        name: "inverted"
+        parameters: []
+        signature: "inverted(): Optional"
+        returnValue:
+          sapientType: "OPTIONAL"
+          content: !<optional>
+            value:
+              sapientType: "NULL"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+            target: "java.util.Optional"
+          valueType: "java.util.Optional"
+          genericValueType: "java.lang.Boolean"
+          uuid: "<init>_optional1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 1025
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "51619841B5874975FEF8C41270798C88"
+      index: 3
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "BASIC"
+        content: !<regular>
+          value: 0.0
+        valueType: "double"
+        uuid: "<init>_double3"
+        fixed: true
+        equalsMethodPresent: true
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "011f4a07-4042-360e-a86c-7956aece4033"
+    deleted: false
+    disabled: true
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: true
+- method:
+    name: "reportTemperatureNow"
+    returnType: "double"
+    signature: "reportTemperatureNow() : double"
+    instructionFingerprint: "E5906BE7E270293C6A5019C762E194A4"
+    parametersTypes: []
+  paths:
+  - pathId: "path1"
+    pathIdForUser: "path1"
+    testPathName: "reportTemperatureNowTest"
+    nameDefinedByUser: false
+    constructorSignature: "<init>(edu.wpi.first.wpilibj.simulation.DCMotorSim,xyz.auriium.mattlib2.hardware.config.MotorComponent)\
+      \ : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "922100702424FFDF29478751D49AC9DB"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "CONSTRUCTOR"
+      modelFingerprint: "DAA630F280CF3D3FB4DE95C47420DB56"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "OBJECT"
+        content: !<new>
+          target: "xyz.auriium.mattlib2.sim.DCSimMotor"
+          parameters:
+          - name: "motorSim"
+            value:
+              sapientType: "MOCK"
+              valueType: "edu.wpi.first.wpilibj.simulation.DCMotorSim"
+              uuid: "<init>_dCMotorSim1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          - name: "motorComponent"
+            value:
+              sapientType: "MOCK"
+              suggestedContent: !<unknown_object>
+                target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+                onlyPojoFunctions: false
+                builderPattern: false
+              valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+              uuid: "<init>_motorComponent1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          privateConstructor: false
+          createdByTargetCode: false
+        suggestedContent: !<new>
+          target: "xyz.auriium.mattlib2.sim.DCSimMotor"
+          parameters:
+          - name: "motorSim"
+            value:
+              sapientType: "UNKNOWN"
+              valueType: "edu.wpi.first.wpilibj.simulation.DCMotorSim"
+              uuid: "<init>_dCMotorSim1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          - name: "motorComponent"
+            value:
+              sapientType: "UNKNOWN"
+              suggestedContent: !<unknown_object>
+                target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+                onlyPojoFunctions: false
+                builderPattern: false
+              valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+              uuid: "<init>_motorComponent1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          privateConstructor: false
+          createdByTargetCode: false
+        valueType: "xyz.auriium.mattlib2.sim.DCSimMotor"
+        uuid: "target"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "LOCAL_VARIABLE"
+      name: "motorComponent"
+      modelFingerprint: "087012BFB7877B68492BD4B0E0315894"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+        uuid: "<init>_motorComponent1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "motorComponent"
+        name: "inverted"
+        parameters: []
+        signature: "inverted(): Optional"
+        returnValue:
+          sapientType: "OPTIONAL"
+          content: !<optional>
+            value:
+              sapientType: "NULL"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+            target: "java.util.Optional"
+          valueType: "java.util.Optional"
+          genericValueType: "java.lang.Boolean"
+          uuid: "<init>_optional1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 1025
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "51619841B5874975FEF8C41270798C88"
+      index: 3
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "BASIC"
+        content: !<regular>
+          value: 0.0
+        valueType: "double"
+        fixed: true
+        equalsMethodPresent: true
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "cd414e50-1830-3c30-aac2-9411ef88edf5"
+    deleted: false
+    disabled: true
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: true
+- method:
+    name: "forceLinearOffset"
+    returnType: "void"
+    signature: "forceLinearOffset(double) : void"
+    instructionFingerprint: "A2E040600D3E2A39DF7127D66C86FD68"
+    parametersTypes:
+    - "double"
+  paths:
+  - pathId: "path1"
+    pathIdForUser: "path1"
+    testPathName: "forceLinearOffsetThrowsMattlib2Exception"
+    nameDefinedByUser: false
+    constructorSignature: "<init>(edu.wpi.first.wpilibj.simulation.DCMotorSim,xyz.auriium.mattlib2.hardware.config.MotorComponent)\
+      \ : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "D8DAB9ABB3AC43585D26081B4DC15C27"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "CONSTRUCTOR"
+      modelFingerprint: "DAA630F280CF3D3FB4DE95C47420DB56"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "OBJECT"
+        content: !<new>
+          target: "xyz.auriium.mattlib2.sim.DCSimMotor"
+          parameters:
+          - name: "motorSim"
+            value:
+              sapientType: "MOCK"
+              valueType: "edu.wpi.first.wpilibj.simulation.DCMotorSim"
+              uuid: "<init>_dCMotorSim1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          - name: "motorComponent"
+            value:
+              sapientType: "MOCK"
+              suggestedContent: !<unknown_object>
+                target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+                onlyPojoFunctions: false
+                builderPattern: false
+              valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+              uuid: "<init>_motorComponent1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          privateConstructor: false
+          createdByTargetCode: false
+        suggestedContent: !<new>
+          target: "xyz.auriium.mattlib2.sim.DCSimMotor"
+          parameters:
+          - name: "motorSim"
+            value:
+              sapientType: "UNKNOWN"
+              valueType: "edu.wpi.first.wpilibj.simulation.DCMotorSim"
+              uuid: "<init>_dCMotorSim1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          - name: "motorComponent"
+            value:
+              sapientType: "UNKNOWN"
+              suggestedContent: !<unknown_object>
+                target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+                onlyPojoFunctions: false
+                builderPattern: false
+              valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+              uuid: "<init>_motorComponent1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          privateConstructor: false
+          createdByTargetCode: false
+        valueType: "xyz.auriium.mattlib2.sim.DCSimMotor"
+        uuid: "target"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "INPUT"
+      name: "linearOffset_mechanismMeters"
+      modelFingerprint: "6058C67DD25229648D9AC653CC9D4EB2"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "BASIC"
+        content: !<regular>
+          value: 0.0
+        valueType: "double"
+        uuid: "forceLinearOffset_double1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "LOCAL_VARIABLE"
+      name: "motorComponent"
+      modelFingerprint: "087012BFB7877B68492BD4B0E0315894"
+      index: 3
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+        uuid: "<init>_motorComponent1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "motorComponent"
+        name: "inverted"
+        parameters: []
+        signature: "inverted(): Optional"
+        returnValue:
+          sapientType: "OPTIONAL"
+          content: !<optional>
+            value:
+              sapientType: "NULL"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+            target: "java.util.Optional"
+          valueType: "java.util.Optional"
+          genericValueType: "java.lang.Boolean"
+          uuid: "<init>_optional1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 1025
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "FIELD"
+      name: "motorComponent"
+      modelFingerprint: "BD8FF555EDEB0C9C134712AA0E8BF6BE"
+      index: 4
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+        uuid: "<init>_motorComponent1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "this.motorComponent"
+        name: "rotationToMeterCoefficient"
+        parameters: []
+        signature: "rotationToMeterCoefficient(): Optional"
+        returnValue:
+          sapientType: "OPTIONAL"
+          content: !<optional>
+            value:
+              sapientType: "NULL"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+            target: "java.util.Optional"
+          valueType: "java.util.Optional"
+          genericValueType: "java.lang.Double"
+          uuid: "forceLinearOffset_optional1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 1025
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "FIELD"
+      name: "motorComponent"
+      modelFingerprint: "82974AF38616B6CA2457D56A58CBB685"
+      index: 5
+      ignored: false
+      nestedInLoop: true
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+        uuid: "<init>_motorComponent1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "this.motorComponent"
+        name: "selfPath"
+        parameters: []
+        signature: "selfPath(): GenericPath"
+        returnValue:
+          sapientType: "MOCK"
+          valueType: "xyz.auriium.yuukonstants.GenericPath"
+          uuid: "lambda$forceLinearOffset$1_genericPath1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 1025
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "STATIC"
+      name: "Exceptions"
+      modelFingerprint: "559244999C51C852813038B6C0565D8F"
+      index: 6
+      ignored: false
+      nestedInLoop: true
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        valueType: "xyz.auriium.mattlib2.hardware.Exceptions"
+        uuid: "xyz.auriium.mattlib2.hardware.Exceptions"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "xyz.auriium.mattlib2.hardware.Exceptions"
+        name: "MOTOR_NOT_LINEAR"
+        parameters:
+        - name: "motor"
+          value:
+            sapientType: "MOCK"
+            valueType: "xyz.auriium.yuukonstants.GenericPath"
+            uuid: "lambda$forceLinearOffset$1_genericPath1"
+            fixed: false
+            equalsMethodPresent: false
+            explicitCastNeeded: false
+        signature: "MOTOR_NOT_LINEAR(GenericPath): Mattlib2Exception"
+        returnValue:
+          sapientType: "EXCEPTION"
+          valueType: "xyz.auriium.mattlib2.Mattlib2Exception"
+          uuid: "lambda$forceLinearOffset$1_mattlib2Exception1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 9
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "09878E86253FA4AB023B855A309660D1"
+      index: 7
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "EXCEPTION"
+        valueType: "xyz.auriium.mattlib2.Mattlib2Exception"
+        uuid: "lambda$forceLinearOffset$1_mattlib2Exception1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "5e95270d-22ef-391d-bbad-23ee3016c85c"
+    deleted: false
+    disabled: true
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: true
+- method:
+    name: "linearPosition_mechanismMeters"
+    returnType: "double"
+    signature: "linearPosition_mechanismMeters() : double"
+    instructionFingerprint: "166BD0CC11C7A1AFBEF09E301BA6D4CE"
+    parametersTypes: []
+  paths:
+  - pathId: "path1"
+    pathIdForUser: "path1"
+    testPathName: "linearPosition_mechanismMetersThrowsMattlib2Exception"
+    nameDefinedByUser: false
+    constructorSignature: "<init>(edu.wpi.first.wpilibj.simulation.DCMotorSim,xyz.auriium.mattlib2.hardware.config.MotorComponent)\
+      \ : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "7EA2CF776CAD3FE6DACC1675DCF8B418"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "CONSTRUCTOR"
+      modelFingerprint: "DAA630F280CF3D3FB4DE95C47420DB56"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "OBJECT"
+        content: !<new>
+          target: "xyz.auriium.mattlib2.sim.DCSimMotor"
+          parameters:
+          - name: "motorSim"
+            value:
+              sapientType: "MOCK"
+              valueType: "edu.wpi.first.wpilibj.simulation.DCMotorSim"
+              uuid: "<init>_dCMotorSim1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          - name: "motorComponent"
+            value:
+              sapientType: "MOCK"
+              suggestedContent: !<unknown_object>
+                target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+                onlyPojoFunctions: false
+                builderPattern: false
+              valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+              uuid: "<init>_motorComponent1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          privateConstructor: false
+          createdByTargetCode: false
+        suggestedContent: !<new>
+          target: "xyz.auriium.mattlib2.sim.DCSimMotor"
+          parameters:
+          - name: "motorSim"
+            value:
+              sapientType: "UNKNOWN"
+              valueType: "edu.wpi.first.wpilibj.simulation.DCMotorSim"
+              uuid: "<init>_dCMotorSim1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          - name: "motorComponent"
+            value:
+              sapientType: "UNKNOWN"
+              suggestedContent: !<unknown_object>
+                target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+                onlyPojoFunctions: false
+                builderPattern: false
+              valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+              uuid: "<init>_motorComponent1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          privateConstructor: false
+          createdByTargetCode: false
+        valueType: "xyz.auriium.mattlib2.sim.DCSimMotor"
+        uuid: "target"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "LOCAL_VARIABLE"
+      name: "motorComponent"
+      modelFingerprint: "087012BFB7877B68492BD4B0E0315894"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+        uuid: "<init>_motorComponent1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "motorComponent"
+        name: "inverted"
+        parameters: []
+        signature: "inverted(): Optional"
+        returnValue:
+          sapientType: "OPTIONAL"
+          content: !<optional>
+            value:
+              sapientType: "NULL"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+            target: "java.util.Optional"
+          valueType: "java.util.Optional"
+          genericValueType: "java.lang.Boolean"
+          uuid: "<init>_optional1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 1025
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "FIELD"
+      name: "motorComponent"
+      modelFingerprint: "BD8FF555EDEB0C9C134712AA0E8BF6BE"
+      index: 3
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+        uuid: "<init>_motorComponent1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "this.motorComponent"
+        name: "rotationToMeterCoefficient"
+        parameters: []
+        signature: "rotationToMeterCoefficient(): Optional"
+        returnValue:
+          sapientType: "OPTIONAL"
+          content: !<optional>
+            value:
+              sapientType: "NULL"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+            target: "java.util.Optional"
+          valueType: "java.util.Optional"
+          genericValueType: "java.lang.Double"
+          uuid: "linearPosition_mechanismMeters_optional1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 1025
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "FIELD"
+      name: "motorComponent"
+      modelFingerprint: "82974AF38616B6CA2457D56A58CBB685"
+      index: 4
+      ignored: false
+      nestedInLoop: true
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+        uuid: "<init>_motorComponent1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "this.motorComponent"
+        name: "selfPath"
+        parameters: []
+        signature: "selfPath(): GenericPath"
+        returnValue:
+          sapientType: "MOCK"
+          valueType: "xyz.auriium.yuukonstants.GenericPath"
+          uuid: "lambda$linearPosition_mechanismMeters$2_genericPath1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 1025
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "STATIC"
+      name: "Exceptions"
+      modelFingerprint: "559244999C51C852813038B6C0565D8F"
+      index: 5
+      ignored: false
+      nestedInLoop: true
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        valueType: "xyz.auriium.mattlib2.hardware.Exceptions"
+        uuid: "xyz.auriium.mattlib2.hardware.Exceptions"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "xyz.auriium.mattlib2.hardware.Exceptions"
+        name: "MOTOR_NOT_LINEAR"
+        parameters:
+        - name: "motor"
+          value:
+            sapientType: "MOCK"
+            valueType: "xyz.auriium.yuukonstants.GenericPath"
+            uuid: "lambda$linearPosition_mechanismMeters$2_genericPath1"
+            fixed: false
+            equalsMethodPresent: false
+            explicitCastNeeded: false
+        signature: "MOTOR_NOT_LINEAR(GenericPath): Mattlib2Exception"
+        returnValue:
+          sapientType: "EXCEPTION"
+          valueType: "xyz.auriium.mattlib2.Mattlib2Exception"
+          uuid: "lambda$linearPosition_mechanismMeters$2_mattlib2Exception1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 9
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "09878E86253FA4AB023B855A309660D1"
+      index: 6
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "EXCEPTION"
+        valueType: "xyz.auriium.mattlib2.Mattlib2Exception"
+        uuid: "lambda$linearPosition_mechanismMeters$2_mattlib2Exception1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "77a4c6a0-95fc-3954-a3f8-48c346f9becb"
+    deleted: false
+    disabled: true
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: true
+- method:
+    name: "linearVelocity_mechanismMetersPerSecond"
+    returnType: "double"
+    signature: "linearVelocity_mechanismMetersPerSecond() : double"
+    instructionFingerprint: "ECC29703560D34F7E6496A36C9534B98"
+    parametersTypes: []
+  paths:
+  - pathId: "path1"
+    pathIdForUser: "path1"
+    testPathName: "linearVelocity_mechanismMetersPerSecondThrowsMattlib2Exception"
+    nameDefinedByUser: false
+    constructorSignature: "<init>(edu.wpi.first.wpilibj.simulation.DCMotorSim,xyz.auriium.mattlib2.hardware.config.MotorComponent)\
+      \ : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "994D8B0DA5D6DA6CD9B1951A703DC74F"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "CONSTRUCTOR"
+      modelFingerprint: "DAA630F280CF3D3FB4DE95C47420DB56"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "OBJECT"
+        content: !<new>
+          target: "xyz.auriium.mattlib2.sim.DCSimMotor"
+          parameters:
+          - name: "motorSim"
+            value:
+              sapientType: "MOCK"
+              valueType: "edu.wpi.first.wpilibj.simulation.DCMotorSim"
+              uuid: "<init>_dCMotorSim1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          - name: "motorComponent"
+            value:
+              sapientType: "MOCK"
+              suggestedContent: !<unknown_object>
+                target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+                onlyPojoFunctions: false
+                builderPattern: false
+              valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+              uuid: "<init>_motorComponent1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          privateConstructor: false
+          createdByTargetCode: false
+        suggestedContent: !<new>
+          target: "xyz.auriium.mattlib2.sim.DCSimMotor"
+          parameters:
+          - name: "motorSim"
+            value:
+              sapientType: "UNKNOWN"
+              valueType: "edu.wpi.first.wpilibj.simulation.DCMotorSim"
+              uuid: "<init>_dCMotorSim1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          - name: "motorComponent"
+            value:
+              sapientType: "UNKNOWN"
+              suggestedContent: !<unknown_object>
+                target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+                onlyPojoFunctions: false
+                builderPattern: false
+              valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+              uuid: "<init>_motorComponent1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          privateConstructor: false
+          createdByTargetCode: false
+        valueType: "xyz.auriium.mattlib2.sim.DCSimMotor"
+        uuid: "target"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "LOCAL_VARIABLE"
+      name: "motorComponent"
+      modelFingerprint: "087012BFB7877B68492BD4B0E0315894"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+        uuid: "<init>_motorComponent1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "motorComponent"
+        name: "inverted"
+        parameters: []
+        signature: "inverted(): Optional"
+        returnValue:
+          sapientType: "OPTIONAL"
+          content: !<optional>
+            value:
+              sapientType: "NULL"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+            target: "java.util.Optional"
+          valueType: "java.util.Optional"
+          genericValueType: "java.lang.Boolean"
+          uuid: "<init>_optional1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 1025
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "FIELD"
+      name: "motorComponent"
+      modelFingerprint: "BD8FF555EDEB0C9C134712AA0E8BF6BE"
+      index: 3
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+        uuid: "<init>_motorComponent1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "this.motorComponent"
+        name: "rotationToMeterCoefficient"
+        parameters: []
+        signature: "rotationToMeterCoefficient(): Optional"
+        returnValue:
+          sapientType: "OPTIONAL"
+          content: !<optional>
+            value:
+              sapientType: "NULL"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+            target: "java.util.Optional"
+          valueType: "java.util.Optional"
+          genericValueType: "java.lang.Double"
+          uuid: "linearVelocity_mechanismMetersPerSecond_optional1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 1025
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "FIELD"
+      name: "motorComponent"
+      modelFingerprint: "82974AF38616B6CA2457D56A58CBB685"
+      index: 4
+      ignored: false
+      nestedInLoop: true
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+        uuid: "<init>_motorComponent1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "this.motorComponent"
+        name: "selfPath"
+        parameters: []
+        signature: "selfPath(): GenericPath"
+        returnValue:
+          sapientType: "MOCK"
+          valueType: "xyz.auriium.yuukonstants.GenericPath"
+          uuid: "lambda$linearVelocity_mechanismMetersPerSecond$3_genericPath1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 1025
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "STATIC"
+      name: "Exceptions"
+      modelFingerprint: "559244999C51C852813038B6C0565D8F"
+      index: 5
+      ignored: false
+      nestedInLoop: true
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        valueType: "xyz.auriium.mattlib2.hardware.Exceptions"
+        uuid: "xyz.auriium.mattlib2.hardware.Exceptions"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "xyz.auriium.mattlib2.hardware.Exceptions"
+        name: "MOTOR_NOT_LINEAR"
+        parameters:
+        - name: "motor"
+          value:
+            sapientType: "MOCK"
+            valueType: "xyz.auriium.yuukonstants.GenericPath"
+            uuid: "lambda$linearVelocity_mechanismMetersPerSecond$3_genericPath1"
+            fixed: false
+            equalsMethodPresent: false
+            explicitCastNeeded: false
+        signature: "MOTOR_NOT_LINEAR(GenericPath): Mattlib2Exception"
+        returnValue:
+          sapientType: "EXCEPTION"
+          valueType: "xyz.auriium.mattlib2.Mattlib2Exception"
+          uuid: "lambda$linearVelocity_mechanismMetersPerSecond$3_mattlib2Exception1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 9
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "09878E86253FA4AB023B855A309660D1"
+      index: 6
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "EXCEPTION"
+        valueType: "xyz.auriium.mattlib2.Mattlib2Exception"
+        uuid: "lambda$linearVelocity_mechanismMetersPerSecond$3_mattlib2Exception1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "392b3221-474a-3864-911e-50b0e7306a5e"
+    deleted: false
+    disabled: true
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: true
+- method:
+    name: "forceRotationalOffset"
+    returnType: "void"
+    signature: "forceRotationalOffset(double) : void"
+    instructionFingerprint: "8EED53A495D737A5E54467940B10B839"
+    parametersTypes:
+    - "double"
+  paths:
+  - pathId: "path1"
+    pathIdForUser: "path1"
+    testPathName: "forceRotationalOffsetTest"
+    nameDefinedByUser: false
+    constructorSignature: "<init>(edu.wpi.first.wpilibj.simulation.DCMotorSim,xyz.auriium.mattlib2.hardware.config.MotorComponent)\
+      \ : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "FCDE8CC3807C9632B866BB4F59F5FE16"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "CONSTRUCTOR"
+      modelFingerprint: "DAA630F280CF3D3FB4DE95C47420DB56"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "OBJECT"
+        content: !<new>
+          target: "xyz.auriium.mattlib2.sim.DCSimMotor"
+          parameters:
+          - name: "motorSim"
+            value:
+              sapientType: "MOCK"
+              valueType: "edu.wpi.first.wpilibj.simulation.DCMotorSim"
+              uuid: "<init>_dCMotorSim1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          - name: "motorComponent"
+            value:
+              sapientType: "MOCK"
+              suggestedContent: !<unknown_object>
+                target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+                onlyPojoFunctions: false
+                builderPattern: false
+              valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+              uuid: "<init>_motorComponent1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          privateConstructor: false
+          createdByTargetCode: false
+        suggestedContent: !<new>
+          target: "xyz.auriium.mattlib2.sim.DCSimMotor"
+          parameters:
+          - name: "motorSim"
+            value:
+              sapientType: "UNKNOWN"
+              valueType: "edu.wpi.first.wpilibj.simulation.DCMotorSim"
+              uuid: "<init>_dCMotorSim1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          - name: "motorComponent"
+            value:
+              sapientType: "UNKNOWN"
+              suggestedContent: !<unknown_object>
+                target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+                onlyPojoFunctions: false
+                builderPattern: false
+              valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+              uuid: "<init>_motorComponent1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          privateConstructor: false
+          createdByTargetCode: false
+        valueType: "xyz.auriium.mattlib2.sim.DCSimMotor"
+        uuid: "target"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "INPUT"
+      name: "offset_mechanismRotations"
+      modelFingerprint: "FF57DB1C9D620C113D146490302F4047"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "BASIC"
+        content: !<regular>
+          value: 0.0
+        valueType: "double"
+        uuid: "forceRotationalOffset_double1"
+        fixed: false
+        equalsMethodPresent: true
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "LOCAL_VARIABLE"
+      name: "motorComponent"
+      modelFingerprint: "087012BFB7877B68492BD4B0E0315894"
+      index: 3
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+        uuid: "<init>_motorComponent1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "motorComponent"
+        name: "inverted"
+        parameters: []
+        signature: "inverted(): Optional"
+        returnValue:
+          sapientType: "OPTIONAL"
+          content: !<optional>
+            value:
+              sapientType: "NULL"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+            target: "java.util.Optional"
+          valueType: "java.util.Optional"
+          genericValueType: "java.lang.Boolean"
+          uuid: "<init>_optional1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 1025
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "68041019986276EDF5D420282D883A57"
+      index: 4
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "VOID"
+        fixed: true
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "89b0c00f-8839-33cb-be12-cecadba7b7e7"
+    deleted: false
+    disabled: true
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: true
+- method:
+    name: "angularPosition_normalizedMechanismRotations"
+    returnType: "double"
+    signature: "angularPosition_normalizedMechanismRotations() : double"
+    instructionFingerprint: "B9C47E0FE3E055E50AD620FABB0865EB"
+    parametersTypes: []
+  paths:
+  - pathId: "path1"
+    pathIdForUser: "path1"
+    testPathName: "angularPosition_normalizedMechanismRotationsTest"
+    nameDefinedByUser: false
+    constructorSignature: "<init>(edu.wpi.first.wpilibj.simulation.DCMotorSim,xyz.auriium.mattlib2.hardware.config.MotorComponent)\
+      \ : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "1B9CF6E3C7D4B68E49A93ED5996FE324"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "CONSTRUCTOR"
+      modelFingerprint: "DAA630F280CF3D3FB4DE95C47420DB56"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "OBJECT"
+        content: !<new>
+          target: "xyz.auriium.mattlib2.sim.DCSimMotor"
+          parameters:
+          - name: "motorSim"
+            value:
+              sapientType: "MOCK"
+              valueType: "edu.wpi.first.wpilibj.simulation.DCMotorSim"
+              uuid: "<init>_dCMotorSim1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          - name: "motorComponent"
+            value:
+              sapientType: "MOCK"
+              suggestedContent: !<unknown_object>
+                target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+                onlyPojoFunctions: false
+                builderPattern: false
+              valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+              uuid: "<init>_motorComponent1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          privateConstructor: false
+          createdByTargetCode: false
+        suggestedContent: !<new>
+          target: "xyz.auriium.mattlib2.sim.DCSimMotor"
+          parameters:
+          - name: "motorSim"
+            value:
+              sapientType: "UNKNOWN"
+              valueType: "edu.wpi.first.wpilibj.simulation.DCMotorSim"
+              uuid: "<init>_dCMotorSim1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          - name: "motorComponent"
+            value:
+              sapientType: "UNKNOWN"
+              suggestedContent: !<unknown_object>
+                target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+                onlyPojoFunctions: false
+                builderPattern: false
+              valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+              uuid: "<init>_motorComponent1"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+          privateConstructor: false
+          createdByTargetCode: false
+        valueType: "xyz.auriium.mattlib2.sim.DCSimMotor"
+        uuid: "target"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "LOCAL_VARIABLE"
+      name: "motorComponent"
+      modelFingerprint: "087012BFB7877B68492BD4B0E0315894"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "xyz.auriium.mattlib2.hardware.config.MotorComponent"
+        uuid: "<init>_motorComponent1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "motorComponent"
+        name: "inverted"
+        parameters: []
+        signature: "inverted(): Optional"
+        returnValue:
+          sapientType: "OPTIONAL"
+          content: !<optional>
+            value:
+              sapientType: "NULL"
+              fixed: false
+              equalsMethodPresent: false
+              explicitCastNeeded: false
+            target: "java.util.Optional"
+          valueType: "java.util.Optional"
+          genericValueType: "java.lang.Boolean"
+          uuid: "<init>_optional1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 1025
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "INTERNAL"
+      name: "internalMethod"
+      modelFingerprint: "314ADC1034425027CCF4D1A91E369284"
+      index: 3
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      methodExercised:
+        target: "target"
+        name: "angularPosition_mechanismRotations"
+        parameters: []
+        signature: "angularPosition_mechanismRotations(): double"
+        returnValue:
+          sapientType: "BASIC"
+          content: !<regular>
+            value: 1.0
+          suggestedContent: !<regular>
+            value: 1.0
+          valueType: "double"
+          uuid: "angularPosition_normalizedMechanismRotations_double1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 1
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "STATIC"
+      name: "AngleUtil"
+      modelFingerprint: "1B49DBDEBC5A95D8DC1A0F21A99DA6B9"
+      index: 4
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "REAL"
+        valueType: "xyz.auriium.mattlib2.utils.AngleUtil"
+        uuid: "xyz.auriium.mattlib2.utils.AngleUtil"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "xyz.auriium.mattlib2.utils.AngleUtil"
+        name: "normalizeRotations"
+        parameters:
+        - name: "numberOnInfiniteSet_rotations"
+          value:
+            sapientType: "BASIC"
+            content: !<regular>
+              value: 1.0
+            suggestedContent: !<regular>
+              value: 1.0
+            valueType: "double"
+            uuid: "angularPosition_normalizedMechanismRotations_double1"
+            fixed: false
+            equalsMethodPresent: false
+            explicitCastNeeded: false
+        signature: "normalizeRotations(double): double"
+        returnValue:
+          sapientType: "BASIC"
+          content: !<regular>
+            value: 0.0
+          suggestedContent: !<regular>
+            value: 0.0
+          valueType: "double"
+          uuid: "angularPosition_normalizedMechanismRotations_double2"
+          fixed: false
+          equalsMethodPresent: true
+          explicitCastNeeded: false
+        access: 9
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "9137498EFBEBDD3FA216D1B7B56DA3B7"
+      index: 5
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "BASIC"
+        content: !<regular>
+          value: 0.0
+        suggestedContent: !<regular>
+          value: 0.0
+        valueType: "double"
+        uuid: "angularPosition_normalizedMechanismRotations_double2"
+        fixed: false
+        equalsMethodPresent: true
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "8e635b89-f602-397f-9935-03e6dd2f6d23"
+    deleted: false
+    disabled: true
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: true

@@ -1,0 +1,936 @@
+---
+modelFingerprint: "A04422EEFF00D702252D1B16C9478DE6"
+methods:
+- method:
+    name: "getKey"
+    returnType: "java.lang.String"
+    signature: "getKey(java.lang.reflect.Method) : java.lang.String"
+    instructionFingerprint: "B8AF3F49D5D8E09FE0035982ECDC1111"
+    parametersTypes:
+    - "java.lang.reflect.Method"
+  paths:
+  - pathId: "path1"
+    pathIdForUser: "path1"
+    testPathName: "getKeyWhenConfIsNotNull"
+    nameDefinedByUser: false
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "855359A7B502DCE73CD8FBC67D9764D2"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "INPUT"
+      name: "method"
+      modelFingerprint: "17D1981C9FDA2F5DD71BF31F647BA599"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "NULL"
+        suggestedContent: !<unknown_object>
+          target: "java.lang.reflect.Method"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "java.lang.reflect.Method"
+        uuid: "getKey_method1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "LOCAL_VARIABLE"
+      name: "conf"
+      modelFingerprint: "9D4B1F701AA515CE31362BD864D0CB28"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "xyz.auriium.mattlib2.log.annote.Conf"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "xyz.auriium.mattlib2.log.annote.Conf"
+        uuid: "getKey_annotation1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: true
+      methodExercised:
+        target: "conf"
+        name: "value"
+        parameters: []
+        signature: "value(): String"
+        returnValue:
+          sapientType: "BASIC"
+          content: !<regular>
+            value: "return_of_value1"
+          valueType: "java.lang.String"
+          uuid: "getKey_string1"
+          fixed: false
+          equalsMethodPresent: true
+          explicitCastNeeded: false
+        access: 1025
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "74E3865DF3703B1BD134558B3110DF96"
+      index: 3
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "BASIC"
+        content: !<regular>
+          value: "return_of_value1"
+        valueType: "java.lang.String"
+        uuid: "getKey_string1"
+        fixed: false
+        equalsMethodPresent: true
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "7203cd39-4588-3923-a0b7-0103de3c9b8e"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_WITHOUT_EXPRESSION_SUPPORT"
+    prover: "LLM"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path2"
+    pathIdForUser: "path2"
+    testPathName: "getKeyWhenLogIsNotNull"
+    nameDefinedByUser: false
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "133B2DEA7A7153674D9C99F35BF53846"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "INPUT"
+      name: "method"
+      modelFingerprint: "17D1981C9FDA2F5DD71BF31F647BA599"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "NULL"
+        suggestedContent: !<unknown_object>
+          target: "java.lang.reflect.Method"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "java.lang.reflect.Method"
+        uuid: "getKey_method1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "LOCAL_VARIABLE"
+      name: "log"
+      modelFingerprint: "4273B5A931FBF6001EB6021CD2991AAD"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "xyz.auriium.mattlib2.log.annote.Log"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "xyz.auriium.mattlib2.log.annote.Log"
+        uuid: "getKey_annotation2"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: true
+      methodExercised:
+        target: "log"
+        name: "value"
+        parameters: []
+        signature: "value(): String"
+        returnValue:
+          sapientType: "BASIC"
+          content: !<regular>
+            value: "return_of_value1"
+          valueType: "java.lang.String"
+          uuid: "getKey_string1"
+          fixed: false
+          equalsMethodPresent: true
+          explicitCastNeeded: false
+        access: 1025
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "D1F433D4EB9F8805FF391E82DAB508AB"
+      index: 3
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "BASIC"
+        content: !<regular>
+          value: "return_of_value1"
+        valueType: "java.lang.String"
+        uuid: "getKey_string1"
+        fixed: false
+        equalsMethodPresent: true
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "7648a38f-5f5d-3876-9964-b38ef42b52e9"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_WITHOUT_EXPRESSION_SUPPORT"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path3"
+    pathIdForUser: "path3"
+    testPathName: "getKeyWhenTuneIsNotNull"
+    nameDefinedByUser: false
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "7BB59A4F51DC8777ED51CF8B59054D96"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "INPUT"
+      name: "method"
+      modelFingerprint: "17D1981C9FDA2F5DD71BF31F647BA599"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "NULL"
+        suggestedContent: !<unknown_object>
+          target: "java.lang.reflect.Method"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "java.lang.reflect.Method"
+        uuid: "getKey_method1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "LOCAL_VARIABLE"
+      name: "tune"
+      modelFingerprint: "8BC4EC9A823D5B75573F0565C5B0B7DD"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "xyz.auriium.mattlib2.log.annote.Tune"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "xyz.auriium.mattlib2.log.annote.Tune"
+        uuid: "getKey_annotation3"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: true
+      methodExercised:
+        target: "tune"
+        name: "value"
+        parameters: []
+        signature: "value(): String"
+        returnValue:
+          sapientType: "BASIC"
+          content: !<regular>
+            value: "return_of_value1"
+          valueType: "java.lang.String"
+          uuid: "getKey_string1"
+          fixed: false
+          equalsMethodPresent: true
+          explicitCastNeeded: false
+        access: 1025
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "D1F433D4EB9F8805FF391E82DAB508AB"
+      index: 3
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "BASIC"
+        content: !<regular>
+          value: "return_of_value1"
+        valueType: "java.lang.String"
+        uuid: "getKey_string1"
+        fixed: false
+        equalsMethodPresent: true
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "dbb556b7-97d4-39dc-b205-adf126e19c9e"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_WITHOUT_EXPRESSION_SUPPORT"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path4"
+    pathIdForUser: "path4"
+    testPathName: "getKeyWhenTuneIsNull"
+    nameDefinedByUser: false
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "705772A3FF380FBB59A918C2021011AB"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "INPUT"
+      name: "method"
+      modelFingerprint: "17D1981C9FDA2F5DD71BF31F647BA599"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "NULL"
+        suggestedContent: !<unknown_object>
+          target: "java.lang.reflect.Method"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "java.lang.reflect.Method"
+        uuid: "getKey_method1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "D1F433D4EB9F8805FF391E82DAB508AB"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "BASIC"
+        content: !<regular>
+          value: "result1"
+        valueType: "java.lang.String"
+        uuid: "getKey_string1"
+        fixed: false
+        equalsMethodPresent: true
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "37979940-9945-3394-9309-1a4122bfdadc"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_WITHOUT_EXPRESSION_SUPPORT"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+- method:
+    name: "checkMattLog"
+    returnType: "void"
+    signature: "checkMattLog(java.lang.reflect.Method) : void"
+    instructionFingerprint: "D61680327D71074AB52431DE62391B96"
+    parametersTypes:
+    - "java.lang.reflect.Method"
+  paths:
+  - pathId: "path1"
+    pathIdForUser: "path1"
+    testPathName: "checkMattLogWhenQuantityGreaterThan1ThrowsMattlib2Exception"
+    nameDefinedByUser: false
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "049298224D65991FFE33FD9B4EC89493"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "INPUT"
+      name: "method"
+      modelFingerprint: "17D1981C9FDA2F5DD71BF31F647BA599"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "NULL"
+        suggestedContent: !<unknown_object>
+          target: "java.lang.reflect.Method"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "java.lang.reflect.Method"
+        uuid: "checkMattLog_method1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "STATIC"
+      name: "Exceptions"
+      modelFingerprint: "6E18841224C72734F818CD6131B96ECE"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        valueType: "xyz.auriium.mattlib2.Exceptions"
+        uuid: "xyz.auriium.mattlib2.Exceptions"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "xyz.auriium.mattlib2.Exceptions"
+        name: "TOO_MANY_ANNOTATIONS"
+        parameters:
+        - name: "methodName"
+          value:
+            sapientType: "BASIC"
+            content: !<regular>
+              value: "methodName1"
+            valueType: "java.lang.String"
+            uuid: "checkMattLog_string1"
+            fixed: false
+            equalsMethodPresent: false
+            explicitCastNeeded: false
+        - name: "className"
+          value:
+            sapientType: "BASIC"
+            content: !<regular>
+              value: "Object"
+            suggestedContent: !<regular>
+              value: "Object"
+            valueType: "java.lang.String"
+            uuid: "checkMattLog_string2"
+            fixed: false
+            equalsMethodPresent: false
+            explicitCastNeeded: false
+        signature: "TOO_MANY_ANNOTATIONS(String,String): Mattlib2Exception"
+        returnValue:
+          sapientType: "EXCEPTION"
+          valueType: "xyz.auriium.mattlib2.Mattlib2Exception"
+          uuid: "checkMattLog_mattlib2Exception1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 9
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "09878E86253FA4AB023B855A309660D1"
+      index: 3
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "EXCEPTION"
+        valueType: "xyz.auriium.mattlib2.Mattlib2Exception"
+        uuid: "checkMattLog_mattlib2Exception1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "2992ecc1-7ee9-3394-a97f-e7e5380f4473"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_WITHOUT_EXPRESSION_SUPPORT"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path6"
+    pathIdForUser: "path2"
+    testPathName: "checkMattLogWhenQuantityEquals0ThrowsMattlib2Exception"
+    nameDefinedByUser: false
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "09F6ACBFBCBEA83ECEFD0856D7973DCE"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "INPUT"
+      name: "method"
+      modelFingerprint: "17D1981C9FDA2F5DD71BF31F647BA599"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "NULL"
+        suggestedContent: !<unknown_object>
+          target: "java.lang.reflect.Method"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "java.lang.reflect.Method"
+        uuid: "checkMattLog_method1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "STATIC"
+      name: "Exceptions"
+      modelFingerprint: "6BBAAE2A3D3000816243937C0EB84637"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        valueType: "xyz.auriium.mattlib2.Exceptions"
+        uuid: "xyz.auriium.mattlib2.Exceptions"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "xyz.auriium.mattlib2.Exceptions"
+        name: "NO_ANNOTATIONS_ON_METHOD"
+        parameters:
+        - name: "methodName"
+          value:
+            sapientType: "BASIC"
+            content: !<regular>
+              value: "methodName1"
+            valueType: "java.lang.String"
+            uuid: "checkMattLog_string1"
+            fixed: false
+            equalsMethodPresent: false
+            explicitCastNeeded: false
+        - name: "className"
+          value:
+            sapientType: "BASIC"
+            content: !<regular>
+              value: "Object"
+            suggestedContent: !<regular>
+              value: "Object"
+            valueType: "java.lang.String"
+            uuid: "checkMattLog_string2"
+            fixed: false
+            equalsMethodPresent: false
+            explicitCastNeeded: false
+        signature: "NO_ANNOTATIONS_ON_METHOD(String,String): Mattlib2Exception"
+        returnValue:
+          sapientType: "EXCEPTION"
+          valueType: "xyz.auriium.mattlib2.Mattlib2Exception"
+          uuid: "checkMattLog_mattlib2Exception1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 9
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "09878E86253FA4AB023B855A309660D1"
+      index: 3
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "EXCEPTION"
+        valueType: "xyz.auriium.mattlib2.Mattlib2Exception"
+        uuid: "checkMattLog_mattlib2Exception1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "2661d3b2-b1f7-3726-bb3d-067951fbb270"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_WITHOUT_EXPRESSION_SUPPORT"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path2"
+    pathIdForUser: "path3"
+    testPathName: "checkMattLogWhenMethodGetParameterCountNotEquals0ThrowsMattlib2Exception"
+    nameDefinedByUser: false
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "6345A1C288DBEA5F14C19DAD81919347"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "INPUT"
+      name: "method"
+      modelFingerprint: "17D1981C9FDA2F5DD71BF31F647BA599"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "NULL"
+        suggestedContent: !<unknown_object>
+          target: "java.lang.reflect.Method"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "java.lang.reflect.Method"
+        uuid: "checkMattLog_method1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "STATIC"
+      name: "Exceptions"
+      modelFingerprint: "356557E63380E2027EA2AB36A28BFE53"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        valueType: "xyz.auriium.mattlib2.Exceptions"
+        uuid: "xyz.auriium.mattlib2.Exceptions"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "xyz.auriium.mattlib2.Exceptions"
+        name: "BAD_CONF_OR_TUNE"
+        parameters:
+        - name: "methodName"
+          value:
+            sapientType: "BASIC"
+            content: !<regular>
+              value: "methodName1"
+            valueType: "java.lang.String"
+            uuid: "checkMattLog_string1"
+            fixed: false
+            equalsMethodPresent: false
+            explicitCastNeeded: false
+        - name: "className"
+          value:
+            sapientType: "BASIC"
+            content: !<regular>
+              value: "Object"
+            suggestedContent: !<regular>
+              value: "Object"
+            valueType: "java.lang.String"
+            uuid: "checkMattLog_string2"
+            fixed: false
+            equalsMethodPresent: false
+            explicitCastNeeded: false
+        signature: "BAD_CONF_OR_TUNE(String,String): Mattlib2Exception"
+        returnValue:
+          sapientType: "EXCEPTION"
+          valueType: "xyz.auriium.mattlib2.Mattlib2Exception"
+          uuid: "checkMattLog_mattlib2Exception1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 9
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "09878E86253FA4AB023B855A309660D1"
+      index: 3
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "EXCEPTION"
+        valueType: "xyz.auriium.mattlib2.Mattlib2Exception"
+        uuid: "checkMattLog_mattlib2Exception1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "ea852dad-7d1a-33ad-bfcf-1b9ad73f745f"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_WITHOUT_EXPRESSION_SUPPORT"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path3"
+    pathIdForUser: "path4"
+    testPathName: "checkMattLogWhenLogIsNull"
+    nameDefinedByUser: false
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "052059DCE8A33FB753B6F583C688A561"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "INPUT"
+      name: "method"
+      modelFingerprint: "17D1981C9FDA2F5DD71BF31F647BA599"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "NULL"
+        suggestedContent: !<unknown_object>
+          target: "java.lang.reflect.Method"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "java.lang.reflect.Method"
+        uuid: "checkMattLog_method1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "68041019986276EDF5D420282D883A57"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "VOID"
+        fixed: true
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "6f4bb2a3-ec08-3e3c-96d5-3e1fd8410b23"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_WITHOUT_EXPRESSION_SUPPORT"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path4"
+    pathIdForUser: "path5"
+    testPathName: "checkMattLogWhenMethodGetParameterCountGreaterThan1ThrowsMattlib2Exception"
+    nameDefinedByUser: false
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "3472D5AA1ED64A3E593FFCC16DF16154"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "INPUT"
+      name: "method"
+      modelFingerprint: "17D1981C9FDA2F5DD71BF31F647BA599"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "NULL"
+        suggestedContent: !<unknown_object>
+          target: "java.lang.reflect.Method"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "java.lang.reflect.Method"
+        uuid: "checkMattLog_method1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "STATIC"
+      name: "Exceptions"
+      modelFingerprint: "7686D536983D43FBAA38271E191F5D50"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        valueType: "xyz.auriium.mattlib2.Exceptions"
+        uuid: "xyz.auriium.mattlib2.Exceptions"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "xyz.auriium.mattlib2.Exceptions"
+        name: "BAD_LOG"
+        parameters:
+        - name: "methodName"
+          value:
+            sapientType: "BASIC"
+            content: !<regular>
+              value: "methodName1"
+            valueType: "java.lang.String"
+            uuid: "checkMattLog_string1"
+            fixed: false
+            equalsMethodPresent: false
+            explicitCastNeeded: false
+        - name: "className"
+          value:
+            sapientType: "BASIC"
+            content: !<regular>
+              value: "Object"
+            suggestedContent: !<regular>
+              value: "Object"
+            valueType: "java.lang.String"
+            uuid: "checkMattLog_string2"
+            fixed: false
+            equalsMethodPresent: false
+            explicitCastNeeded: false
+        signature: "BAD_LOG(String,String): Mattlib2Exception"
+        returnValue:
+          sapientType: "EXCEPTION"
+          valueType: "xyz.auriium.mattlib2.Mattlib2Exception"
+          uuid: "checkMattLog_mattlib2Exception1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 9
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "09878E86253FA4AB023B855A309660D1"
+      index: 3
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "EXCEPTION"
+        valueType: "xyz.auriium.mattlib2.Mattlib2Exception"
+        uuid: "checkMattLog_mattlib2Exception1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "a9e3cf5d-bb81-35d8-bf16-62631edb5ad5"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_WITHOUT_EXPRESSION_SUPPORT"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path5"
+    pathIdForUser: "path6"
+    testPathName: "checkMattLogWhenMethodGetReturnTypeNotEqualsDefaultTypeThrowsMattlib2Exception"
+    nameDefinedByUser: false
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "672E028DBF5EE7F6C51FD408DF3428EF"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "INPUT"
+      name: "method"
+      modelFingerprint: "17D1981C9FDA2F5DD71BF31F647BA599"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "NULL"
+        suggestedContent: !<unknown_object>
+          target: "java.lang.reflect.Method"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "java.lang.reflect.Method"
+        uuid: "checkMattLog_method1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "STATIC"
+      name: "Exceptions"
+      modelFingerprint: "04CAD23AF604621B5A664EDD6F68367F"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        valueType: "xyz.auriium.mattlib2.Exceptions"
+        uuid: "xyz.auriium.mattlib2.Exceptions"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "xyz.auriium.mattlib2.Exceptions"
+        name: "BAD_RETURN_TYPE"
+        parameters:
+        - name: "methodName"
+          value:
+            sapientType: "BASIC"
+            content: !<regular>
+              value: "methodName1"
+            valueType: "java.lang.String"
+            uuid: "checkMattLog_string1"
+            fixed: false
+            equalsMethodPresent: false
+            explicitCastNeeded: false
+        - name: "className"
+          value:
+            sapientType: "BASIC"
+            content: !<regular>
+              value: "Object"
+            suggestedContent: !<regular>
+              value: "Object"
+            valueType: "java.lang.String"
+            uuid: "checkMattLog_string2"
+            fixed: false
+            equalsMethodPresent: false
+            explicitCastNeeded: false
+        signature: "BAD_RETURN_TYPE(String,String): Mattlib2Exception"
+        returnValue:
+          sapientType: "EXCEPTION"
+          valueType: "xyz.auriium.mattlib2.Mattlib2Exception"
+          uuid: "checkMattLog_mattlib2Exception1"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 9
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "09878E86253FA4AB023B855A309660D1"
+      index: 3
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "EXCEPTION"
+        valueType: "xyz.auriium.mattlib2.Mattlib2Exception"
+        uuid: "checkMattLog_mattlib2Exception1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "7992807b-31af-3bee-b72c-32280bafd881"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_WITHOUT_EXPRESSION_SUPPORT"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false

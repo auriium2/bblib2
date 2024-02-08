@@ -1,7 +1,7 @@
 package xyz.auriium.mattlib2.sim;
 
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import xyz.auriium.mattlib2.IPeriodicLooped;
+import xyz.auriium.mattlib2.loop.IMattlibHooked;
 import xyz.auriium.mattlib2.hardware.ILinearMotor;
 import xyz.auriium.mattlib2.hardware.IRotationalMotor;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
@@ -10,7 +10,7 @@ import xyz.auriium.yuukonstants.exception.ExplainedException;
 
 import java.util.Optional;
 
-public class DCSimMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped {
+public class DCSimMotor implements ILinearMotor, IRotationalMotor, IMattlibHooked {
 
     final DCMotorSim motorSim;
     final MotorComponent motorComponent;
@@ -44,7 +44,6 @@ public class DCSimMotor implements ILinearMotor, IRotationalMotor, IPeriodicLoop
         motorComponent.reportVoltageGiven(voltageNow);
         motorComponent.reportTemperature(0);
         motorComponent.reportMechanismRotations(angularPosition_mechanismRotations());
-        motorComponent.reportMechanismRotationsBound(angularPosition_normalizedMechanismRotations());
     }
 
     @Override

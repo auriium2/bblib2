@@ -1,5 +1,7 @@
 package xyz.auriium.mattlib2;
 
+import xyz.auriium.mattlib2.loop.IMattlibHooked;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,22 +10,22 @@ import java.util.List;
  */
 public class MattlibLooper {
 
-    final List<IPeriodicLooped> orderedThingsToBeLooped = new ArrayList<>();
+    final List<IMattlibHooked> orderedThingsToBeLooped = new ArrayList<>();
 
-    public void register(IPeriodicLooped runnable) {
-        if (orderedThingsToBeLooped.contains(runnable)) return;
-        orderedThingsToBeLooped.add(runnable);
+    public void register(IMattlibHooked hook) {
+        if (orderedThingsToBeLooped.contains(hook)) return;
+        orderedThingsToBeLooped.add(hook);
     }
 
 
     public void runPreInit() {
-        for (IPeriodicLooped runnable : orderedThingsToBeLooped) {
+        for (IMattlibHooked runnable : orderedThingsToBeLooped) {
             runnable.preInit();
         }
     }
 
     public void runPostInit() {
-        for (IPeriodicLooped runnable : orderedThingsToBeLooped) {
+        for (IMattlibHooked runnable : orderedThingsToBeLooped) {
             runnable.verifyInit(); //TODO send those exceptions somewhere
             runnable.verify2Init();
         }
@@ -31,16 +33,16 @@ public class MattlibLooper {
 
     public void runPeriodicLoop() {
 
-        for (IPeriodicLooped runnable : orderedThingsToBeLooped) {
+        for (IMattlibHooked runnable : orderedThingsToBeLooped) {
             runnable.logicPeriodic();
         }
 
         if (MattlibSettings.USE_LOGGING) {
-            for (IPeriodicLooped runnable : orderedThingsToBeLooped) {
+            for (IMattlibHooked runnable : orderedThingsToBeLooped) {
                 runnable.logPeriodic();
             }
 
-            for (IPeriodicLooped runnable : orderedThingsToBeLooped) {
+            for (IMattlibHooked runnable : orderedThingsToBeLooped) {
                 runnable.tunePeriodic();
             }
         }
@@ -48,12 +50,12 @@ public class MattlibLooper {
     }
 
     /**
-     * Exists so you can register a {@link IPeriodicLooped} in one line when instantiating an object
+     * Exists so you can register a {@link IMattlibHooked} in one line when instantiating an object
      * @param someThing
      * @return
      * @param <T>
      */
-    public <T extends IPeriodicLooped> T registerAndReturn(T someThing) {
+    public <T extends IMattlibHooked> T registerAndReturn(T someThing) {
         if (orderedThingsToBeLooped.contains(someThing)) return someThing;
         orderedThingsToBeLooped.add(someThing);
 

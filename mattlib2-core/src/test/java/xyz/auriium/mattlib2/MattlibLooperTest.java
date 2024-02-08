@@ -2,13 +2,14 @@ package xyz.auriium.mattlib2;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import xyz.auriium.mattlib2.loop.IMattlibHooked;
 import xyz.auriium.yuukonstants.exception.ExplainedException;
 
 import java.util.Optional;
 
 public class MattlibLooperTest {
 
-    public class ShitterUsingLoops implements IPeriodicLooped {
+    public class ShitterUsingLoops implements IMattlibHooked {
         boolean initRun = false;
 
         public ShitterUsingLoops() {

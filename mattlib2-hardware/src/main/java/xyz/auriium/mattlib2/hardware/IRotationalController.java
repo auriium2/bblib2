@@ -12,7 +12,9 @@ public interface IRotationalController extends IRotationalMotor {
      * You should call this every frame. Don't call the other version if you call this one.
      * @param setpoint_mechanismNormalizedRotations desired position of the mechanism in rotations
      */
-    void controlToNormalizedReference(double setpoint_mechanismNormalizedRotations);
+    default void controlToNormalizedReference(double setpoint_mechanismNormalizedRotations) {
+        controlToNormalizedReferenceArbitrary(setpoint_mechanismNormalizedRotations, 0);
+    }
 
     /**
      * does pid but adds a feedforward first, for stability or something
@@ -22,7 +24,9 @@ public interface IRotationalController extends IRotationalMotor {
     void controlToNormalizedReferenceArbitrary(double setpoint_mechanismNormalizedRotations, double arbitraryFF_volts);
 
 
-    void controlToInfiniteReference(double setpoint_mechanismRotations);
+    default void controlToInfiniteReference(double setpoint_mechanismRotations) {
+        controlToInfiniteReferenceArbitrary(setpoint_mechanismRotations, 0);
+    }
 
 
     /**

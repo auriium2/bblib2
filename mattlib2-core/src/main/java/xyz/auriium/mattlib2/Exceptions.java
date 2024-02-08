@@ -7,6 +7,14 @@ import static java.lang.String.format;
 
 public class Exceptions {
 
+    public static Mattlib2Exception BAD_ROUTINE_LENGTH() {
+        throw new Mattlib2Exception(
+                "badRoutineLength",
+                "the contents of a sequential subroutine must be greater than 0",
+                "make the amount of subroutines greater than 0"
+        );
+    }
+
     public static Mattlib2Exception BAD_NAME(String path) {
         throw new Mattlib2Exception(
                 "badName",
@@ -28,7 +36,7 @@ public class Exceptions {
     }
 
 
-    public static final Mattlib2Exception CONF_NOT_LOADED() {
+    public static Mattlib2Exception CONF_NOT_LOADED() {
         throw new Mattlib2Exception(
                 "configNotLoaded",
                 format("your code tried to access a component, but it was loaded after preInit was called and therefore wasn't loaded!"),
@@ -36,7 +44,7 @@ public class Exceptions {
         );
     }
 
-    public static final Mattlib2Exception MATTLIB_FILE_EXCEPTION(String fileType) {
+    public static Mattlib2Exception MATTLIB_FILE_EXCEPTION(String fileType) {
         throw new Mattlib2Exception(
                 "noConfigFile",
                 format("for some reason the [%s] file for mattlib is not present!", fileType),
@@ -44,7 +52,7 @@ public class Exceptions {
         );
     }
 
-    public static final Mattlib2Exception DUPLICATE_IDS(GenericPath path) {
+    public static Mattlib2Exception DUPLICATE_IDS(GenericPath path) {
         throw new Mattlib2Exception(
                 "duplicateIds",
                 format("multiple config nodes/mattlib components share the name [%s].", path.tablePath()),
@@ -52,7 +60,7 @@ public class Exceptions {
         );
     }
 
-    public static final Mattlib2Exception NODE_NOT_MAP(GenericPath path) {
+    public static Mattlib2Exception NODE_NOT_MAP(GenericPath path) {
         throw new Mattlib2Exception(
                 "nodeNotMap",
                 format("the node at position [%s] is expected to be a mapping-like, but it is not.", path.tablePath()),
@@ -60,7 +68,7 @@ public class Exceptions {
         );
     }
 
-    public static final Mattlib2Exception ALREADY_INITIALIZED() {
+    public static Mattlib2Exception ALREADY_INITIALIZED() {
         return new Mattlib2Exception(
                 "logAlreadyInitialized",
                 "mattlib2 was already initialized, but you called loadWaiting or loadFuture on it after initialization!",

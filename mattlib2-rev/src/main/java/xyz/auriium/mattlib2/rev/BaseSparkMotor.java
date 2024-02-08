@@ -1,8 +1,7 @@
 package xyz.auriium.mattlib2.rev;
 
 import com.revrobotics.*;
-import edu.wpi.first.units.Measure;
-import xyz.auriium.mattlib2.IPeriodicLooped;
+import xyz.auriium.mattlib2.loop.IMattlibHooked;
 import xyz.auriium.mattlib2.hardware.ILinearMotor;
 import xyz.auriium.mattlib2.hardware.IRotationalMotor;
 import xyz.auriium.mattlib2.hardware.OperationMode;
@@ -17,7 +16,7 @@ import java.util.Optional;
 /**
  * Implementation of the spark motor
  */
-class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IPeriodicLooped {
+class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IMattlibHooked {
 
     final CANSparkMax sparkMax;
     final MotorComponent motorComponent;

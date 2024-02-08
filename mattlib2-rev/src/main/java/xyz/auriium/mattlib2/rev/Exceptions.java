@@ -7,14 +7,14 @@ import static java.lang.String.format;
 
 public class Exceptions {
 
-    public static final Mattlib2Exception VOLTAGE_COMPENSATION_FAILED(String motor) {
+    public static Mattlib2Exception VOLTAGE_COMPENSATION_FAILED(String motor) {
         return new Mattlib2Exception(
                 "rev/voltageCompensationFailed",
                 format("something went wrong setting up voltage compensation for the motor %s", motor),
                 "panic and cry"
         );
     }
-    public static final Mattlib2Exception GENERIC_REV_ERROR(String motor) {
+    public static Mattlib2Exception GENERIC_REV_ERROR(String motor) {
         return new Mattlib2Exception(
                 "rev/genericRevError",
                 format("something went wrong setting up a rev config command for the motor %s", motor),
@@ -28,7 +28,7 @@ public class Exceptions {
             "do not try to use the external value supply when you command this motor to a reference"
     );
 
-    public static final Mattlib2Exception MUST_DEFINE_LIMIT_TYPE(GenericPath path) {
+    public static Mattlib2Exception MUST_DEFINE_LIMIT_TYPE(GenericPath path) {
         return new Mattlib2Exception(
                 "rev/mustDefineLimitType",
                 format("the motor at [%s] is using limit switches, but does not define the field <switch_normally> to tell whether the limit switch is normally open or not", path.tablePath()),

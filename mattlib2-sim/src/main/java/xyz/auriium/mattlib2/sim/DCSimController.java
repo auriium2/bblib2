@@ -36,7 +36,7 @@ public class DCSimController extends DCSimMotor implements ILinearController, IR
     }
 
     @Override
-    public void controlToLinearReference(double setpointMechanism_meters) {
+    public void controlToLinearReferenceArbitrary(double setpointMechanism_meters, double arbFF) {
         double coef = motorComponent.rotationToMeterCoefficient().orElseThrow(() -> Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath()));
 
         double controlEffort = pidController.calculate(
@@ -46,31 +46,15 @@ public class DCSimController extends DCSimMotor implements ILinearController, IR
                 // / motorComponent.encoderToMechanismCoefficient() WHAT THE FUCK
         );
 
-        this.setToVoltage(controlEffort);
+        this.setToVoltage(controlEffort + arbFF);
     }
 
-    @Override
-    public void controlToLinearReference(double setpointMechanism_meters, double measurementMechanism_meters) {
-
-        double coef = motorComponent.rotationToMeterCoefficient().orElseThrow(() -> Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath()));
-        double controlEffort = pidController.calculate(
-                angularPosition_encoderRotations(),
-                setpointMechanism_meters
-                / coef
-                // / motorComponent.encoderToMechanismCoefficient() WHAT THE FUCK
-        );
-
-        this.setToVoltage(controlEffort);
-    }
 
     @Override
-    public void controlToNormalizedReference(double setpoint_mechanismNormalizedRotations) {
-        controlToNormalizedReference(setpoint_mechanismNormalizedRotations, angularPosition_mechanismRotations());
-    }
+    public void controlToNormalizedReferenceArbitrary(double setpoint_mechanismNormalizedRotations, double arbFF) {
 
-    @Override
-    public void controlToNormalizedReference(double setpoint_mechanismNormalizedRotations, double measurement_mechanismNormalizedRotations) {
 
+        double measurement_mechanismNormalizedRotations = angularPosition_normalizedMechanismRotations();
         double currentAngle_mechanismNormalizedRotations = measurement_mechanismNormalizedRotations % 1d;
         if (currentAngle_mechanismNormalizedRotations < 0d) {
             currentAngle_mechanismNormalizedRotations += 1d; //no idea why this works
@@ -89,30 +73,20 @@ public class DCSimController extends DCSimMotor implements ILinearController, IR
             reference_mechanismInfiniteRotations += 1d;
         }
 
-        controlToInfiniteReference(reference_mechanismInfiniteRotations);
+        controlToInfiniteReferenceArbitrary(reference_mechanismInfiniteRotations, arbFF);
 
     }
 
     @Override
-    public void controlToInfiniteReference(double setpoint_mechanismRotations) {
+    public void controlToInfiniteReferenceArbitrary(double setpoint_mechanismRotations, double arbFF) {
         double controlEffort = pidController.calculate(
                 this.angularPosition_encoderRotations(),
                 setpoint_mechanismRotations
                        //  / motorComponent.encoderToMechanismCoefficient() WHAT THE FUCK
         );
 
-        this.setToVoltage(controlEffort);
+        this.setToVoltage(controlEffort + arbFF);
     }
 
-    @Override
-    public void controlToInfiniteReference(double setpoint_mechanismRotations, double measurement_mechanismRotations) {
-        double controlEffort = pidController.calculate(
-                measurement_mechanismRotations,
-                setpoint_mechanismRotations
-                     //   / motorComponent.encoderToMechanismCoefficient() WHAT THE FUCK
-        );
-
-        this.setToVoltage(controlEffort);
-    }
 }
 

@@ -13,6 +13,7 @@ import java.util.Optional;
  */
 public class ProcessPath extends GenericPath {
 
+
     public ProcessPath(String[] pathComposition) {
         super(pathComposition);
     }

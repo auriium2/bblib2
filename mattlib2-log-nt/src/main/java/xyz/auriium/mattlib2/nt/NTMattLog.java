@@ -17,6 +17,8 @@ import xyz.auriium.mattlib2.log.INetworkedComponent;
 import xyz.auriium.mattlib2.log.ProcessMap;
 import xyz.auriium.mattlib2.log.ProcessPath;
 import xyz.auriium.mattlib2.log.TypeMap;
+import xyz.auriium.mattlib2.loop.IMattlibHooked;
+import xyz.auriium.mattlib2.loop.simple.ISimpleSubroutine;
 import xyz.auriium.mattlib2.yuukonfig.*;
 import yuukonfig.core.ConfigLoader;
 import yuukonfig.core.YuuKonfig;
@@ -28,6 +30,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
 
@@ -36,7 +39,7 @@ import java.util.regex.Pattern;
  *
  * WARNING: When using this, you MUST CALL INIT
  */
-public class NTMattLog implements IMattLog, IPeriodicLooped {
+public class NTMattLog implements IMattLog, IMattlibHooked {
 
     //record for storing important data
     record LoadStruct<T>(ProcessPath path, Class<T> type, CompletableFuture<T> futureReference) { }

@@ -10,7 +10,6 @@ import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.MethodCall;
 import net.bytebuddy.implementation.bytecode.assign.Assigner;
 import net.bytebuddy.matcher.ElementMatchers;
-import org.apache.commons.lang3.StringUtils;
 import xyz.auriium.mattlib2.Exceptions;
 import xyz.auriium.mattlib2.Mattlib2Exception;
 import xyz.auriium.mattlib2.MattlibSettings;
@@ -67,11 +66,66 @@ public class LogComponentManipulator implements Manipulator {
 
     static final ByteBuddy BUDDY = new ByteBuddy();
 
+    public static int getLevenshteinDistance(CharSequence s, CharSequence t) {
+        if (s == null || t == null) {
+            throw new IllegalArgumentException("Strings must not be null");
+        }
+
+        int n = s.length();
+        int m = t.length();
+
+        if (n == 0) {
+            return m;
+        }
+        if (m == 0) {
+            return n;
+        }
+
+        if (n > m) {
+            // swap the input strings to consume less memory
+            final CharSequence tmp = s;
+            s = t;
+            t = tmp;
+            n = m;
+            m = t.length();
+        }
+
+        final int[] p = new int[n + 1];
+        // indexes into strings s and t
+        int i; // iterates through s
+        int j; // iterates through t
+        int upperleft;
+        int upper;
+
+        char jOfT; // jth character of t
+        int cost;
+
+        for (i = 0; i <= n; i++) {
+            p[i] = i;
+        }
+
+        for (j = 1; j <= m; j++) {
+            upperleft = p[0];
+            jOfT = t.charAt(j - 1);
+            p[0] = j;
+
+            for (i = 1; i <= n; i++) {
+                upper = p[i];
+                cost = s.charAt(i - 1) == jOfT ? 0 : 1;
+                // minimum of cell to the left+1, to the top+1, diagonally left and up +cost
+                p[i] = Math.min(Math.min(p[i - 1] + 1, p[i] + 1), upperleft + cost);
+                upperleft = upper;
+            }
+        }
+
+        return p[n];
+    }
+
     public static Optional<String> getTheClosestMatch(List<String> collection, String target) {
         int distance = Integer.MAX_VALUE;
         String closest = null;
         for (String compareObject : collection) {
-            int currentDistance = StringUtils.getLevenshteinDistance(compareObject, target);
+            int currentDistance = getLevenshteinDistance(compareObject, target);
             if(currentDistance < distance) {
                 distance = currentDistance;
                 closest = compareObject;

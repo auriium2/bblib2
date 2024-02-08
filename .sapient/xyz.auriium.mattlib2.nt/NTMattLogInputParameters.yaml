@@ -1,0 +1,573 @@
+---
+modelFingerprint: "2B5502F084A5DA742C335A6558B1928E"
+methods:
+- method:
+    name: "preInit"
+    returnType: "void"
+    signature: "preInit() : void"
+    tryCatchBlocks:
+    - idExternalInstruction: 0
+      id: 1
+      catchExceptions:
+      - "java.io.IOException"
+    instructionFingerprint: "5A1826C1592390B9FBE285849F697B3C"
+    parametersTypes: []
+  paths:
+  - pathId: "path11"
+    pathIdForUser: "path1"
+    testPathName: "preInitWhenCaughtIOExceptionThrowsMattlib2Exception"
+    nameDefinedByUser: false
+    constructorSignature: "<init>() : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "B69C6E514867062835D3FC0734A14803"
+    problemWasSolvedByProver: false
+    catchBlockExercised:
+      idExternalInstruction: 0
+      id: 1
+      catchExceptions:
+      - "java.io.IOException"
+    truncated: true
+    inputParameters: []
+    uuid: "974f8fe8-09ee-343b-8e5c-4d43b4a711b0"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path1"
+    pathIdForUser: "path2"
+    testPathName: "preInitWhenSim_fileNotExistsThrowsMattlib2Exception"
+    nameDefinedByUser: false
+    constructorSignature: "<init>() : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "A2938D47B0A106FE4A698ACC3A0BC4AC"
+    problemWasSolvedByProver: false
+    truncated: true
+    inputParameters: []
+    uuid: "74f0a419-8899-362b-b9e9-e67586705afc"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path2"
+    pathIdForUser: "path3"
+    testPathName: "preInitWhenMcr_fileNotExistsThrowsMattlib2Exception"
+    nameDefinedByUser: false
+    constructorSignature: "<init>() : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "AF1472532E496DF97672D10302B326A6"
+    problemWasSolvedByProver: false
+    truncated: true
+    inputParameters: []
+    uuid: "0a635fc0-2120-3dc7-8222-8f99d37676fc"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path3"
+    pathIdForUser: "path4"
+    testPathName: "preInitWhenStructsIsEmpty"
+    nameDefinedByUser: false
+    constructorSignature: "<init>() : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "MODERATE"
+    modelFingerprint: "0D5E191787368675699DD718D7D7DBA0"
+    problemWasSolvedByProver: false
+    truncated: true
+    inputParameters: []
+    uuid: "87b15ae7-85fe-3a8f-a580-cc7bd547ad7b"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path4"
+    pathIdForUser: "path5"
+    testPathName: "preInitWhenMattlibSettingsROBOTEqualsMattlibSettingsRobotCARYAndStructsIsEmpty"
+    nameDefinedByUser: false
+    constructorSignature: "<init>() : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "MODERATE"
+    modelFingerprint: "53C40E79E689D3B8344319642393E1E6"
+    problemWasSolvedByProver: false
+    truncated: true
+    inputParameters: []
+    uuid: "c66706ab-0020-3f21-930d-cdb08c7ed938"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path7"
+    pathIdForUser: "path6"
+    testPathName: "preInitWhenNotShouldDoFunnyOverwriteOfFileAndStructsIsEmpty"
+    nameDefinedByUser: false
+    constructorSignature: "<init>() : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "MODERATE"
+    modelFingerprint: "61AF91DF46670B084DC92865FA85D5B7"
+    problemWasSolvedByProver: false
+    truncated: true
+    inputParameters: []
+    uuid: "7577d31a-0c5c-33e0-839a-77447ece86a2"
+    deleted: true
+    disabled: false
+    ignoredBySystem: true
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path8"
+    pathIdForUser: "path7"
+    testPathName: "preInitWhenRobotBaseNotIsSimulationAndMattlibSettingsROBOTEqualsMattlibSettingsRobotCARYAndStructsIsEmpty"
+    nameDefinedByUser: false
+    constructorSignature: "<init>() : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "MODERATE"
+    modelFingerprint: "D590C1A264E37FE47DF76870C1C2DCB4"
+    problemWasSolvedByProver: false
+    truncated: true
+    inputParameters: []
+    uuid: "1128b0ff-95ee-34c0-bb1b-802871fa8822"
+    deleted: true
+    disabled: false
+    ignoredBySystem: true
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path5"
+    pathIdForUser: "path8"
+    testPathName: "preInitWhenMattlibSettingsROBOTEqualsMattlibSettingsRobotMCRAndStructsIsEmpty"
+    nameDefinedByUser: false
+    constructorSignature: "<init>() : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "MODERATE"
+    modelFingerprint: "F641649B9EB7BE9D4EB18EE6721F8981"
+    problemWasSolvedByProver: false
+    truncated: true
+    inputParameters: []
+    uuid: "4ae63b4e-e342-3208-b0b3-6c25fcbdeff7"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path6"
+    pathIdForUser: "path9"
+    testPathName: "preInitWhenMattlibSettingsROBOTNotEqualsMattlibSettingsRobotMCRAndStructsIsEmpty"
+    nameDefinedByUser: false
+    constructorSignature: "<init>() : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "MODERATE"
+    modelFingerprint: "D908472F2088141984EC9E443BD8E1BE"
+    problemWasSolvedByProver: false
+    truncated: true
+    inputParameters: []
+    uuid: "6fd3521e-a256-3b01-a85f-9b4a770721d3"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path9"
+    pathIdForUser: "path10"
+    testPathName: "preInitWhenMattlibSettingsROBOTNotEqualsMattlibSettingsRobotCARYAndMattlibSettingsROBOTEqualsMattlibSettingsRobotMCRAnd"
+    nameDefinedByUser: false
+    constructorSignature: "<init>() : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "MODERATE"
+    modelFingerprint: "9E66C8BB230EC1C04B5474E4DD6E2E45"
+    problemWasSolvedByProver: false
+    truncated: true
+    inputParameters: []
+    uuid: "c436490e-4ac5-315a-9335-8b024b4fc2b7"
+    deleted: true
+    disabled: false
+    ignoredBySystem: true
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path10"
+    pathIdForUser: "path11"
+    testPathName: "preInitWhenMattlibSettingsROBOTNotEqualsMattlibSettingsRobotCARYAndMattlibSettingsROBOTNotEqualsMattlibSettingsRobotMCR"
+    nameDefinedByUser: false
+    constructorSignature: "<init>() : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "MODERATE"
+    modelFingerprint: "8CD2795B037673F1F3425F5401F83A00"
+    problemWasSolvedByProver: false
+    truncated: true
+    inputParameters: []
+    uuid: "219cb8fe-7f6e-3989-8e5f-8c29699ead14"
+    deleted: true
+    disabled: false
+    ignoredBySystem: true
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+- method:
+    name: "loadFuture"
+    returnType: "java.util.concurrent.CompletableFuture"
+    signature: "loadFuture(java.lang.Class<xyz.auriium.mattlib2.log.INetworkedComponent>,java.lang.String[])\
+      \ : java.util.concurrent.CompletableFuture<xyz.auriium.mattlib2.log.INetworkedComponent>"
+    instructionFingerprint: "C97FAF858E659ADD56D0D15E0D1E95EC"
+    parametersTypes:
+    - "java.lang.Class"
+    - "java.lang.String[]"
+  paths:
+  - pathId: "path1"
+    pathIdForUser: "path1"
+    testPathName: "loadFutureWhenNotHasBeenInitialized"
+    nameDefinedByUser: false
+    constructorSignature: "<init>() : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "D5A2352E7539C2A1C66C11B01ACD2FDF"
+    problemWasSolvedByProver: false
+    truncated: true
+    inputParameters: []
+    uuid: "57e1571a-8c27-3c1e-a905-d402b328579a"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+- method:
+    name: "recursivelyGenerateMatcher"
+    returnType: "net.bytebuddy.matcher.ElementMatcher$Junction"
+    signature: "recursivelyGenerateMatcher(java.lang.Class<?>,net.bytebuddy.matcher.ElementMatcher$Junction<net.bytebuddy.description.ByteCodeElement>)\
+      \ : net.bytebuddy.matcher.ElementMatcher$Junction<net.bytebuddy.description.ByteCodeElement>"
+    instructionFingerprint: "5344073472A33C1FF58F7E2EDE9674F7"
+    parametersTypes:
+    - "java.lang.Class"
+    - "net.bytebuddy.matcher.ElementMatcher$Junction"
+  paths:
+  - pathId: "path1"
+    pathIdForUser: "path1"
+    testPathName: "recursivelyGenerateMatcherWhenSuperclassGetInterfacesIsNotEmpty"
+    nameDefinedByUser: false
+    constructorSignature: "<init>() : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "3B65D48A00B05C2D891CDA9ED10E9C55"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "CONSTRUCTOR"
+      modelFingerprint: "4DB0F57EEFC6BBF1691C61D6F11B96D4"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "OBJECT"
+        content: !<new>
+          target: "xyz.auriium.mattlib2.nt.NTMattLog"
+          parameters: []
+          privateConstructor: false
+          createdByTargetCode: false
+        suggestedContent: !<new>
+          target: "xyz.auriium.mattlib2.nt.NTMattLog"
+          parameters: []
+          privateConstructor: false
+          createdByTargetCode: false
+        valueType: "xyz.auriium.mattlib2.nt.NTMattLog"
+        uuid: "target"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "INPUT"
+      name: "superclass"
+      modelFingerprint: "CD280075284A5E2F876D78004FEE022C"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "CLASS"
+        content: !<regular>
+          value: "java.lang.Object"
+        valueType: "java.lang.Class"
+        genericValueType: "?"
+        uuid: "recursivelyGenerateMatcher_class1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "INPUT"
+      name: "lastMatcher"
+      modelFingerprint: "072FB85448B2047377B1E63FEB89B412"
+      index: 3
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "net.bytebuddy.matcher.ElementMatcher$Junction"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "net.bytebuddy.matcher.ElementMatcher$Junction"
+        genericValueType: "net.bytebuddy.description.ByteCodeElement"
+        uuid: "recursivelyGenerateMatcher_elementMatcher.Junction1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "STATIC"
+      name: "ElementMatchers"
+      modelFingerprint: "E0094BC1568F2CC19C732C9BDBB864E3"
+      index: 4
+      ignored: false
+      nestedInLoop: true
+      nestedInRecursion: true
+      value:
+        sapientType: "MOCK"
+        valueType: "net.bytebuddy.matcher.ElementMatchers"
+        uuid: "net.bytebuddy.matcher.ElementMatchers"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "net.bytebuddy.matcher.ElementMatchers"
+        name: "isDeclaredBy"
+        parameters:
+        - name: "type"
+          value:
+            sapientType: "CLASS"
+            content: !<regular>
+              value: "java.lang.Object"
+            valueType: "java.lang.Class"
+            uuid: "recursivelyGenerateMatcher_class2"
+            fixed: false
+            equalsMethodPresent: false
+            explicitCastNeeded: false
+        signature: "isDeclaredBy(Class): ElementMatcher$Junction"
+        returnValue:
+          sapientType: "MOCK"
+          valueType: "net.bytebuddy.matcher.ElementMatcher$Junction"
+          uuid: "recursivelyGenerateMatcher_elementMatcher.Junction2"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 9
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "LOCAL_VARIABLE"
+      name: "matcher"
+      modelFingerprint: "49BA49A83808BE02ACA318A8244BA14B"
+      index: 5
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: true
+      value:
+        sapientType: "MOCK"
+        suggestedContent: !<unknown_object>
+          target: "net.bytebuddy.matcher.ElementMatcher$Junction"
+          onlyPojoFunctions: false
+          builderPattern: false
+        valueType: "net.bytebuddy.matcher.ElementMatcher$Junction"
+        genericValueType: "net.bytebuddy.description.ByteCodeElement"
+        uuid: "recursivelyGenerateMatcher_elementMatcher.Junction1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      methodExercised:
+        target: "matcher"
+        name: "or"
+        parameters:
+        - name: "arg0"
+          value:
+            sapientType: "MOCK"
+            valueType: "net.bytebuddy.matcher.ElementMatcher$Junction"
+            uuid: "recursivelyGenerateMatcher_elementMatcher.Junction2"
+            fixed: false
+            equalsMethodPresent: false
+            explicitCastNeeded: false
+        signature: "or(ElementMatcher$Junction): ElementMatcher$Junction"
+        returnValue:
+          sapientType: "MOCK"
+          valueType: "net.bytebuddy.matcher.ElementMatcher$Junction"
+          genericValueType: "net.bytebuddy.description.ByteCodeElement"
+          uuid: "recursivelyGenerateMatcher_elementMatcher.Junction3"
+          fixed: false
+          equalsMethodPresent: false
+          explicitCastNeeded: false
+        access: 1025
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "60431F5CFEA0F3D16B531B5D2C54B0D0"
+      index: 6
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "MOCK"
+        valueType: "net.bytebuddy.matcher.ElementMatcher$Junction"
+        genericValueType: "net.bytebuddy.description.ByteCodeElement"
+        uuid: "recursivelyGenerateMatcher_elementMatcher.Junction4"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "d339fb5a-3c6f-3842-810b-f0d02fb32c7b"
+    deleted: false
+    disabled: true
+    ignoredBySystem: false
+    lastExecutionStatus: "SKIPPED"
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path2"
+    pathIdForUser: "path2"
+    testPathName: "recursivelyGenerateMatcherWhenSuperclassGetInterfacesIsEmpty"
+    nameDefinedByUser: false
+    constructorSignature: "<init>() : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "0A325452386620A5C55E3F2D0B3BC4C3"
+    problemWasSolvedByProver: false
+    truncated: true
+    inputParameters: []
+    uuid: "906493ac-d82b-34d7-b775-e99cc5920dc0"
+    deleted: true
+    disabled: false
+    ignoredBySystem: true
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+- method:
+    name: "load"
+    returnType: "xyz.auriium.mattlib2.log.INetworkedComponent"
+    signature: "load(java.lang.Class<xyz.auriium.mattlib2.log.INetworkedComponent>,java.lang.String)\
+      \ : xyz.auriium.mattlib2.log.INetworkedComponent"
+    tryCatchBlocks:
+    - idExternalInstruction: 0
+      id: 2
+      catchExceptions:
+      - "java.lang.NoSuchMethodException"
+      - "java.lang.reflect.InvocationTargetException"
+      - "java.lang.InstantiationException"
+      - "java.lang.IllegalAccessException"
+    instructionFingerprint: "27C08CD9C64E32E9C1CF8BFB9E756D81"
+    parametersTypes:
+    - "java.lang.Class"
+    - "java.lang.String"
+  paths:
+  - pathId: "path1"
+    pathIdForUser: "path1"
+    testPathName: "loadWhenPatternMatcherPathFindThrowsMattlib2Exception"
+    nameDefinedByUser: false
+    constructorSignature: "<init>() : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "2FBE117E1F1A7CA9BC8BE07581EDC58E"
+    problemWasSolvedByProver: false
+    truncated: true
+    inputParameters: []
+    uuid: "93ddc5c5-dce7-3534-aee0-984b2a20f12a"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path2"
+    pathIdForUser: "path2"
+    testPathName: "loadWhenNotHasBeenInitialized"
+    nameDefinedByUser: false
+    constructorSignature: "<init>() : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "MODERATE"
+    modelFingerprint: "0537381153AC94766ADAB226628B9BC5"
+    problemWasSolvedByProver: false
+    truncated: true
+    inputParameters: []
+    uuid: "dad0eab3-9217-305c-b95b-87994397dd8b"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    variablesCouldNotBeIsolated: "BUDDY"
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path3"
+    pathIdForUser: "path3"
+    testPathName: "loadWhenCaughtNoSuchMethodExceptionOrInvocationTargetExceptionOrInstantiationExceptionOrIllegalAThrowsMattlib2Exception"
+    nameDefinedByUser: false
+    constructorSignature: "<init>() : void"
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "MODERATE"
+    modelFingerprint: "360A2B1DFD3E2D5ED1A3644651DD6280"
+    problemWasSolvedByProver: false
+    catchBlockExercised:
+      idExternalInstruction: 0
+      id: 2
+      catchExceptions:
+      - "java.lang.NoSuchMethodException"
+      - "java.lang.reflect.InvocationTargetException"
+      - "java.lang.InstantiationException"
+      - "java.lang.IllegalAccessException"
+    truncated: true
+    inputParameters: []
+    uuid: "32f2b103-c185-3f32-a873-e223223e2d67"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    variablesCouldNotBeIsolated: "BUDDY"
+    failureReason:
+      reason: "METHOD_CALL_INSTRUCTION_INTERNAL_METHOD_FAILURE"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false

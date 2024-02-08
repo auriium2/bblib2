@@ -1,0 +1,84 @@
+---
+modelFingerprint: "4B8C577A3B41AFA997525814A238B2E1"
+methods:
+- method:
+    name: "normalizeRotations"
+    returnType: "double"
+    signature: "normalizeRotations(double) : double"
+    instructionFingerprint: "BDD89DDC6371F0422639D7333394ED54"
+    parametersTypes:
+    - "double"
+  paths:
+  - pathId: "path1"
+    pathIdForUser: "path1"
+    testPathName: "normalizeRotationsWhenHugeLessThan0"
+    nameDefinedByUser: false
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "BFEAAA1C31CCED75B071ABB0A23AE86B"
+    problemWasSolvedByProver: false
+    truncated: false
+    inputParameters:
+    - type: "INPUT"
+      name: "numberOnInfiniteSet_rotations"
+      modelFingerprint: "A851671735892570E68060B7078F5714"
+      index: 1
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "BASIC"
+        content: !<regular>
+          value: 0.0
+        valueType: "double"
+        uuid: "normalizeRotations_double1"
+        fixed: false
+        equalsMethodPresent: false
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    - type: "RESULT"
+      name: "result"
+      modelFingerprint: "CEEE3B2B76828071BA088901A843A0D0"
+      index: 2
+      ignored: false
+      nestedInLoop: false
+      nestedInRecursion: false
+      value:
+        sapientType: "BASIC"
+        content: !<regular>
+          value: 0.0
+        valueType: "double"
+        uuid: "normalizeRotations_double3"
+        fixed: false
+        equalsMethodPresent: true
+        explicitCastNeeded: false
+      staticReadMethodForField: false
+      filledByUser: false
+    uuid: "b91d0316-eef0-3b82-b435-9f4cc333853d"
+    deleted: false
+    disabled: false
+    ignoredBySystem: false
+    failureReason:
+      reason: "PROVER_COULD_NOT_SOLVE_THE_PROBLEM"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
+  - pathId: "path2"
+    pathIdForUser: "path2"
+    testPathName: "normalizeRotationsWhenHugeNotLessThan0"
+    nameDefinedByUser: false
+    priorityDefinedByUser: false
+    filledByUser: false
+    priority: "LOW"
+    modelFingerprint: "1066B586ABBEE35B95553334815921AC"
+    problemWasSolvedByProver: true
+    truncated: true
+    inputParameters: []
+    uuid: "3c76484b-e29c-3594-b781-de9d9a023b10"
+    deleted: true
+    disabled: false
+    ignoredBySystem: true
+    prover: "DEFAULT"
+    disabledStatusUpdatedByUser: false
+    disabledStatusUpdatedBySystem: false
