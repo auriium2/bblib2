@@ -231,16 +231,18 @@ public class NTMattLog implements IMattLog, IMattlibHooked {
                     .method(matcher.and(ElementMatchers.isMethod()))
                     .intercept(MethodDelegation.toMethodReturnOf("getInsideFuture"));
 
-            DynamicType.Unloaded<?> unloaded = dyn.make();
-            ClassLoader loaderToUse = type.getClassLoader();
-            DynamicType.Loaded<?> loaded = unloaded.load(loaderToUse, ClassLoadingStrategy.ForBootstrapInjection.Default.INJECTION);
+            try (DynamicType.Unloaded<?> unloaded = dyn.make()) {
+                ClassLoader loaderToUse = type.getClassLoader();
+                DynamicType.Loaded<?> loaded = unloaded.load(loaderToUse, ClassLoadingStrategy.ForBootstrapInjection.Default.INJECTION);
 
-            var out= loaded
-                    .getLoaded()
-                    .getDeclaredConstructor(CompletableFuture.class)
-                    .newInstance(uncompleted);
+                var out= loaded
+                        .getLoaded()
+                        .getDeclaredConstructor(CompletableFuture.class)
+                        .newInstance(uncompleted);
 
-            return type.cast(out);
+                return type.cast(out);
+            }
+
 
         } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
             throw new Mattlib2Exception("bytecodeFailure","critical bytecode manipulation error", "contact matt");

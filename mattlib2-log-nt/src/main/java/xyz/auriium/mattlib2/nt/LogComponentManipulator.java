@@ -248,7 +248,6 @@ public class LogComponentManipulator implements Manipulator {
         }
 
         //handle data not being present
-
         List<String> allMethods = Arrays.stream(useClass.getMethods()).map(ReflectionUtil::getKey).collect(Collectors.toList());
 
 
@@ -311,14 +310,16 @@ public class LogComponentManipulator implements Manipulator {
                         .intercept(consumerInvoke);
             }
 
-            DynamicType.Unloaded<?> unloaded = builder.make();
-            ClassLoader loaderToUse = useClass.getClassLoader();
-            DynamicType.Loaded<?> loaded = unloaded.load(loaderToUse, ClassLoadingStrategy.ForBootstrapInjection.Default.INJECTION);
+            try (DynamicType.Unloaded<?> unloaded = builder.make()) {
+                ClassLoader loaderToUse = useClass.getClassLoader();
+                DynamicType.Loaded<?> loaded = unloaded.load(loaderToUse, ClassLoadingStrategy.ForBootstrapInjection.Default.INJECTION);
 
-            return loaded
-                    .getLoaded()
-                    .getDeclaredConstructor()
-                    .newInstance();
+                return loaded
+                        .getLoaded()
+                        .getDeclaredConstructor()
+                        .newInstance();
+            }
+
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new Mattlib2Exception("bytebuddy", "critical reflection error", "ask matt for help");
         }
