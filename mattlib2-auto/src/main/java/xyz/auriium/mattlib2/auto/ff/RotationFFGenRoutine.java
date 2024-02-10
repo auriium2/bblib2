@@ -6,7 +6,7 @@ import xyz.auriium.mattlib2.hardware.IRotationEncoder;
 public class RotationFFGenRoutine extends BaseFFGenRoutine{
 
     final IRotationEncoder encoder;
-    public RotationFFGenRoutine(FFGenComponent component, IActuator actuator, IRotationEncoder encoder) {
+    public RotationFFGenRoutine(GenerateFFComponent component, IActuator actuator, IRotationEncoder encoder) {
         super(component, actuator);
         this.encoder = encoder;
     }

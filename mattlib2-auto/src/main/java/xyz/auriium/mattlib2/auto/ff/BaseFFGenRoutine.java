@@ -1,7 +1,6 @@
 package xyz.auriium.mattlib2.auto.ff;
 
 import xyz.auriium.mattlib2.loop.IMattlibHooked;
-import xyz.auriium.mattlib2.loop.ISubroutine;
 import xyz.auriium.mattlib2.hardware.IActuator;
 import xyz.auriium.mattlib2.loop.Outcome;
 import xyz.auriium.mattlib2.loop.simple.ISimpleSubroutine;
@@ -15,15 +14,23 @@ import java.util.List;
  */
 public abstract class BaseFFGenRoutine implements ISimpleSubroutine, IMattlibHooked {
 
-    final FFGenComponent component;
+    final GenerateFFComponent component;
     final IActuator actuator;
 
-    protected BaseFFGenRoutine(FFGenComponent component, IActuator actuator) {
+    protected BaseFFGenRoutine(GenerateFFComponent component, IActuator actuator) {
         this.component = component;
         this.actuator = actuator;
 
+        this.delay_ms = component.delay_ms().orElse(20L);
+        this.endVoltage_volts = component.endVoltage_volts().orElse(12d);
+        this.rampRate_voltsPerSecond = component.rampRate_voltsPerMS().orElse(0.001);
+
         mattRegister();
     }
+
+    final long delay_ms;
+    final double endVoltage_volts;
+    final double rampRate_voltsPerSecond;
 
     abstract double emitVelocity_primeUnitsPerSecond();
 
@@ -37,7 +44,7 @@ public abstract class BaseFFGenRoutine implements ISimpleSubroutine, IMattlibHoo
     public void runSetup(SetupOrders orders) {
         if (orders == SetupOrders.AWAKEN) {
             startTime_ms = System.currentTimeMillis();
-            endTime_ms = computeEndTimeInMS(System.currentTimeMillis(), component.delay_ms(), component.endVoltage_volts(), component.rampRate_voltsPerMS());
+            endTime_ms = computeEndTimeInMS(System.currentTimeMillis(), delay_ms, endVoltage_volts, rampRate_voltsPerSecond);
 
             return;
         }
@@ -62,7 +69,7 @@ public abstract class BaseFFGenRoutine implements ISimpleSubroutine, IMattlibHoo
                 long curTime_ms = System.currentTimeMillis();
                 if (curTime_ms > endTime_ms) yield Outcome.success();
 
-                double voltage = computeVoltage(curTime_ms, startTime_ms, component.delay_ms(), component.rampRate_voltsPerMS());
+                double voltage = computeVoltage(curTime_ms, startTime_ms, delay_ms, rampRate_voltsPerSecond);
                 double velocityOut = emitVelocity_primeUnitsPerSecond();
                 actuator.setToVoltage(voltage);
 

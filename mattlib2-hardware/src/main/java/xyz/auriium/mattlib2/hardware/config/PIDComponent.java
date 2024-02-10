@@ -64,10 +64,6 @@ public interface PIDComponent extends CommonPIDComponent, IndividualPIDComponent
             return commonPIDComponent.dConstant();
         }
 
-        @Override public double fConstant() {
-            return commonPIDComponent.fConstant();
-        }
-
         @Override
 
         public double iConstant() {

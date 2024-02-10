@@ -7,7 +7,7 @@ public class LinearFFGenRoutine extends BaseFFGenRoutine{
 
     final ILinearEncoder encoder;
 
-    public LinearFFGenRoutine(FFGenComponent component, IActuator actuator, ILinearEncoder encoder) {
+    public LinearFFGenRoutine(GenerateFFComponent component, IActuator actuator, ILinearEncoder encoder) {
         super(component, actuator);
 
         this.encoder = encoder;

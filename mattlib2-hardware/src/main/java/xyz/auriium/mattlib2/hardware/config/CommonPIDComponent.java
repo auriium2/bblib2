@@ -13,7 +13,6 @@ public interface CommonPIDComponent extends INetworkedComponent {
     @Tune("p") double pConstant();
     @Tune("i") double iConstant();
     @Tune("d") double dConstant();
-    @Tune("f") double fConstant();
 
 
     @HasUpdated(keysToCheck = {"p", "i", "d"}) boolean hasUpdated();
