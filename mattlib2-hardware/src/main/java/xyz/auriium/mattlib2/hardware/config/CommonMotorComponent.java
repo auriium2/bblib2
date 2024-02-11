@@ -20,10 +20,6 @@ public interface CommonMotorComponent extends INetworkedComponent {
         CLOSED
     }
 
-    enum OptimizationMode {
-        NONE,
-        POSITION
-    }
 
 
     /**

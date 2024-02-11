@@ -146,6 +146,15 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IMattlibHooked {
         motorComponent.openRampRate_seconds().ifPresent(sparkMax::setOpenLoopRampRate);
         motorComponent.closedRampRate_seconds().ifPresent(sparkMax::setClosedLoopRampRate);
 
+
+        sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus0, 200);
+        sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus1, 20);
+        sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus2, 10);
+        sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 100);
+        sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 100);
+        sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus5, 500);
+        sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus6, 500);
+
         return toThrow;
     }
 
