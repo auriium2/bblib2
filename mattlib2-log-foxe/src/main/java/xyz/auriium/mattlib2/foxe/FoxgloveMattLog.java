@@ -38,7 +38,7 @@ public class FoxgloveMattLog implements IMattLog, IMattlibHooked {
     }
 
     @Override
-    public Optional<ExplainedException> verifyInit() {
+    public ExplainedException[] verifyInit() {
 
 
         //TODO take all the compiled channels and put them in here
@@ -76,7 +76,7 @@ public class FoxgloveMattLog implements IMattLog, IMattlibHooked {
 
 
 
-        return Optional.empty();
+        return new ExplainedException[0];
     }
 
     @Override

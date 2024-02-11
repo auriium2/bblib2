@@ -1,24 +1,28 @@
 package xyz.auriium.mattlib2.rev;
 
+import com.revrobotics.CANSparkBase;
+import com.revrobotics.REVLibError;
 import xyz.auriium.mattlib2.Mattlib2Exception;
 import xyz.auriium.yuukonstants.GenericPath;
+import xyz.auriium.yuukonstants.exception.ExplainedException;
 
 import static java.lang.String.format;
 
 public class Exceptions {
 
-    public static Mattlib2Exception VOLTAGE_COMPENSATION_FAILED(String motor) {
-        return new Mattlib2Exception(
-                "rev/voltageCompensationFailed",
-                format("something went wrong setting up voltage compensation for the motor %s", motor),
-                "panic and cry"
+    public static ExplainedException REV_ERROR(REVLibError code, GenericPath path) {
+        throw new Mattlib2Exception(
+                "revError",
+                format("The rev library threw an error with status [%s] and status code [%s] when configuring motor [%s]", code.name(), code.value, path.tablePath()),
+                "Try looking up the error on a site called Google.com"
         );
     }
-    public static Mattlib2Exception GENERIC_REV_ERROR(String motor) {
-        return new Mattlib2Exception(
-                "rev/genericRevError",
-                format("something went wrong setting up a rev config command for the motor %s", motor),
-                "contact matt"
+
+    public static ExplainedException REV_FAULT(CANSparkBase.FaultID fault, GenericPath path) {
+        throw new Mattlib2Exception(
+                "revFault",
+                format("The rev library reports a fault with status [%s] and status code [%s] when checking motor [%s]", fault.name(), fault.value, path.tablePath()),
+                "Try looking up the error on a site called Google.com"
         );
     }
 

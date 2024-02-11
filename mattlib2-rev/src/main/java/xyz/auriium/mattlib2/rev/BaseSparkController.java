@@ -26,9 +26,9 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
 
 
     @Override
-    public Optional<ExplainedException> verifyInit() {
+    public ExplainedException[] verifyInit() {
         var opt = super.verifyInit();
-        if (opt.isPresent()) return opt;
+        if (opt.length > 0) return opt;
 
         localPidController.setFeedbackDevice(encoder);
 
@@ -36,7 +36,7 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
         localPidController.setI(pidConfig.iConstant(), 0);
         localPidController.setD(pidConfig.dConstant(), 0);
 
-        return Optional.empty();
+        return new ExplainedException[0];
     }
 
     @Override public void verify2Init() {

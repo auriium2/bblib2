@@ -17,10 +17,10 @@ public class MattlibLooperTest {
         }
 
         @Override
-        public Optional<ExplainedException> verifyInit() {
+        public ExplainedException[] verifyInit() {
             initRun = true;
 
-            return Optional.empty();
+            return new ExplainedException[0];
         }
     }
 

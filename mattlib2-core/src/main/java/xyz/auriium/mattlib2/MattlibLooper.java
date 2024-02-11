@@ -1,6 +1,8 @@
 package xyz.auriium.mattlib2;
 
 import xyz.auriium.mattlib2.loop.IMattlibHooked;
+import xyz.auriium.yuukonstants.exception.ExplainedException;
+import yuukonfig.core.ArrayUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +26,15 @@ public class MattlibLooper {
         }
     }
 
-    public void runPostInit() {
+    public ExplainedException[] runPostInit() {
+
+        ExplainedException[] problems = new ExplainedException[0];
         for (IMattlibHooked runnable : orderedThingsToBeLooped) {
-            runnable.verifyInit(); //TODO send those exceptions somewhere
+            problems = ArrayUtil.combine(problems, runnable.verifyInit());
             runnable.verify2Init();
         }
+
+        return problems;
     }
 
     public void runPeriodicLoop() {

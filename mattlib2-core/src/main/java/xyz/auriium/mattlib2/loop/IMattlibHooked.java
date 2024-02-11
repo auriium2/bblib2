@@ -44,8 +44,8 @@ public interface IMattlibHooked {
      * It is intended to run ONCE after init. It's body should make sure the class it is attached to is running ok
      * If not, it should return an exception (not throw it)
      */
-    default Optional<ExplainedException> verifyInit() {
-        return Optional.empty();
+    default ExplainedException[] verifyInit() {
+        return new ExplainedException[0];
     }
 
 

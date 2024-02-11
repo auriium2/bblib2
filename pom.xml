@@ -7,7 +7,7 @@
     <groupId>xyz.auriium</groupId>
     <artifactId>mattlib2</artifactId>
     <packaging>pom</packaging>
-    <version>1.4.1-SNAPSHOT</version>
+    <version>1.5.0-SNAPSHOT</version>
     <modules>
         <module>mattlib2-core</module>
         <module>mattlib2-rev</module>
@@ -16,6 +16,7 @@
         <module>mattlib2-auto</module>
         <module>mattlib2-hardware</module>
         <module>mattlib2-sim</module>
+        <module>mattlib2-ctre</module>
     </modules>
 
 

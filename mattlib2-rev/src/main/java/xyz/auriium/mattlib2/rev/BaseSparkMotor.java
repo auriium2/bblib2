@@ -8,7 +8,9 @@ import xyz.auriium.mattlib2.hardware.OperationMode;
 import xyz.auriium.mattlib2.hardware.config.CommonMotorComponent;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 import xyz.auriium.mattlib2.utils.AngleUtil;
+import xyz.auriium.yuukonstants.GenericPath;
 import xyz.auriium.yuukonstants.exception.ExplainedException;
+import yuukonfig.core.ArrayUtil;
 
 import java.util.Optional;
 
@@ -51,34 +53,64 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IMattlibHooked {
         return linearCoef;
     }
 
+    public static ExplainedException[] orThrow(REVLibError code, GenericPath path, ExplainedException[] arr) {
+        if (code != REVLibError.kOk) {
+            return ArrayUtil.combine(arr, Exceptions.REV_ERROR(code, path));
+        } else {
+            return arr;
+        }
+    }
+
+
     @Override
-    public Optional<ExplainedException> verifyInit() {
-        REVLibError err = sparkMax.restoreFactoryDefaults();
-        if (err != REVLibError.kOk) {
-            return Optional.of(Exceptions.GENERIC_REV_ERROR( motorComponent.selfPath().tablePath() ));
+    public ExplainedException[] verifyInit() {
+
+        ExplainedException[] toThrow = new ExplainedException[0];
+        GenericPath path = motorComponent.selfPath();
+
+        for (int i = 0; i < CANSparkBase.FaultID.values().length; i++) {
+            var fault = CANSparkBase.FaultID.fromId(i);
+            if (sparkMax.getStickyFault(fault)) {
+                toThrow = ArrayUtil.combine(toThrow, Exceptions.REV_FAULT(fault, path));
+            }
         }
 
+
+        toThrow = orThrow(sparkMax.getLastError(), path, toThrow); //initial error check
+        toThrow = orThrow(sparkMax.restoreFactoryDefaults(), path, toThrow);
         //NEVER PUYT FUCKING CODE BEHIND THIS LINE BECAUSE IF YOU DO IT WILL WASTE <4> hours
         //CHANGE THIS NUMBER WHEN YOUR TIME GETS WASTED
 
         boolean isInverted = motorComponent.inverted().orElse(false);
         sparkMax.setInverted(isInverted);
 
+        toThrow = orThrow(
+                encoder.setPositionConversionFactor(motorComponent.encoderToMechanismCoefficient()),
+                path,
+                toThrow
+        );
 
-        encoder.setPositionConversionFactor(motorComponent.encoderToMechanismCoefficient());
-        encoder.setVelocityConversionFactor(motorComponent.encoderToMechanismCoefficient() / 60.0); //divide by 60 to get rotations per second
+        toThrow = orThrow(
+                encoder.setVelocityConversionFactor(motorComponent.encoderToMechanismCoefficient() / 60.0),
+                path,
+                toThrow
+        );
 
-
-        REVLibError vcError = sparkMax.enableVoltageCompensation(12);
-        if (vcError != REVLibError.kOk) {
-            return Optional.of(Exceptions.VOLTAGE_COMPENSATION_FAILED( motorComponent.selfPath().tablePath() ));
-        }
+        toThrow = orThrow(
+                sparkMax.enableVoltageCompensation(12),
+                path,
+                toThrow
+        );
 
         //cyrrent limits
-        motorComponent.currentLimit().ifPresent(sparkMax::setSmartCurrentLimit);
+        int currentLimit = motorComponent.currentLimit().orElse(70);
+        toThrow = orThrow(
+                sparkMax.setSmartCurrentLimit(currentLimit),
+                path,
+                toThrow
+        );
 
         //hard and soft limits
-
         motorComponent.forwardLimit().ifPresent(normally -> {
             SparkLimitSwitch.Type type;
             if (normally == CommonMotorComponent.Normally.CLOSED) {
@@ -114,9 +146,7 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IMattlibHooked {
         motorComponent.openRampRate_seconds().ifPresent(sparkMax::setOpenLoopRampRate);
         motorComponent.closedRampRate_seconds().ifPresent(sparkMax::setClosedLoopRampRate);
 
-
-
-        return Optional.empty();
+        return toThrow;
     }
 
     @Override

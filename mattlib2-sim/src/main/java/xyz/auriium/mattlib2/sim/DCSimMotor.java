@@ -30,11 +30,11 @@ public class DCSimMotor implements ILinearMotor, IRotationalMotor, IMattlibHooke
     double rotationalOffset_encoderRotations = 0;
 
     @Override
-    public Optional<ExplainedException> verifyInit() {
+    public ExplainedException[] verifyInit() {
         motorComponent.inverted().ifPresent(b -> inverted = b);
 
 
-        return Optional.empty();
+        return new ExplainedException[0];
     }
 
     @Override

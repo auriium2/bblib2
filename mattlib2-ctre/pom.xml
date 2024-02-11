@@ -2,14 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>mattlib2</artifactId>
         <groupId>xyz.auriium</groupId>
+        <artifactId>mattlib2</artifactId>
         <version>1.5.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mattlib2-rev</artifactId>
+    <artifactId>mattlib2-ctre</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -19,8 +19,8 @@
 
     <repositories>
         <repository>
-            <id>rev</id>
-            <url>https://maven.revrobotics.com/</url>
+            <id>release</id>
+            <url>https://maven.ctr-electronics.com/release/</url>
         </repository>
     </repositories>
 
@@ -32,24 +32,13 @@
         </dependency>
         <dependency>
             <groupId>xyz.auriium</groupId>
-            <artifactId>mattlib2-log-nt</artifactId>
-            <version>1.5.0-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>xyz.auriium</groupId>
             <artifactId>mattlib2-hardware</artifactId>
             <version>1.5.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.revrobotics.frc</groupId>
-            <artifactId>REVLib-java</artifactId>
-            <version>2024.2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>edu.wpi.first.wpilibj</groupId>
-            <artifactId>wpilibj-java</artifactId>
-            <version>2024.1.1</version>
+            <groupId>com.ctre.phoenix6</groupId>
+            <artifactId>wpiapi-java</artifactId>
+            <version>24.2.0</version>
         </dependency>
     </dependencies>
 
