@@ -15,7 +15,7 @@ import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 import xyz.auriium.mattlib2.hardware.config.PIDComponent;
 import xyz.auriium.yuukonstants.exception.ExplainedException;
 
-public class BaseTalonFXController extends     g implements ILinearController, IRotationalController, ILinearVelocityController, IRotationalVelocityController {
+public class BaseTalonFXController extends BaseTalonFXMotor implements ILinearController, IRotationalController, ILinearVelocityController, IRotationalVelocityController {
 
     final PIDComponent component;
 
