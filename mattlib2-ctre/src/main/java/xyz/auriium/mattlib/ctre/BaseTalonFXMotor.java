@@ -37,6 +37,20 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
         position_mechanismRotations = talonFX.getPosition();
         velocity_mechanismRotationsPerSecond = talonFX.getVelocity();
 
+        BaseStatusSignal.setUpdateFrequencyForAll(
+                100.0,
+                currentNow,
+                voltageOutput,
+                temperature,
+                velocity_mechanismRotationsPerSecond
+         );
+
+        BaseStatusSignal.setUpdateFrequencyForAll(
+                250,
+                position_mechanismRotations
+        );
+
+
         mattRegister();
     }
 
@@ -212,15 +226,15 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
     }
 
     @Override public double reportCurrentNow_amps() {
-        return currentNow.getValue();
+        return currentNow.getValueAsDouble();
     }
 
     @Override public double reportVoltageNow() {
-        return voltageOutput.getValue();
+        return voltageOutput.getValueAsDouble();
     }
 
     @Override public double reportTemperatureNow() {
-        return temperature.getValue();
+        return temperature.getValueAsDouble();
     }
 
     @Override public void forceLinearOffset(double linearOffset_mechanismMeters) {
@@ -228,11 +242,11 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
     }
 
     @Override public double linearPosition_mechanismMeters() {
-        return position_mechanismRotations.getValue() * loadLinearCoef();
+        return position_mechanismRotations.getValueAsDouble() * loadLinearCoef();
     }
 
     @Override public double linearVelocity_mechanismMetersPerSecond() {
-        return velocity_mechanismRotationsPerSecond.getValue() * loadLinearCoef();
+        return velocity_mechanismRotationsPerSecond.getValueAsDouble() * loadLinearCoef();
     }
 
     @Override public void forceRotationalOffset(double offset_mechanismRotations) {
