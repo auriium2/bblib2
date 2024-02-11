@@ -54,11 +54,12 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IMattlibHooked {
     }
 
     public static ExplainedException[] orThrow(REVLibError code, GenericPath path, ExplainedException[] arr) {
-        if (code != REVLibError.kOk) {
+       return arr;
+        /*if (code != REVLibError.kOk) {
             return ArrayUtil.combine(arr, Exceptions.REV_ERROR(code, path));
         } else {
             return arr;
-        }
+        }*/
     }
 
 

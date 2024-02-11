@@ -29,6 +29,15 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
     public BaseTalonFXMotor(TalonFX talonFX, MotorComponent motorComponent) {
         this.talonFX = talonFX;
         this.motorComponent = motorComponent;
+
+        currentNow = talonFX.getTorqueCurrent();
+        voltageOutput = talonFX.getMotorVoltage();
+        temperature = talonFX.getDeviceTemp();
+
+        position_mechanismRotations = talonFX.getPosition();
+        velocity_mechanismRotationsPerSecond = talonFX.getVelocity();
+
+        mattRegister();
     }
 
     public static ExplainedException[] orThrow(StatusCode code, GenericPath path, ExplainedException[] arr) {
@@ -146,15 +155,6 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
             talonFX.getConfigurator().apply(rr);
         });
 
-
-        currentNow = talonFX.getTorqueCurrent();
-        voltageOutput = talonFX.getMotorVoltage();
-        temperature = talonFX.getDeviceTemp();
-
-        position_mechanismRotations = talonFX.getPosition();
-        velocity_mechanismRotationsPerSecond = talonFX.getVelocity();
-
-        //loading status signals
 
         return exceptions;
     }
