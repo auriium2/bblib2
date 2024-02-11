@@ -39,7 +39,8 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
         }
     }
 
-    @Override public ExplainedException[] verifyInit() {
+    @Override
+    public ExplainedException[] verifyInit() {
 
 
 

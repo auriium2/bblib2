@@ -67,13 +67,14 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IMattlibHooked {
 
         ExplainedException[] toThrow = new ExplainedException[0];
         GenericPath path = motorComponent.selfPath();
-
+/*
         for (int i = 0; i < CANSparkBase.FaultID.values().length; i++) {
             var fault = CANSparkBase.FaultID.fromId(i);
-            if (sparkMax.getStickyFault(fault)) {
+            if (i == 3) continue;
+            if (sparkMax.getFault(fault)) {
                 toThrow = ArrayUtil.combine(toThrow, Exceptions.REV_FAULT(fault, path));
             }
-        }
+        }*/
 
 
         toThrow = orThrow(sparkMax.getLastError(), path, toThrow); //initial error check
