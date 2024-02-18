@@ -5,12 +5,10 @@ import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.*;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.ForwardLimitTypeValue;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.ctre.phoenix6.signals.ReverseLimitTypeValue;
+import com.ctre.phoenix6.signals.*;
 import xyz.auriium.mattlib2.hardware.ILinearMotor;
 import xyz.auriium.mattlib2.hardware.IRotationalMotor;
+import xyz.auriium.mattlib2.hardware.OperationMode;
 import xyz.auriium.mattlib2.hardware.config.CommonMotorComponent;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 import xyz.auriium.mattlib2.loop.IMattlibHooked;
@@ -30,27 +28,6 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
         this.talonFX = talonFX;
         this.motorComponent = motorComponent;
 
-        currentNow = talonFX.getTorqueCurrent();
-        voltageOutput = talonFX.getMotorVoltage();
-        temperature = talonFX.getDeviceTemp();
-
-        position_mechanismRotations = talonFX.getPosition();
-        velocity_mechanismRotationsPerSecond = talonFX.getVelocity();
-
-        BaseStatusSignal.setUpdateFrequencyForAll(
-                100.0,
-                currentNow,
-                voltageOutput,
-                temperature,
-                velocity_mechanismRotationsPerSecond
-         );
-
-        BaseStatusSignal.setUpdateFrequencyForAll(
-                250,
-                position_mechanismRotations
-        );
-
-
         mattRegister();
     }
 
@@ -65,57 +42,27 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
     @Override
     public ExplainedException[] verifyInit() {
 
-
-
         ExplainedException[] exceptions = new ExplainedException[0];
 
         //set feedback config
 
-        var fbConfig = new FeedbackConfigs()
-                .withSensorToMechanismRatio(motorComponent.encoderToMechanismCoefficient());
+        var sumConfig = new TalonFXConfiguration();
 
-        exceptions = orThrow(
-                talonFX.getConfigurator().apply(fbConfig),
-                motorComponent.selfPath(),
-                exceptions
-        );
-
-        //current limits
-
-        double currentLimit = motorComponent.currentLimit().orElse(70);
-
-        var clConfig = new CurrentLimitsConfigs()
-                .withStatorCurrentLimit(currentLimit);
-
-        exceptions = orThrow(
-                talonFX.getConfigurator().apply(clConfig),
-                motorComponent.selfPath(),
-                exceptions
-        );
+        sumConfig.Feedback.SensorToMechanismRatio =  1/ motorComponent.encoderToMechanismCoefficient();
+        sumConfig.CurrentLimits.StatorCurrentLimit = motorComponent.currentLimit().orElse(70);
 
         //hardware limits
 
-        var hwlsm = new HardwareLimitSwitchConfigs();
         var fwLimit = motorComponent.forwardLimit();
         var rvLimit = motorComponent.reverseLimit();
         if (fwLimit.isPresent()) {
-            hwlsm = hwlsm
-                    .withForwardLimitEnable(true)
-                    .withForwardLimitType(fwLimit.get() == CommonMotorComponent.Normally.OPEN ? ForwardLimitTypeValue.NormallyOpen : ForwardLimitTypeValue.NormallyClosed);
+            sumConfig.HardwareLimitSwitch.ForwardLimitEnable = true;
+            sumConfig.HardwareLimitSwitch.ForwardLimitType = fwLimit.get() == CommonMotorComponent.Normally.OPEN ? ForwardLimitTypeValue.NormallyOpen : ForwardLimitTypeValue.NormallyClosed;
         }
         if (rvLimit.isPresent()) {
-            hwlsm = hwlsm
-                    .withReverseLimitEnable(true)
-                    .withReverseLimitType(rvLimit.get() == CommonMotorComponent.Normally.OPEN ? ReverseLimitTypeValue.NormallyOpen : ReverseLimitTypeValue.NormallyClosed);
+            sumConfig.HardwareLimitSwitch.ReverseLimitEnable = true;
+            sumConfig.HardwareLimitSwitch.ReverseLimitType = rvLimit.get() == CommonMotorComponent.Normally.OPEN ? ReverseLimitTypeValue.NormallyOpen : ReverseLimitTypeValue.NormallyClosed;
         }
-
-        exceptions = orThrow(
-                talonFX.getConfigurator().apply(hwlsm),
-                motorComponent.selfPath(),
-                exceptions
-        );
-
-
 
         //software limits
 
@@ -123,52 +70,81 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
         Optional<Double> rvLimitSoft = motorComponent.reverseSoftLimit_mechanismRot();
 
 
-        var swConfig = new SoftwareLimitSwitchConfigs ()
-                .withForwardSoftLimitEnable(fwLimitSoft.isPresent())
-                .withReverseSoftLimitEnable(rvLimitSoft.isPresent());
+        sumConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = fwLimitSoft.isPresent();
+        sumConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = rvLimitSoft.isPresent();
 
-        if (fwLimitSoft.isPresent()) {
-            swConfig = swConfig.withForwardSoftLimitThreshold(fwLimitSoft.get());
-        }
-        if (rvLimitSoft.isPresent()) {
-            swConfig = swConfig.withReverseSoftLimitThreshold(rvLimitSoft.get());
-        }
+        fwLimitSoft.ifPresent(aDouble -> sumConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = aDouble);
+        rvLimitSoft.ifPresent(aDouble -> sumConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = aDouble);
 
-        exceptions = orThrow(
-                talonFX.getConfigurator().apply(swConfig),
-                motorComponent.selfPath(),
-                exceptions
-        );
-
-        //idle mode + inverted
-
-        boolean inverted = motorComponent.inverted().orElse(false);
-        boolean breakModeEnabled = motorComponent.breakModeEnabled().orElse(false);
-
-        var mocConfig = new MotorOutputConfigs()
-                .withInverted(inverted ? InvertedValue.CounterClockwise_Positive : InvertedValue.Clockwise_Positive)
-                .withNeutralMode(breakModeEnabled ? NeutralModeValue.Brake : NeutralModeValue.Coast);
-
-        exceptions = orThrow(
-                talonFX.getConfigurator().apply(mocConfig),
-                motorComponent.selfPath(),
-                exceptions
-        );
+        sumConfig.MotorOutput.Inverted = motorComponent.inverted().orElse(false) ? InvertedValue.CounterClockwise_Positive : InvertedValue.Clockwise_Positive;
+        sumConfig.MotorOutput.NeutralMode = motorComponent.breakModeEnabled().orElse(false) ? NeutralModeValue.Brake : NeutralModeValue.Coast;
 
         motorComponent.openRampRate_seconds().ifPresent(rate -> {
-            OpenLoopRampsConfigs rr = new OpenLoopRampsConfigs()
-                    .withDutyCycleOpenLoopRampPeriod(rate)
-                    .withVoltageOpenLoopRampPeriod(rate);
-            talonFX.getConfigurator().apply(rr);
+
+            sumConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = rate;
+            sumConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = rate;
+
         });
 
         motorComponent.closedRampRate_seconds().ifPresent(rate -> {
-            ClosedLoopRampsConfigs rr = new ClosedLoopRampsConfigs()
-                    .withDutyCycleClosedLoopRampPeriod(rate)
-                    .withVoltageClosedLoopRampPeriod(rate);
-            talonFX.getConfigurator().apply(rr);
-        });
 
+            sumConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = rate;
+            sumConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = rate;
+
+        });
+        exceptions = orThrow(
+                talonFX.getConfigurator().apply(sumConfig, 0.1),
+                motorComponent.selfPath(),
+                exceptions
+        );
+
+        currentNow = talonFX.getTorqueCurrent();
+        voltageOutput = talonFX.getMotorVoltage();
+        temperature = talonFX.getDeviceTemp();
+
+        position_mechanismRotations = talonFX.getPosition();
+        velocity_mechanismRotationsPerSecond = talonFX.getVelocity();
+
+        forwardLimitSwitchHit = talonFX.getForwardLimit();
+        reverseLimitSwitchHit = talonFX.getReverseLimit();
+
+        if (motorComponent.fwReset_mechanismRot().isPresent() || motorComponent.rvReset_mechanismRot().isPresent()) {
+            BaseStatusSignal.setUpdateFrequencyForAll(100,
+                    forwardLimitSwitchHit,
+                    reverseLimitSwitchHit
+            );
+        } else {
+            BaseStatusSignal.setUpdateFrequencyForAll(20,
+                    forwardLimitSwitchHit,
+                    reverseLimitSwitchHit
+            );
+        }
+
+        if (motorComponent.fwReset_mechanismRot().isPresent() && motorComponent.forwardLimit().isPresent()) {
+            botherRunningFwLimitLoop = true;
+        }
+
+        if (motorComponent.rvReset_mechanismRot().isPresent() && motorComponent.reverseLimit().isPresent()) {
+            botherRunningRvLimitLoop = true;
+        }
+
+
+
+        BaseStatusSignal.setUpdateFrequencyForAll(
+                100.0,
+                currentNow,
+                voltageOutput,
+                temperature,
+                velocity_mechanismRotationsPerSecond
+        );
+
+        BaseStatusSignal.setUpdateFrequencyForAll(
+                250,
+                position_mechanismRotations
+        );
+
+
+        System.out.println("DONE AND SYS: " + motorComponent.encoderToMechanismCoefficient());
 
         return exceptions;
     }
@@ -178,6 +154,15 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
     StatusSignal<Double> temperature;
     StatusSignal<Double> position_mechanismRotations;
     StatusSignal<Double> velocity_mechanismRotationsPerSecond;
+
+    StatusSignal<ForwardLimitValue> forwardLimitSwitchHit;
+    StatusSignal<ReverseLimitValue> reverseLimitSwitchHit;
+
+    OperationMode mode = OperationMode.NOT_SET;
+
+    boolean botherRunningFwLimitLoop = false;
+    boolean botherRunningRvLimitLoop = false;
+
 
     @Override
     public void logicPeriodic() {
@@ -189,6 +174,36 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
                 position_mechanismRotations,
                 velocity_mechanismRotationsPerSecond
         );
+
+        if (botherRunningFwLimitLoop || botherRunningRvLimitLoop) {
+            BaseStatusSignal.refreshAll(
+                    forwardLimitSwitchHit,
+                    reverseLimitSwitchHit
+            );
+        }
+
+        if (botherRunningFwLimitLoop) {
+            var forwardNormally = motorComponent.forwardLimit().get();
+
+            boolean suddenlyClosed = forwardNormally == CommonMotorComponent.Normally.CLOSED && forwardLimitSwitchHit.getValue() == ForwardLimitValue.Open;
+            boolean suddenlyOpen = forwardNormally == CommonMotorComponent.Normally.OPEN && forwardLimitSwitchHit.getValue() == ForwardLimitValue.ClosedToGround;
+
+            if (suddenlyOpen || suddenlyClosed) {
+                talonFX.setPosition(motorComponent.fwReset_mechanismRot().get());
+            }
+        }
+
+        if (botherRunningRvLimitLoop) {
+            var forwardNormally = motorComponent.reverseLimit().get();
+
+            boolean suddenlyClosed = forwardNormally == CommonMotorComponent.Normally.CLOSED && reverseLimitSwitchHit.getValue() == ReverseLimitValue.Open;
+            boolean suddenlyOpen = forwardNormally == CommonMotorComponent.Normally.OPEN && reverseLimitSwitchHit.getValue() == ReverseLimitValue.ClosedToGround;
+
+            if (suddenlyOpen || suddenlyClosed) {
+                talonFX.setPosition(motorComponent.rvReset_mechanismRot().get());
+            }
+        }
+
 
     }
 
@@ -217,11 +232,13 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
 
     @Override
     public void setToVoltage(double voltage) {
+        mode = OperationMode.VOLTAGE;
         talonFX.setVoltage(voltage);
     }
 
     @Override
     public void setToPercent(double percent_zeroToOne) {
+        mode = OperationMode.DUTY;
         talonFX.set(percent_zeroToOne);
     }
 
@@ -251,7 +268,7 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
 
     @Override public void forceRotationalOffset(double offset_mechanismRotations) {
         var fbc = new FeedbackConfigs()
-                .withSensorToMechanismRatio(motorComponent.encoderToMechanismCoefficient())
+                .withSensorToMechanismRatio(1 / motorComponent.encoderToMechanismCoefficient())
                 .withFeedbackRotorOffset(offset_mechanismRotations);
 
         talonFX.getConfigurator().apply(fbc);
@@ -279,5 +296,13 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
 
     @Override public double angularVelocity_encoderRotationsPerSecond() {
         return velocity_mechanismRotationsPerSecond.getValue() / loadLinearCoef();
+    }
+
+    @Override public <T> T rawAccess(Class<T> clazz) throws UnsupportedOperationException {
+        if (clazz == TalonFX.class) {
+            return clazz.cast(talonFX);
+        }
+
+        throw new UnsupportedOperationException();
     }
 }

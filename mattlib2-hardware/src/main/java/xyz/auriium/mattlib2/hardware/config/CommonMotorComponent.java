@@ -35,12 +35,15 @@ public interface CommonMotorComponent extends INetworkedComponent {
     @Conf("reverseLimit") Optional<Normally> reverseLimit();
     @Conf("forwardSoftLimit") Optional<Double> forwardSoftLimit_mechanismRot();
     @Conf("reverseSoftLimit") Optional<Double> reverseSoftLimit_mechanismRot();
+    @Conf("forceOffsetAtForwardLimit") Optional<Double> fwReset_mechanismRot();
+    @Conf("forceOffsetAtReverseLimit") Optional<Double> rvReset_mechanismRot();
 
     @Conf("inverted") Optional<Boolean> inverted();
     @Conf("openRampRate") Optional<Double> openRampRate_seconds();
     @Conf("closedRampRate") Optional<Double> closedRampRate_seconds();
     @Conf("breakModeEnabled") Optional<Boolean> breakModeEnabled();
     @Conf("hasAbsolute") Optional<Boolean> hasAbsoluteEncoder();
+
 
     //Stuff used for simulation
     @Conf(ROTATIONAL_INERTIA) Optional<Double> massMomentInertia();

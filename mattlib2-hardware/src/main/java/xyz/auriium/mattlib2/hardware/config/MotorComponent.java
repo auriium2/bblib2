@@ -117,6 +117,14 @@ public interface MotorComponent extends IndividualMotorComponent, CommonMotorCom
             return commonMotorComponent.reverseSoftLimit_mechanismRot();
         }
 
+        @Override public Optional<Double> fwReset_mechanismRot() {
+            return commonMotorComponent.fwReset_mechanismRot();
+        }
+
+        @Override public Optional<Double> rvReset_mechanismRot() {
+            return commonMotorComponent.rvReset_mechanismRot();
+        }
+
         @Override
         public Optional<Boolean> inverted() {
             return commonMotorComponent.inverted();
