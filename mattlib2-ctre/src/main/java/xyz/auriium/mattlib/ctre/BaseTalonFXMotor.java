@@ -109,12 +109,12 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
         reverseLimitSwitchHit = talonFX.getReverseLimit();
 
         if (motorComponent.fwReset_mechanismRot().isPresent() || motorComponent.rvReset_mechanismRot().isPresent()) {
-            BaseStatusSignal.setUpdateFrequencyForAll(100,
+            BaseStatusSignal.setUpdateFrequencyForAll(50,
                     forwardLimitSwitchHit,
                     reverseLimitSwitchHit
             );
         } else {
-            BaseStatusSignal.setUpdateFrequencyForAll(20,
+            BaseStatusSignal.setUpdateFrequencyForAll(5,
                     forwardLimitSwitchHit,
                     reverseLimitSwitchHit
             );
@@ -131,7 +131,7 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
 
 
         BaseStatusSignal.setUpdateFrequencyForAll(
-                100.0,
+                25,
                 currentNow,
                 voltageOutput,
                 temperature,
@@ -139,7 +139,7 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
         );
 
         BaseStatusSignal.setUpdateFrequencyForAll(
-                250,
+                50,
                 position_mechanismRotations
         );
 
