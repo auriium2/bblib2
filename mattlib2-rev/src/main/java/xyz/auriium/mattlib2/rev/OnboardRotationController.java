@@ -7,6 +7,7 @@ import xyz.auriium.mattlib2.hardware.IRotationEncoder;
 import xyz.auriium.mattlib2.hardware.IRotationalController;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 import xyz.auriium.mattlib2.hardware.config.PIDComponent;
+import xyz.auriium.yuukonstants.exception.ExplainedException;
 
 public class OnboardRotationController extends BaseSparkMotor implements IRotationalController {
 
@@ -25,9 +26,36 @@ public class OnboardRotationController extends BaseSparkMotor implements IRotati
     double setpoint_primeUnits = 0;
     double observation_primeUnits = 0;
 
+    @Override public ExplainedException[] verifyInit() {
+        var ee =  super.verifyInit();
+
+        pidController.setPID(
+                pidComponent.pConstant(),
+                pidComponent.iConstant(),
+                pidComponent.dConstant()
+        );
+
+        pidController.setTolerance(pidComponent.tolerance_pidUnits());
+
+        return ee;
+    }
+
     @Override public void logPeriodic() {
+        super.logPeriodic();
+
         pidComponent.reportState(observation_primeUnits);
         pidComponent.reportReference(setpoint_primeUnits);
+    }
+
+    @Override public void tunePeriodic() {
+        super.tunePeriodic();
+
+        if (pidComponent.hasUpdated()) {
+            pidController.setP(pidComponent.pConstant());
+            pidController.setI(pidComponent.iConstant());
+            pidController.setD(pidComponent.dConstant());
+            pidController.setTolerance(pidComponent.tolerance_pidUnits());
+        }
     }
 
     @Override

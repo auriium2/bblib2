@@ -76,6 +76,14 @@ public interface MotorComponent extends IndividualMotorComponent, CommonMotorCom
             individualMotorComponent.reportMechanismVelocity(mechanismRotationsPerSecond);
         }
 
+        @Override public void reportFwLimitTriggered(boolean triggered) {
+            individualMotorComponent.reportFwLimitTriggered(triggered);
+        }
+
+        @Override public void reportRvLimitTriggered(boolean triggered) {
+            individualMotorComponent.reportRvLimitTriggered(triggered);
+        }
+
 
         @Override
         public Optional<Type> typeOfMotor() {

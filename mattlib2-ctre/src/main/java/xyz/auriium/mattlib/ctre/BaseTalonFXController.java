@@ -37,8 +37,6 @@ public class BaseTalonFXController extends BaseTalonFXMotor implements ILinearCo
         return old;
     }
 
-
-
     @Override public void controlToLinearReferenceArbitrary(double setpointMechanism_meters, double arbitraryFF_volts) {
         mode = OperationMode.LINEAR_POS;
         reference_primeUnits = setpointMechanism_meters;
@@ -93,7 +91,6 @@ public class BaseTalonFXController extends BaseTalonFXMotor implements ILinearCo
         talonFX.setControl(request);
     }
 
-
     @Override public void controlToLinearVelocityReferenceArbitrary(double setPointMechanism_metersPerSecond, double arbitraryFF_voltage) {
         reference_primeUnits = setPointMechanism_metersPerSecond;
         mode = OperationMode.LINEAR_VEL;
@@ -116,7 +113,6 @@ public class BaseTalonFXController extends BaseTalonFXMotor implements ILinearCo
 
     @Override public void logPeriodic() {
         super.logPeriodic();
-
 
         pidConfig.reportReference(reference_primeUnits);
         switch (mode) {

@@ -64,6 +64,10 @@ public interface PIDComponent extends CommonPIDComponent, IndividualPIDComponent
             return commonPIDComponent.dConstant();
         }
 
+        @Override public double tolerance_pidUnits() {
+            return commonPIDComponent.tolerance_pidUnits();
+        }
+
         @Override
 
         public double iConstant() {
