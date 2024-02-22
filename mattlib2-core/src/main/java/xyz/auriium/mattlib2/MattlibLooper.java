@@ -43,11 +43,19 @@ public class MattlibLooper {
             runnable.logicPeriodic();
         }
 
+        for (IMattlibHooked runnable : orderedThingsToBeLooped) {
+            runnable.alwaysLogPeriodic();
+        }
+
+
+
         if (MattlibSettings.USE_LOGGING) {
             for (IMattlibHooked runnable : orderedThingsToBeLooped) {
                 runnable.logPeriodic();
             }
+        }
 
+        if (MattlibSettings.USE_TUNING) {
             for (IMattlibHooked runnable : orderedThingsToBeLooped) {
                 runnable.tunePeriodic();
             }

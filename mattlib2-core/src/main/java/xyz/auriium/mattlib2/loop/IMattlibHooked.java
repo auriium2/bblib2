@@ -64,6 +64,11 @@ public interface IMattlibHooked {
     }
 
     /**
+     * This function will be logged even when logging is disabled
+     */
+    default void alwaysLogPeriodic() {}
+
+    /**
      * This function should be run in robot periodic, optionally
      */
     default void logPeriodic() {};

@@ -43,6 +43,8 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IMattlibHooked {
     double temperature = 0;
 
     double loadLinearCoef() {
+
+
         if (!linearCoefSet) {
             linearCoefSet = true;
             Optional<Double> coefOptional = motorComponent.rotationToMeterCoefficient();

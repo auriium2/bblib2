@@ -3,21 +3,26 @@ package xyz.auriium.mattlib2.auto.dynamics;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import org.ojalgo.matrix.MatrixR064;
-import org.ojalgo.matrix.store.Primitive64Store;
+
+import java.util.Arrays;
 
 public class FastSwerveKinematics {
 
     final MatrixR064 inverseKinematics;
     final MatrixR064 forwardKinematics_pseudo;
 
+    final Rotation2d[] rotationVector = new Rotation2d[4];
+
     public FastSwerveKinematics(MatrixR064 inverseKinematics, MatrixR064 forwardKinematics_pseudo) {
         this.inverseKinematics = inverseKinematics;
         this.forwardKinematics_pseudo = forwardKinematics_pseudo;
+        Arrays.fill(rotationVector, new Rotation2d());
     }
 
-    public FastSwerveKinematics load(Translation2d[] swerveModulePositionOffsets_four) {
+    public static FastSwerveKinematics load(Translation2d[] swerveModulePositionOffsets_four) {
         //Generate 1st order inverse kinematic matrix
 
         var inverseKinematicBuilder = MatrixR064.FACTORY.makeDense(8,3);
@@ -35,26 +40,41 @@ public class FastSwerveKinematics {
         }
 
         MatrixR064 inverseKinematics = inverseKinematicBuilder.get();
-        MatrixR064 forwardKinematics_pseudo = inverseKinematics.invert();
+        MatrixR064 forwardKinematics_pseudo = (inverseKinematics.transpose().multiply(inverseKinematics)).invert().multiply(inverseKinematics.transpose());
+
+                //FUCKING GIVE ME THE MOORE PERSIJISNINFOSNFOSNFAISNFO
+        //DUMB SHIT
 
         return new FastSwerveKinematics(inverseKinematics, forwardKinematics_pseudo);
     }
 
 
     public SwerveModuleState[] convertCentroidStateToModuleStateSafe(ChassisSpeeds speeds) {
+        if (speeds.vxMetersPerSecond == 0.0
+                && speeds.vyMetersPerSecond == 0.0
+                && speeds.omegaRadiansPerSecond == 0.0) {
+            SwerveModuleState[] moduleStates = new SwerveModuleState[4];
+            for (int i = 0; i < 4; i++) {
+                moduleStates[i] = new SwerveModuleState(0.0, rotationVector[i]);
+            }
+
+            return moduleStates;
+        }
+
         MatrixR064 centroidStateVector = MatrixR064.FACTORY.column(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond);
         MatrixR064 moduleStateVector = convertCentroidStateToModuleState(centroidStateVector); //compiler inlines this
 
         SwerveModuleState[] locallyAllocatedStates = new SwerveModuleState[4]; //TODO reduce object allocations
 
         for (int i = 0; i < 4; i++) {
-            double x = moduleStateVector.doubleValue(2 * i);
-            double y = moduleStateVector.doubleValue(2 * i + 1);
+            double x = moduleStateVector.doubleValue(i * 2);
+            double y = moduleStateVector.doubleValue(i * 2  + 1);
 
             double velocity = Math.hypot(x,y);
             Rotation2d angle = new Rotation2d(x,y);
 
             locallyAllocatedStates[i] = new SwerveModuleState(velocity, angle);
+            rotationVector[i] = angle;
         }
 
         return locallyAllocatedStates;
@@ -72,6 +92,7 @@ public class FastSwerveKinematics {
                 states[3].speedMetersPerSecond * states[3].angle.getSin(),
                 states[3].speedMetersPerSecond * states[3].angle.getCos()
         );
+
 
         MatrixR064 centroidStateVector = convertModuleStateToCentroidState(moduleStateVector);
 

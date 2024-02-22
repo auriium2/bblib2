@@ -35,8 +35,15 @@ public class DCSimController extends DCSimMotor implements ILinearController, IR
         }
     }
 
+    boolean isContinuous = false;
+
     @Override
     public void controlToLinearReferenceArbitrary(double setpointMechanism_meters, double arbFF) {
+        if (isContinuous) {
+            isContinuous = false;
+            pidController.disableContinuousInput();
+        }
+
         double coef = motorComponent.rotationToMeterCoefficient().orElseThrow(() -> Exceptions.MOTOR_NOT_LINEAR(motorComponent.selfPath()));
 
         double controlEffort = pidController.calculate(
@@ -52,33 +59,29 @@ public class DCSimController extends DCSimMotor implements ILinearController, IR
 
     @Override
     public void controlToNormalizedReferenceArbitrary(double setpoint_mechanismNormalizedRotations, double arbFF) {
-
-
-        double measurement_mechanismNormalizedRotations = angularPosition_normalizedMechanismRotations();
-        double currentAngle_mechanismNormalizedRotations = measurement_mechanismNormalizedRotations % 1d;
-        if (currentAngle_mechanismNormalizedRotations < 0d) {
-            currentAngle_mechanismNormalizedRotations += 1d; //no idea why this works
+        if (!isContinuous) {
+            isContinuous = true;
+            pidController.enableContinuousInput(0, 1);
         }
 
-        // take (infinite - normalized) for (current offset) then add (setpoint normalized) for (setpoint infinite)
-        double reference_mechanismInfiniteRotations = setpoint_mechanismNormalizedRotations
-                + measurement_mechanismNormalizedRotations
-                - currentAngle_mechanismNormalizedRotations;
 
+        double controlEffort = pidController.calculate(
+                this.angularPosition_encoderRotations(),
+                setpoint_mechanismNormalizedRotations
+        );
 
-        // more modulus code i don't understand
-        if (setpoint_mechanismNormalizedRotations - currentAngle_mechanismNormalizedRotations > 0.5) {
-            reference_mechanismInfiniteRotations -= 1d;
-        } else if (setpoint_mechanismNormalizedRotations - currentAngle_mechanismNormalizedRotations < -0.5) {
-            reference_mechanismInfiniteRotations += 1d;
-        }
+        this.setToVoltage(controlEffort + arbFF);
 
-        controlToInfiniteReferenceArbitrary(reference_mechanismInfiniteRotations, arbFF);
 
     }
 
     @Override
     public void controlToInfiniteReferenceArbitrary(double setpoint_mechanismRotations, double arbFF) {
+        if (isContinuous) {
+            isContinuous = false;
+            pidController.disableContinuousInput();
+        }
+
         double controlEffort = pidController.calculate(
                 this.angularPosition_encoderRotations(),
                 setpoint_mechanismRotations

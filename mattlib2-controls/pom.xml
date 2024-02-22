@@ -5,11 +5,11 @@
     <parent>
         <artifactId>mattlib2</artifactId>
         <groupId>xyz.auriium</groupId>
-        <version>1.6.4-SNAPSHOT</version>
+        <version>1.7.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mattlib2-auto</artifactId>
+    <artifactId>mattlib2-controls</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -26,19 +26,18 @@
         <dependency>
             <groupId>xyz.auriium</groupId>
             <artifactId>mattlib2-core</artifactId>
-            <version>1.6.4-SNAPSHOT</version>
+            <version>1.7.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>xyz.auriium</groupId>
             <artifactId>mattlib2-hardware</artifactId>
-            <version>1.6.4-SNAPSHOT</version>
+            <version>1.7.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.ojalgo</groupId>
             <artifactId>ojalgo</artifactId>
             <version>53.3.0</version>
         </dependency>
-
 
 
     </dependencies>

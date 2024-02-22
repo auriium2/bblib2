@@ -109,7 +109,7 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
         reverseLimitSwitchHit = talonFX.getReverseLimit();
 
         if (motorComponent.fwReset_mechanismRot().isPresent() || motorComponent.rvReset_mechanismRot().isPresent()) {
-            BaseStatusSignal.setUpdateFrequencyForAll(50,
+            BaseStatusSignal.setUpdateFrequencyForAll(25,
                     forwardLimitSwitchHit,
                     reverseLimitSwitchHit
             );
@@ -131,20 +131,19 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
 
 
         BaseStatusSignal.setUpdateFrequencyForAll(
-                25,
+                12.5,
                 currentNow,
                 voltageOutput,
-                temperature,
-                velocity_mechanismRotationsPerSecond
+                temperature
+
         );
 
         BaseStatusSignal.setUpdateFrequencyForAll(
                 50,
+                velocity_mechanismRotationsPerSecond,
                 position_mechanismRotations
         );
 
-
-        System.out.println("DONE AND SYS: " + motorComponent.encoderToMechanismCoefficient());
 
         return exceptions;
     }
@@ -194,15 +193,17 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
         }
 
         if (botherRunningRvLimitLoop) {
-            var forwardNormally = motorComponent.reverseLimit().get();
+            var reverseNormally = motorComponent.reverseLimit().get();
 
-            boolean suddenlyClosed = forwardNormally == CommonMotorComponent.Normally.CLOSED && reverseLimitSwitchHit.getValue() == ReverseLimitValue.Open;
-            boolean suddenlyOpen = forwardNormally == CommonMotorComponent.Normally.OPEN && reverseLimitSwitchHit.getValue() == ReverseLimitValue.ClosedToGround;
+            boolean suddenlyClosed = reverseNormally == CommonMotorComponent.Normally.CLOSED && reverseLimitSwitchHit.getValue() == ReverseLimitValue.Open;
+            boolean suddenlyOpen = reverseNormally == CommonMotorComponent.Normally.OPEN && reverseLimitSwitchHit.getValue() == ReverseLimitValue.ClosedToGround;
 
             if (suddenlyOpen || suddenlyClosed) {
                 talonFX.setPosition(motorComponent.rvReset_mechanismRot().get());
             }
         }
+
+        talonFX.optimizeBusUtilization();
 
 
     }
@@ -214,6 +215,25 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
         motorComponent.reportVoltageGiven(voltageOutput.getValue());
         motorComponent.reportMechanismRotations(position_mechanismRotations.getValue());
         motorComponent.reportMechanismVelocity(velocity_mechanismRotationsPerSecond.getValue());
+
+        if (botherRunningFwLimitLoop) {
+            var forwardNormally = motorComponent.forwardLimit().get();
+
+            boolean suddenlyClosed = forwardNormally == CommonMotorComponent.Normally.CLOSED && reverseLimitSwitchHit.getValue() == ReverseLimitValue.Open;
+            boolean suddenlyOpen = forwardNormally == CommonMotorComponent.Normally.OPEN && reverseLimitSwitchHit.getValue() == ReverseLimitValue.ClosedToGround;
+
+            motorComponent.reportFwLimitTriggered(suddenlyClosed || suddenlyOpen);
+
+        }
+
+        if (botherRunningRvLimitLoop) {
+            var reverseNormally = motorComponent.reverseLimit().get();
+
+            boolean suddenlyClosed = reverseNormally == CommonMotorComponent.Normally.CLOSED && reverseLimitSwitchHit.getValue() == ReverseLimitValue.Open;
+            boolean suddenlyOpen = reverseNormally == CommonMotorComponent.Normally.OPEN && reverseLimitSwitchHit.getValue() == ReverseLimitValue.ClosedToGround;
+
+            motorComponent.reportRvLimitTriggered(suddenlyClosed || suddenlyOpen);
+        }
     }
 
 

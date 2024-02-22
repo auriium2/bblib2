@@ -131,6 +131,28 @@ public class HardwareREV {
 
     }
 
+    /**
+     *
+     * @param motorComponent
+     * @param pdConfig
+     * @param stateObserver
+     * @return use onboard pid controler
+     */
+    public static IRotationalController rotationalSpark_onboardPID(MotorComponent motorComponent, PIDComponent pdConfig, IRotationEncoder stateObserver) {
+        int canId = motorComponent.id();
+        GenericPath possiblyNullPath = IDS_ALREADY_SEEN.get(canId);
+        GenericPath pathOfComponent  = motorComponent.selfPath();
+
+        if (possiblyNullPath != null) {
+            Exceptions.DUPLICATE_IDS_FOUND(pathOfComponent, canId, possiblyNullPath);
+        }
+
+
+        CANSparkMax sparkMax = createSparkmax(motorComponent);
+        RelativeEncoder relativeEncoder = sparkMax.getEncoder();
+
+        return new OnboardRotationController(sparkMax, motorComponent, relativeEncoder, stateObserver, pdConfig);
+    }
 
     /**
      * Sets up a mattlib SparkMax device that is tasked with controlling linear motion;
