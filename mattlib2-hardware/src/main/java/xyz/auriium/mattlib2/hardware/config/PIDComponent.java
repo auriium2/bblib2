@@ -3,6 +3,8 @@ package xyz.auriium.mattlib2.hardware.config;
 import xyz.auriium.mattlib2.Mattlib;
 import xyz.auriium.yuukonstants.GenericPath;
 
+import java.util.Optional;
+
 public interface PIDComponent extends CommonPIDComponent, IndividualPIDComponent {
 
     /**
@@ -66,6 +68,10 @@ public interface PIDComponent extends CommonPIDComponent, IndividualPIDComponent
 
         @Override public double tolerance_pidUnits() {
             return commonPIDComponent.tolerance_pidUnits();
+        }
+
+        @Override public Optional<Boolean> usePidDeadband() {
+            return commonPIDComponent.usePidDeadband();
         }
 
         @Override

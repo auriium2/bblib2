@@ -5,7 +5,7 @@
     <parent>
         <artifactId>mattlib2</artifactId>
         <groupId>xyz.auriium</groupId>
-        <version>1.7.1-SNAPSHOT</version>
+        <version>1.7.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -66,8 +66,18 @@
             <version>${mattlib2.wpi.versionTag}</version>
         </dependency>
         <dependency>
+            <groupId>edu.wpi.first.cameraserver</groupId>
+            <artifactId>cameraserver-java</artifactId>
+            <version>${mattlib2.wpi.versionTag}</version>
+        </dependency>
+        <dependency>
             <groupId>edu.wpi.first.wpilibNewCommands</groupId>
             <artifactId>wpilibNewCommands-java</artifactId>
+            <version>${mattlib2.wpi.versionTag}</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.wpi.first.hal</groupId>
+            <artifactId>hal-java</artifactId>
             <version>${mattlib2.wpi.versionTag}</version>
         </dependency>
 

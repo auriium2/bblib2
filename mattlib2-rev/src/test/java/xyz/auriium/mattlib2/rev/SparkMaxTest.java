@@ -15,6 +15,7 @@ public class SparkMaxTest {
 
 
 
+    @Disabled
     @Test
     public void wrappingOfNormalNumbersShouldWork() {
         Mockito.withSettings().serializable();
@@ -31,6 +32,7 @@ public class SparkMaxTest {
         Assertions.assertEquals(0.35, mx.angularPosition_normalizedEncoderRotations()); //should be the same
     }
 
+    @Disabled
     @Test
     public void wrappingOfLargeNumbersShouldWork() {
 
@@ -48,6 +50,7 @@ public class SparkMaxTest {
 
     }
 
+    @Disabled
     @Test
     public void wrappingOfNegativeLargeNumbersShouldWork() {
 

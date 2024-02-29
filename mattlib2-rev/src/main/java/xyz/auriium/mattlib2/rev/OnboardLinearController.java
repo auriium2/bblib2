@@ -4,10 +4,8 @@ package xyz.auriium.mattlib2.rev;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
-
 import xyz.auriium.mattlib2.hardware.ILinearController;
 import xyz.auriium.mattlib2.hardware.ILinearEncoder;
-import xyz.auriium.mattlib2.hardware.ILinearMotor;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
 import xyz.auriium.mattlib2.hardware.config.PIDComponent;
 import xyz.auriium.yuukonstants.exception.ExplainedException;
@@ -29,6 +27,12 @@ public class OnboardLinearController extends BaseSparkMotor implements ILinearCo
     double setpoint_primeUnits = 0;
     double observation_primeUnits = 0;
 
+
+    @Override public void stopActuator() {
+        super.stopActuator();
+
+        pidController.reset();
+    }
 
     @Override
     public ExplainedException[] verifyInit() {

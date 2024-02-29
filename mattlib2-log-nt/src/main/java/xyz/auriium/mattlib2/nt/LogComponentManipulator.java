@@ -16,10 +16,7 @@ import xyz.auriium.mattlib2.MattlibSettings;
 import xyz.auriium.mattlib2.log.FixedSupplier;
 import xyz.auriium.mattlib2.log.INetworkedComponent;
 import xyz.auriium.mattlib2.log.ProcessPath;
-import xyz.auriium.mattlib2.log.annote.Conf;
-import xyz.auriium.mattlib2.log.annote.HasUpdated;
-import xyz.auriium.mattlib2.log.annote.SelfPath;
-import xyz.auriium.mattlib2.log.annote.Tune;
+import xyz.auriium.mattlib2.log.annote.*;
 import xyz.auriium.mattlib2.utils.ReflectionUtil;
 import xyz.auriium.yuukonstants.GenericPath;
 import yuukonfig.core.err.BadValueException;
@@ -193,6 +190,9 @@ public class LogComponentManipulator implements Manipulator {
                 continue;
             }
 
+            MattlibSettings.LogLevel level = method.isAnnotationPresent(Essential.class) ? MattlibSettings.LogLevel.ESSENTIAL_TELEMETRY : MattlibSettings.LogLevel.VERBOSE_TELEMETRY;
+            boolean doTelemeter = MattlibSettings.USE_TELEMETRY.isAt(level);
+
             if (conf != null || tune != null) { //Handle this as a config value
                 Mapping mp = node.asMapping();
                 Class<?> returnType = method.getReturnType();
@@ -217,7 +217,8 @@ public class LogComponentManipulator implements Manipulator {
 
                 Supplier<Object> objectSupplier;
 
-                if (tune != null && MattlibSettings.USE_LOGGING) { //it's a tune and not a conf AND we are in tuning mode (only set at restart)
+                if (tune != null && doTelemeter) { //it's a tune and not a conf AND we are in tuning mode (only set at restart)
+
                     objectSupplier = logger.generateTuner(ProcessPath.ofGeneric(newPath), confObject).orElseThrow(() ->
                             new Mattlib2Exception(
                              "tunerGenerationFailed",

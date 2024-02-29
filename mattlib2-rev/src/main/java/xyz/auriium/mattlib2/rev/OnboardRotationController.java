@@ -3,6 +3,7 @@ package xyz.auriium.mattlib2.rev;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import xyz.auriium.mattlib2.hardware.IRotationEncoder;
 import xyz.auriium.mattlib2.hardware.IRotationalController;
 import xyz.auriium.mattlib2.hardware.config.MotorComponent;
@@ -58,6 +59,12 @@ public class OnboardRotationController extends BaseSparkMotor implements IRotati
         }
     }
 
+    @Override public void stopActuator() {
+        super.stopActuator();
+
+        pidController.reset();
+    }
+
     @Override
     public void controlToNormalizedReferenceArbitrary(double setpoint_mechanismNormalizedRotations, double arbitraryFF_volts) {
         if (!normalizedMode) {
@@ -71,7 +78,7 @@ public class OnboardRotationController extends BaseSparkMotor implements IRotati
         setpoint_primeUnits = setpoint_mechanismNormalizedRotations;
         observation_primeUnits = measurement_mechanismNormalizedRotations;
 
-                setToVoltage(feedbackVoltage + arbitraryFF_volts);
+        setToVoltage(feedbackVoltage + arbitraryFF_volts);
     }
 
     @Override

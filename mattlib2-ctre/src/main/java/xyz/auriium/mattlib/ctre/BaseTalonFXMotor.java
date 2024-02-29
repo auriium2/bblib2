@@ -256,6 +256,10 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
         talonFX.setVoltage(voltage);
     }
 
+    @Override public void stopActuator() {
+        talonFX.stopMotor();
+    }
+
     @Override
     public void setToPercent(double percent_zeroToOne) {
         mode = OperationMode.DUTY;

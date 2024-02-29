@@ -16,6 +16,8 @@ public interface IActuator extends IControlEffortReceiver<N1>, IRaw {
      */
     void setToVoltage(double voltage);
 
+    void stopActuator();
+
     /**
      * @param percent_zeroToOne A percentage to drive the actuator at, ranged from 0 to 1.
      *                          - Percentages outside of that range will be rejected loudly

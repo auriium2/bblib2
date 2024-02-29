@@ -59,6 +59,10 @@ public class DCSimMotor implements ILinearMotor, IRotationalMotor, IMattlibHooke
         motorSim.setInputVoltage(voltageNow);
     }
 
+    @Override public void stopActuator() {
+        setToVoltage(0);
+    }
+
     @Override
     public void setToPercent(double percent_zeroToOne) {
         voltageNow = invertedCoef * percent_zeroToOne * 12;

@@ -66,6 +66,11 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IMattlibHooked {
 
 
     @Override
+    public void stopActuator() {
+        sparkMax.stopMotor();
+    }
+
+    @Override
     public ExplainedException[] verifyInit() {
 
         ExplainedException[] toThrow = new ExplainedException[0];

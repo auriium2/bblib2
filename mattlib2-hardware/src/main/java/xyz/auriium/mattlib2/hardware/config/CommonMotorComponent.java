@@ -9,19 +9,7 @@ import java.util.Optional;
  * Commonly reused configuration details of a motor
  */
 public interface CommonMotorComponent extends INetworkedComponent {
-
-    enum Type {
-        BRUSHED,
-        BRUSHLESS
-    }
-
-    enum Normally {
-        OPEN,
-        CLOSED
-    }
-
-
-
+    
     /**
      *
      * @return brushless or brushed (look it up)
@@ -53,6 +41,19 @@ public interface CommonMotorComponent extends INetworkedComponent {
     String POSITION_STDV = "positionStdv";
     String ROTATIONAL_INERTIA = "rotationalInertia";
     String VELOCITY_STDV = "velocityStdv";
+
+
+    enum Type {
+        BRUSHED,
+        BRUSHLESS
+    }
+
+    enum Normally {
+        OPEN,
+        CLOSED
+    }
+
+
 
 
 
