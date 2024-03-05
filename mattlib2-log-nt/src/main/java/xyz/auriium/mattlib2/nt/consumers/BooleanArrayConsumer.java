@@ -13,10 +13,12 @@ public class BooleanArrayConsumer implements InitializableConsumer<boolean[]> {
 
     final NetworkTableEntry entry;
     final BooleanArrayLogEntry logEntry;
+    final MattlibSettings.LogLevel threshold;
 
-    public BooleanArrayConsumer(NetworkTableEntry entry, BooleanArrayLogEntry logEntry) {
+    public BooleanArrayConsumer(NetworkTableEntry entry, BooleanArrayLogEntry logEntry, MattlibSettings.LogLevel threshold) {
         this.entry = entry;
         this.logEntry = logEntry;
+        this.threshold = threshold;
     }
 
     @Override public void initializeLogging() {
@@ -27,7 +29,7 @@ public class BooleanArrayConsumer implements InitializableConsumer<boolean[]> {
         if (!MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.LOG)) return;
 
 
-        if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.VERBOSE_TELEMETRY)) {
+        if (MattlibSettings.USE_TELEMETRY.isAt(threshold)) {
             entry.setBooleanArray(aLong);
         }
         if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.LOG)) {

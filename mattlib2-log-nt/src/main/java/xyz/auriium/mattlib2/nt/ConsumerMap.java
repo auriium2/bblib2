@@ -2,6 +2,7 @@ package xyz.auriium.mattlib2.nt;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.util.datalog.DataLog;
+import xyz.auriium.mattlib2.MattlibSettings;
 import xyz.auriium.mattlib2.log.InitializableConsumer;
 
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.function.Consumer;
 public class ConsumerMap {
 
     public interface ConsumerSupplier<T> {
-        InitializableConsumer<T> make(NetworkTableEntry e, DataLog log);
+        InitializableConsumer<T> make(NetworkTableEntry e, DataLog log, MattlibSettings.LogLevel threshold);
     }
 
     final Map<Class<?>, ConsumerSupplier<?>> backingMap = new HashMap<>();

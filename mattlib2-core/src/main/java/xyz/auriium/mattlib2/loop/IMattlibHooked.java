@@ -63,6 +63,8 @@ public interface IMattlibHooked {
 
     }
 
+    default void postLogicPeriodic() {}
+
     /**
      * This function will be logged even when logging is disabled
      */

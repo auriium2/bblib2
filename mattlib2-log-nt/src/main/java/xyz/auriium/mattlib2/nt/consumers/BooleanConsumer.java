@@ -10,10 +10,12 @@ public class BooleanConsumer implements InitializableConsumer<Boolean> {
 
     final NetworkTableEntry entry;
     final BooleanLogEntry logEntry;
+    final MattlibSettings.LogLevel threshold;
 
-    public BooleanConsumer(NetworkTableEntry entry, BooleanLogEntry logEntry) {
+    public BooleanConsumer(NetworkTableEntry entry, BooleanLogEntry logEntry, MattlibSettings.LogLevel threshold) {
         this.entry = entry;
         this.logEntry = logEntry;
+        this.threshold = threshold;
     }
 
     @Override public void initializeLogging() {
@@ -22,7 +24,7 @@ public class BooleanConsumer implements InitializableConsumer<Boolean> {
 
     @Override
     public void accept(Boolean s) {
-        if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.VERBOSE_TELEMETRY)) {
+        if (MattlibSettings.USE_TELEMETRY.isAt(threshold)) {
             entry.setBoolean(s);
         }
         if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.LOG)) {

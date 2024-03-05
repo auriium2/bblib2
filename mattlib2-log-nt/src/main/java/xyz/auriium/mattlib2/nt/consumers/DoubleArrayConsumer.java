@@ -12,10 +12,12 @@ public class DoubleArrayConsumer implements InitializableConsumer<double[]> {
 
     final NetworkTableEntry entry;
     final DoubleArrayLogEntry logEntry;
+    final MattlibSettings.LogLevel threshold;
 
-    public DoubleArrayConsumer(NetworkTableEntry entry, DoubleArrayLogEntry logEntry) {
+    public DoubleArrayConsumer(NetworkTableEntry entry, DoubleArrayLogEntry logEntry, MattlibSettings.LogLevel threshold) {
         this.entry = entry;
         this.logEntry = logEntry;
+        this.threshold = threshold;
     }
 
     @Override public void initializeLogging() {
@@ -26,7 +28,7 @@ public class DoubleArrayConsumer implements InitializableConsumer<double[]> {
         if (!MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.LOG)) return;
 
 
-        if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.VERBOSE_TELEMETRY)) {
+        if (MattlibSettings.USE_TELEMETRY.isAt(threshold)) {
             entry.setDoubleArray(aLong);
         }
         if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.LOG)) {

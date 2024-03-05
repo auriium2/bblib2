@@ -51,10 +51,17 @@ public class MattlibLooper {
             runnable.logPeriodic();
         }
 
+        if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.VERBOSE_TELEMETRY)) {
+            for (IMattlibHooked runnable : orderedThingsToBeLooped) {
+                runnable.tunePeriodic();
+            }
+
+        }
 
         for (IMattlibHooked runnable : orderedThingsToBeLooped) {
-            runnable.tunePeriodic();
+            runnable.postLogicPeriodic();
         }
+
 
     }
 

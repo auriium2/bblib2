@@ -9,15 +9,17 @@ public class IntConsumer implements InitializableConsumer<Integer> {
 
     final NetworkTableEntry entry;
     final IntegerLogEntry logEntry;
+    final MattlibSettings.LogLevel threshold;
 
-    public IntConsumer(NetworkTableEntry entry, IntegerLogEntry logEntry) {
+    public IntConsumer(NetworkTableEntry entry, IntegerLogEntry logEntry, MattlibSettings.LogLevel threshold) {
         this.entry = entry;
         this.logEntry = logEntry;
+        this.threshold = threshold;
     }
 
 
     @Override public void accept(Integer integer) {
-        if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.VERBOSE_TELEMETRY)) {
+        if (MattlibSettings.USE_TELEMETRY.isAt(threshold)) {
             entry.setInteger(integer);
         }
         if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.LOG)) {

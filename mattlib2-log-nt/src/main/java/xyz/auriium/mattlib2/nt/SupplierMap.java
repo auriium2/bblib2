@@ -28,7 +28,6 @@ public class SupplierMap {
 
     @SuppressWarnings("unchecked")
     public <T> Optional<SupplierSupplier<T>> of(Class<T> clazz) {
-        //System.out.println("class: " + clazz + " and present?; " + backingMap.containsKey(clazz));
         if (!backingMap.containsKey(clazz)) return Optional.empty();
 
         return Optional.of((SupplierSupplier<T>) backingMap.get(clazz));

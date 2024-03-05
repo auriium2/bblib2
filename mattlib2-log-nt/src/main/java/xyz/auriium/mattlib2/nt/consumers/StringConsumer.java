@@ -10,10 +10,13 @@ public class StringConsumer implements InitializableConsumer<String> {
 
     final NetworkTableEntry entry;
     final StringLogEntry logEntry;
+    final MattlibSettings.LogLevel threshold;
 
-    public StringConsumer(NetworkTableEntry entry, StringLogEntry logEntry) {
+
+    public StringConsumer(NetworkTableEntry entry, StringLogEntry logEntry, MattlibSettings.LogLevel threshold) {
         this.entry = entry;
         this.logEntry = logEntry;
+        this.threshold = threshold;
     }
 
     @Override public void initializeLogging() {
@@ -21,7 +24,7 @@ public class StringConsumer implements InitializableConsumer<String> {
     }
 
     @Override public void accept(String s) {
-        if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.VERBOSE_TELEMETRY)) {
+        if (MattlibSettings.USE_TELEMETRY.isAt(threshold)) {
             entry.setString(s);
         }
         if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.LOG)) {

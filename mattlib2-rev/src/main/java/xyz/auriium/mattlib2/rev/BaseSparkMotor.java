@@ -181,7 +181,6 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IMattlibHooked {
 
     @Override
     public void logPeriodic() {
-
         motorComponent.reportCurrentDraw(outputCurrent);
         motorComponent.reportVoltageGiven(outputVoltage);
         motorComponent.reportTemperature(temperature);

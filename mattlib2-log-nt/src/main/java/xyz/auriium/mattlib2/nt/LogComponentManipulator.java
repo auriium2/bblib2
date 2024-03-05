@@ -236,7 +236,7 @@ public class LogComponentManipulator implements Manipulator {
                 //System.out.println(newPath.getAsTablePath());
                 Class<Object> type = (Class<Object>) method.getParameters()[0].getType();
 
-                Consumer<Object> objectConsumer = logger.generateLogger(ProcessPath.ofGeneric(newPath), type).orElseThrow(() ->
+                Consumer<Object> objectConsumer = logger.generateLogger(ProcessPath.ofGeneric(newPath), type, level).orElseThrow(() ->
                         new YuuKonfigException(
                         "tunerGenerationFailed",
                          String.format("could not set up a loggable value of type %s", type.getName()),

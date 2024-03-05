@@ -12,10 +12,12 @@ public class TranslationConsumer implements InitializableConsumer<Translation2d>
 
     final NetworkTableEntry entry;
     final DoubleArrayLogEntry logEntry;
+    final MattlibSettings.LogLevel threshold;
 
-    public TranslationConsumer(NetworkTableEntry entry, DoubleArrayLogEntry logEntry) {
+    public TranslationConsumer(NetworkTableEntry entry, DoubleArrayLogEntry logEntry, MattlibSettings.LogLevel threshold) {
         this.entry = entry;
         this.logEntry = logEntry;
+        this.threshold = threshold;
     }
 
     @Override
@@ -23,7 +25,7 @@ public class TranslationConsumer implements InitializableConsumer<Translation2d>
         if (!MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.LOG)) return;
 
         var data = new double[] { translation2d.getX(), translation2d.getY() };
-        if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.VERBOSE_TELEMETRY)) {
+        if (MattlibSettings.USE_TELEMETRY.isAt(threshold)) {
             entry.setDoubleArray(data);
         }
         if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.LOG)) {

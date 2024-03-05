@@ -11,10 +11,12 @@ public class IntArrayConsumer implements InitializableConsumer<int[]> {
 
     final NetworkTableEntry entry;
     final IntegerArrayLogEntry logEntry;
+    final MattlibSettings.LogLevel threshold;
 
-    public IntArrayConsumer(NetworkTableEntry entry, IntegerArrayLogEntry logEntry) {
+    public IntArrayConsumer(NetworkTableEntry entry, IntegerArrayLogEntry logEntry, MattlibSettings.LogLevel threshold) {
         this.entry = entry;
         this.logEntry = logEntry;
+        this.threshold = threshold;
     }
 
     @Override public void initializeLogging() {
@@ -27,7 +29,7 @@ public class IntArrayConsumer implements InitializableConsumer<int[]> {
         long[] longArray = new long[aLong.length];
         for(int i = 0; i < aLong.length; i++) longArray[i] = aLong[i];
 
-        if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.VERBOSE_TELEMETRY)) {
+        if (MattlibSettings.USE_TELEMETRY.isAt(threshold)) {
             entry.setIntegerArray(longArray);
         }
         if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.LOG)) {

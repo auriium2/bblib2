@@ -14,10 +14,12 @@ public class PoseConsumer implements InitializableConsumer<Pose2d> {
 
     final NetworkTableEntry entry;
     final DoubleArrayLogEntry logEntry;
+    final MattlibSettings.LogLevel threshold;
 
-    public PoseConsumer(NetworkTableEntry entry, DoubleArrayLogEntry logEntry) {
+    public PoseConsumer(NetworkTableEntry entry, DoubleArrayLogEntry logEntry, MattlibSettings.LogLevel threshold) {
         this.entry = entry;
         this.logEntry = logEntry;
+        this.threshold = threshold;
     }
 
     @Override
@@ -25,7 +27,7 @@ public class PoseConsumer implements InitializableConsumer<Pose2d> {
         if (!MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.LOG)) return;
 
         var arr = new double[] { pose2d.getX(), pose2d.getY(), pose2d.getRotation().getRadians() };
-        if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.VERBOSE_TELEMETRY)) {
+        if (MattlibSettings.USE_TELEMETRY.isAt(threshold)) {
             entry.setDoubleArray(arr);
         }
         if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.LOG)) {

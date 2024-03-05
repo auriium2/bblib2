@@ -13,10 +13,12 @@ public class SwerveStateConsumer implements InitializableConsumer<SwerveModuleSt
 
     final NetworkTableEntry entry;
     final DoubleArrayLogEntry logEntry;
+    final MattlibSettings.LogLevel threshold;
 
-    public SwerveStateConsumer(NetworkTableEntry entry, DoubleArrayLogEntry logEntry) {
+    public SwerveStateConsumer(NetworkTableEntry entry, DoubleArrayLogEntry logEntry, MattlibSettings.LogLevel threshold) {
         this.entry = entry;
         this.logEntry = logEntry;
+        this.threshold = threshold;
     }
 
     @Override
@@ -30,7 +32,7 @@ public class SwerveStateConsumer implements InitializableConsumer<SwerveModuleSt
             data[i * 2 + 1] = swerveModulePosition[i].speedMetersPerSecond;
         }
 
-        if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.VERBOSE_TELEMETRY)) {
+        if (MattlibSettings.USE_TELEMETRY.isAt(threshold)) {
             entry.setDoubleArray(data);
         }
         if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.LOG)) {

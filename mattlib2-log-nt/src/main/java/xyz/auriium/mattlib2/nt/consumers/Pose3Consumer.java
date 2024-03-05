@@ -16,10 +16,12 @@ public class Pose3Consumer implements InitializableConsumer<Pose3d> {
 
     final NetworkTableEntry entry;
     final DoubleArrayLogEntry logEntry;
+    final MattlibSettings.LogLevel threshold;
 
-    public Pose3Consumer(NetworkTableEntry entry, DoubleArrayLogEntry logEntry) {
+    public Pose3Consumer(NetworkTableEntry entry, DoubleArrayLogEntry logEntry, MattlibSettings.LogLevel threshold) {
         this.entry = entry;
         this.logEntry = logEntry;
+        this.threshold = threshold;
     }
 
     @Override
@@ -29,7 +31,7 @@ public class Pose3Consumer implements InitializableConsumer<Pose3d> {
         Vector<N3> angle = pose.getRotation().getAxis();
 
         var arr = new double[] { pose.getX(), pose.getY(), pose.getZ(),angle.get(0,0), angle.get(1,0), angle.get(2,0) };
-        if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.VERBOSE_TELEMETRY)) {
+        if (MattlibSettings.USE_TELEMETRY.isAt(threshold)) {
             entry.setDoubleArray(arr);
         }
         if (MattlibSettings.USE_TELEMETRY.isAt(MattlibSettings.LogLevel.LOG)) {
