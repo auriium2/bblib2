@@ -32,7 +32,7 @@ public class DCSimMotor implements ILinearMotor, IRotationalMotor, IMattlibHooke
     @Override
     public ExplainedException[] verifyInit() {
         motorComponent.inverted().ifPresent(b -> inverted = b);
-
+        System.out.println("is he inverted?: " + inverted);
 
         return new ExplainedException[0];
     }

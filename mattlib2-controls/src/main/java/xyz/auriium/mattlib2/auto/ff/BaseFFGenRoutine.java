@@ -1,5 +1,6 @@
 package xyz.auriium.mattlib2.auto.ff;
 
+import xyz.auriium.mattlib2.auto.ff.config.GenerateFFComponent;
 import xyz.auriium.mattlib2.loop.IMattlibHooked;
 import xyz.auriium.mattlib2.hardware.IActuator;
 import xyz.auriium.mattlib2.loop.Outcome;
@@ -50,7 +51,7 @@ public abstract class BaseFFGenRoutine implements ISimpleSubroutine, IMattlibHoo
         }
 
         if (orders == SetupOrders.DIE) {
-            var pr = new PolynomialRegression(from(velocityData), from(voltageData), 1);
+            var pr = FastPolynomialRegression.loadRankDeficient_iterative(from(velocityData), from(voltageData), 1);
             var ks = pr.beta(0);
             var kv = pr.beta(1);
             component.logPredictedStaticConstant(ks);

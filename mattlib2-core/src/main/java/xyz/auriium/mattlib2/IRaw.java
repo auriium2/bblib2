@@ -7,6 +7,7 @@ package xyz.auriium.mattlib2;
  */
 public interface IRaw {
 
+
     /**
      * How to use this: call .rawAccess(TalonFX.class) on a IMotor that you know is a TalonFX to get the TalonFX class out of it
      *

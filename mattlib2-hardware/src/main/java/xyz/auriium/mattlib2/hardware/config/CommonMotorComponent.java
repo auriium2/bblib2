@@ -32,15 +32,12 @@ public interface CommonMotorComponent extends INetworkedComponent {
     @Conf("breakModeEnabled") Optional<Boolean> breakModeEnabled();
     @Conf("hasAbsolute") Optional<Boolean> hasAbsoluteEncoder();
 
-
     //Stuff used for simulation
-    @Conf(ROTATIONAL_INERTIA) Optional<Double> massMomentInertia();
-    @Conf(POSITION_STDV) Optional<Double> positionStandardDeviation();
-    @Conf(VELOCITY_STDV) Optional<Double> velocityStandardDeviation();
+    @Conf("rotationalInertia") Optional<Double> massMomentInertia();
+    @Conf("positionStdv") Optional<Double> positionStandardDeviation();
+    @Conf("velocityStdv") Optional<Double> velocityStandardDeviation();
 
-    String POSITION_STDV = "positionStdv";
     String ROTATIONAL_INERTIA = "rotationalInertia";
-    String VELOCITY_STDV = "velocityStdv";
 
 
     enum Type {

@@ -1,15 +1,12 @@
 package xyz.auriium.mattlib2.nt;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import xyz.auriium.mattlib2.log.INetworkedComponent;
 import xyz.auriium.yuukonstants.GenericPath;
 import yuukonfig.core.impl.BaseManipulation;
 import yuukonfig.core.node.NotPresentNode;
 import yuukonfig.core.node.RawNodeFactory;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class LogComponentManipulatorTest {
 

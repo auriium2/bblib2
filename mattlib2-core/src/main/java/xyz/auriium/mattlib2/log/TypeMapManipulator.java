@@ -1,10 +1,7 @@
-package xyz.auriium.mattlib2.yuukonfig;
+package xyz.auriium.mattlib2.log;
 
 
 import xyz.auriium.mattlib2.Exceptions;
-import xyz.auriium.mattlib2.log.ProcessMap;
-import xyz.auriium.mattlib2.log.ProcessPath;
-import xyz.auriium.mattlib2.log.TypeMap;
 import xyz.auriium.yuukonstants.GenericPath;
 import yuukonfig.core.err.BadValueException;
 import yuukonfig.core.impl.BaseManipulation;
@@ -17,7 +14,6 @@ import yuukonfig.core.node.Node;
 import yuukonfig.core.node.RawNodeFactory;
 
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 

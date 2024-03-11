@@ -14,6 +14,9 @@ public class FastSwerveKinematics {
     final MatrixR064 inverseKinematics;
     final MatrixR064 forwardKinematics_pseudo;
 
+    /**
+     * We use this to save the last positions, because when x and y approach 0 the angle disappears
+     */
     final Rotation2d[] rotationVector = new Rotation2d[4];
 
     public FastSwerveKinematics(MatrixR064 inverseKinematics, MatrixR064 forwardKinematics_pseudo) {
@@ -82,6 +85,7 @@ public class FastSwerveKinematics {
     }
 
     public ChassisSpeeds convertModuleStateToCentroidState(SwerveModuleState[] states) {
+
         MatrixR064 moduleStateVector = MatrixR064.FACTORY.column(
                 states[0].speedMetersPerSecond * states[0].angle.getSin(),
                 states[0].speedMetersPerSecond * states[0].angle.getCos(),

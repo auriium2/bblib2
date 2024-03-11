@@ -1,4 +1,4 @@
-package xyz.auriium.mattlib2.auto.ff;
+package xyz.auriium.mattlib2.auto.ff.config;
 
 import xyz.auriium.mattlib2.log.INetworkedComponent;
 import xyz.auriium.mattlib2.log.annote.Conf;

@@ -1,5 +1,6 @@
 package xyz.auriium.mattlib2.foxe.flat;
 
+
 /*
 
 public class FlatbufferManipulator implements Manipulator {

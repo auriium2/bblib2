@@ -167,13 +167,16 @@ public class BaseTalonFXMotor implements IMattlibHooked, ILinearMotor, IRotation
     @Override
     public void logicPeriodic() {
 
-        BaseStatusSignal.refreshAll(
+        boolean isOk = BaseStatusSignal.refreshAll(
                 currentNow,
                 voltageOutput,
                 temperature,
                 position_mechanismRotations,
                 velocity_mechanismRotationsPerSecond
-        );
+        ).isOK();
+
+        //if not ok do something..
+
 
         if (botherRunningFwLimitLoop || botherRunningRvLimitLoop) {
             BaseStatusSignal.refreshAll(

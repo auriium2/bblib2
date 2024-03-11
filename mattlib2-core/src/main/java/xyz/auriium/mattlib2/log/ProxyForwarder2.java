@@ -1,4 +1,4 @@
-package xyz.auriium.mattlib2.nt;
+package xyz.auriium.mattlib2.log;
 
 import yuukonfig.core.impl.manipulator.section.Forwarder;
 import yuukonfig.core.impl.manipulator.section.ImpossibleAccessException;
@@ -11,7 +11,7 @@ public class ProxyForwarder2 implements Forwarder {
     private final Method method;
     private final Object toInvokeOn;
 
-    ProxyForwarder2(Method method, Object toInvokeOn) {
+    public ProxyForwarder2(Method method, Object toInvokeOn) {
         this.method = method;
         this.toInvokeOn = toInvokeOn;
     }

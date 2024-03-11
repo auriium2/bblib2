@@ -1,6 +1,6 @@
 package xyz.auriium.mattlib2.auto;
 
-import xyz.auriium.mattlib2.auto.ff.GenerateFFComponent;
+import xyz.auriium.mattlib2.auto.ff.config.GenerateFFComponent;
 import xyz.auriium.mattlib2.auto.ff.LinearFFGenRoutine;
 import xyz.auriium.mattlib2.auto.ff.RotationFFGenRoutine;
 import xyz.auriium.mattlib2.hardware.IActuator;

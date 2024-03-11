@@ -10,7 +10,7 @@ import xyz.auriium.mattlib2.log.TypeMap;
 import xyz.auriium.mattlib2.log.annote.Conf;
 import xyz.auriium.mattlib2.nt.LogComponentManipulator;
 import xyz.auriium.mattlib2.nt.NetworkMattLogger;
-import xyz.auriium.mattlib2.yuukonfig.TypeMapManipulator;
+import xyz.auriium.mattlib2.log.TypeMapManipulator;
 import yuukonfig.core.YuuKonfig;
 import yuukonfig.core.node.Node;
 

@@ -16,6 +16,7 @@ import xyz.auriium.mattlib2.MattlibSettings;
 import xyz.auriium.mattlib2.log.FixedSupplier;
 import xyz.auriium.mattlib2.log.INetworkedComponent;
 import xyz.auriium.mattlib2.log.ProcessPath;
+import xyz.auriium.mattlib2.log.ProxyForwarder2;
 import xyz.auriium.mattlib2.log.annote.*;
 import xyz.auriium.mattlib2.utils.ReflectionUtil;
 import xyz.auriium.yuukonstants.GenericPath;
@@ -63,66 +64,11 @@ public class LogComponentManipulator implements Manipulator {
 
     static final ByteBuddy BUDDY = new ByteBuddy();
 
-    public static int getLevenshteinDistance(CharSequence s, CharSequence t) {
-        if (s == null || t == null) {
-            throw new IllegalArgumentException("Strings must not be null");
-        }
-
-        int n = s.length();
-        int m = t.length();
-
-        if (n == 0) {
-            return m;
-        }
-        if (m == 0) {
-            return n;
-        }
-
-        if (n > m) {
-            // swap the input strings to consume less memory
-            final CharSequence tmp = s;
-            s = t;
-            t = tmp;
-            n = m;
-            m = t.length();
-        }
-
-        final int[] p = new int[n + 1];
-        // indexes into strings s and t
-        int i; // iterates through s
-        int j; // iterates through t
-        int upperleft;
-        int upper;
-
-        char jOfT; // jth character of t
-        int cost;
-
-        for (i = 0; i <= n; i++) {
-            p[i] = i;
-        }
-
-        for (j = 1; j <= m; j++) {
-            upperleft = p[0];
-            jOfT = t.charAt(j - 1);
-            p[0] = j;
-
-            for (i = 1; i <= n; i++) {
-                upper = p[i];
-                cost = s.charAt(i - 1) == jOfT ? 0 : 1;
-                // minimum of cell to the left+1, to the top+1, diagonally left and up +cost
-                p[i] = Math.min(Math.min(p[i - 1] + 1, p[i] + 1), upperleft + cost);
-                upperleft = upper;
-            }
-        }
-
-        return p[n];
-    }
-
     public static Optional<String> getTheClosestMatch(List<String> collection, String target) {
         int distance = Integer.MAX_VALUE;
         String closest = null;
         for (String compareObject : collection) {
-            int currentDistance = getLevenshteinDistance(compareObject, target);
+            int currentDistance = ReflectionUtil.getLevenshteinDistance(compareObject, target);
             if(currentDistance < distance) {
                 distance = currentDistance;
                 closest = compareObject;
@@ -135,6 +81,7 @@ public class LogComponentManipulator implements Manipulator {
     @Override
     public Object deserialize(Node node) throws BadValueException {
 
+        //Spell check
         boolean nodeIsMapping = node.type() == Node.Type.MAPPING;
 
 
@@ -147,8 +94,6 @@ public class LogComponentManipulator implements Manipulator {
             });
 
         }
-
-
 
         //other shit
 
@@ -178,14 +123,14 @@ public class LogComponentManipulator implements Manipulator {
 
             Conf conf = method.getAnnotation(Conf.class);
             Tune tune = method.getAnnotation(Tune.class);
-            HasUpdated up = method.getAnnotation(HasUpdated.class);
+            Callback callback = method.getAnnotation(Callback.class);
             SelfPath selfPath = method.getAnnotation(SelfPath.class);
 
             if (selfPath != null) {
                 continue;
             }
 
-            if (up != null) {
+            if (callback != null) {
                 hasUpdatedMap.add(method);
                 continue;
             }
@@ -232,7 +177,6 @@ public class LogComponentManipulator implements Manipulator {
 
                 configOrTuneMap.put(method, objectSupplier);
             } else { //It's a logger!
-
                 //System.out.println(newPath.getAsTablePath());
                 Class<Object> type = (Class<Object>) method.getParameters()[0].getType();
 
@@ -290,12 +234,9 @@ public class LogComponentManipulator implements Manipulator {
                         .invoke(Supplier.class.getMethod("get"))
                         .on(values.getValue())
                         .withAssigner(Assigner.DEFAULT, Assigner.Typing.DYNAMIC);
-
                 builder = builder
                         .define(values.getKey())
                         .intercept(supplierInvoke);
-
-
 
             }
             for (Map.Entry<Method, Consumer<Object>> values : loggerMap.entrySet()) {
@@ -305,7 +246,6 @@ public class LogComponentManipulator implements Manipulator {
                         .on(values.getValue())
                         .withArgument(0)
                         .withAssigner(Assigner.DEFAULT, Assigner.Typing.STATIC); //TODO this needs to be fixed
-
                 builder = builder
                         .define(values.getKey())
                         .intercept(consumerInvoke);
@@ -334,7 +274,7 @@ public class LogComponentManipulator implements Manipulator {
     }
 
     @Override
-    public Node serializeDefault(GenericPath path) {
+    public Node serializeDefault(GenericPath path)  {
 
         Object proxy = Proxy.newProxyInstance(
                 ClassLoader.getSystemClassLoader(),

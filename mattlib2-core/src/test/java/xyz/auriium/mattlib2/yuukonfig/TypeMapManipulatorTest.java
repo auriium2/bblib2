@@ -3,12 +3,11 @@ package xyz.auriium.mattlib2.yuukonfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import xyz.auriium.mattlib2.log.ProcessPath;
+import xyz.auriium.mattlib2.log.TypeMapManipulator;
 import xyz.auriium.yuukonstants.GenericPath;
 import yuukonfig.core.node.Mapping;
 import yuukonfig.core.node.Node;
 import yuukonfig.toml.TomlNodeFactory;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class TypeMapManipulatorTest {
 

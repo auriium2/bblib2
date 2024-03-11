@@ -1,4 +1,4 @@
-package xyz.auriium.mattlib2.yuukonfig;
+package xyz.auriium.mattlib2.log.yuukonfig;
 
 import xyz.auriium.yuukonstants.GenericPath;
 import yuukonfig.core.err.BadValueException;

@@ -1,4 +1,4 @@
-package xyz.auriium.mattlib2.yuukonfig;
+package xyz.auriium.mattlib2.log.yuukonfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;

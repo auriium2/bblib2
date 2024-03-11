@@ -21,6 +21,6 @@ public @interface Log {
 
 
     String value();
-    int vectorSize() default 0;
+    int vectorSize() default -1;
 
 }
