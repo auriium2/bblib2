@@ -26,13 +26,13 @@ public class DCSimController extends DCSimMotor implements ILinearController, IR
     }
 
     @Override
-    public void tunePeriodic() {
+    public void tunePeriodic() {/*
         if (pidComponent.hasUpdated()) {
             pidController.reset();
             pidController.setP(pidComponent.pConstant());
             pidController.setI(pidComponent.iConstant());
             pidController.setD(pidComponent.dConstant());
-        }
+        }*/
     }
 
     boolean isContinuous = false;

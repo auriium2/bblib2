@@ -44,7 +44,7 @@ public class OnboardLinearController extends BaseSparkMotor implements ILinearCo
                 pidComponent.dConstant()
         );
 
-        pidController.setTolerance(pidComponent.tolerance_pidUnits());
+        pidComponent.tolerance_pidUnits().ifPresent(pidController::setTolerance);
 
         return ee;
     }
@@ -60,12 +60,14 @@ public class OnboardLinearController extends BaseSparkMotor implements ILinearCo
     @Override public void tunePeriodic() {
         super.tunePeriodic();
 
+        //TODO breaks
+/*
         if (pidComponent.hasUpdated()) {
             pidController.setP(pidComponent.pConstant());
             pidController.setI(pidComponent.iConstant());
             pidController.setD(pidComponent.dConstant());
-            pidController.setTolerance(pidComponent.tolerance_pidUnits());
-        }
+            pidComponent.tolerance_pidUnits().ifPresent(pidController::setTolerance);
+        }*/
 
     }
 

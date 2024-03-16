@@ -7,10 +7,13 @@ import xyz.auriium.mattlib2.loop.IntelligentHub;
 import xyz.auriium.mattlib2.loop.Outcome;
 
 import java.util.function.Consumer;
+/*
 
+*/
 /**
  * Wrapper that checks how long something takes, assigning it a name
- */
+ *//*
+
 public class WatchdogRoutine<I,O> implements ISubroutine<I,O> {
 
     final ISubroutine<I,O> wrappedRoutine;
@@ -41,3 +44,4 @@ public class WatchdogRoutine<I,O> implements ISubroutine<I,O> {
         return wrappedRoutine.runLogic(orders, whiteboard);
     }
 }
+*/

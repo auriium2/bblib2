@@ -2,6 +2,7 @@ package xyz.auriium.mattlib2.loop.simple;
 
 import xyz.auriium.mattlib2.loop.ISubroutine;
 import xyz.auriium.mattlib2.loop.Outcome;
+/*
 
 public class SimpleComposer implements ISimpleSubroutine {
 
@@ -21,3 +22,4 @@ public class SimpleComposer implements ISimpleSubroutine {
 
 
 }
+*/

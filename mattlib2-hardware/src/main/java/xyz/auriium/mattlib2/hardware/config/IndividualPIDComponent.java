@@ -20,5 +20,6 @@ public interface IndividualPIDComponent extends INetworkedComponent {
      * @param state_primeUnits a reference value in "prime units" arbitrary number that is only guarunteed to be the same as units used by state report
      */
     @Log("state") void reportState(double state_primeUnits);
+    @Log("iteration") void reportIteration(int id);
 
 }

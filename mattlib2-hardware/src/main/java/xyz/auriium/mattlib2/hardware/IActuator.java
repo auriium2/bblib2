@@ -3,7 +3,6 @@ package xyz.auriium.mattlib2.hardware;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.numbers.N1;
 import xyz.auriium.mattlib2.IRaw;
-import xyz.auriium.mattlib2.loop.ISubroutine;
 
 /**
  * Represents something that can be driven

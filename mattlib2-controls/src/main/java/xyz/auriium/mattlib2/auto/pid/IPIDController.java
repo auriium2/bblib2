@@ -1,5 +1,7 @@
 package xyz.auriium.mattlib2.auto.pid;
 
+import java.io.Closeable;
+
 public interface IPIDController {
 
     /**
@@ -9,7 +11,6 @@ public interface IPIDController {
      * @return a control effort in prime units
      */
     double controlToReference_primeUnits(double setpoint_primeUnits, double state_primeUnits);
-
 
     boolean isAtSetpoint();
 

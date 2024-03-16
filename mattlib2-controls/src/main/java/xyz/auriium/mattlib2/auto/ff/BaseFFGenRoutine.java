@@ -41,48 +41,50 @@ public abstract class BaseFFGenRoutine implements ISimpleSubroutine, IMattlibHoo
     long endTime_ms;
     long startTime_ms;
 
-    @Override
-    public void runSetup(SetupOrders orders) {
-        if (orders == SetupOrders.AWAKEN) {
-            startTime_ms = System.currentTimeMillis();
-            endTime_ms = computeEndTimeInMS(System.currentTimeMillis(), delay_ms, endVoltage_volts, rampRate_voltsPerSecond);
+    Outcome<Void> awaken() {
+        startTime_ms = System.currentTimeMillis();
+        endTime_ms = computeEndTimeInMS(System.currentTimeMillis(), delay_ms, endVoltage_volts, rampRate_voltsPerSecond);
+        return Outcome.success();
+    }
 
-            return;
-        }
+    Outcome<Void> die() {
+        var pr = FastPolynomialRegression.loadRankDeficient_iterative(from(velocityData), from(voltageData), 1);
+        var ks = pr.beta(0);
+        var kv = pr.beta(1);
+        component.logPredictedStaticConstant(ks);
+        component.logPredictedVelocityConstant(kv);
 
-        if (orders == SetupOrders.DIE) {
-            var pr = FastPolynomialRegression.loadRankDeficient_iterative(from(velocityData), from(voltageData), 1);
-            var ks = pr.beta(0);
-            var kv = pr.beta(1);
-            component.logPredictedStaticConstant(ks);
-            component.logPredictedVelocityConstant(kv);
+        actuator.setToVoltage(0);
+        velocityData.clear();
+        voltageData.clear();
+        return Outcome.success();
+    }
 
-            actuator.setToVoltage(0);
-            velocityData.clear();
-            voltageData.clear();
-        }
+    Outcome<Void> work() {
+        long curTime_ms = System.currentTimeMillis();
+        if (curTime_ms > endTime_ms) return Outcome.success();
+
+        double voltage = computeVoltage(curTime_ms, startTime_ms, delay_ms, rampRate_voltsPerSecond);
+        double velocityOut = emitVelocity_primeUnitsPerSecond();
+        actuator.setToVoltage(voltage);
+
+        voltageData.add(voltage);
+        velocityData.add(velocityOut);
+
+        component.logInputVoltage(voltage);
+        component.logInputVelocity(velocityOut);
+
+        return Outcome.working();
     }
 
     @Override
     public Outcome<Void> runLogic(Orders ctx, Void vd) {
         return switch (ctx) {
-            case CONTINUE -> {
-                long curTime_ms = System.currentTimeMillis();
-                if (curTime_ms > endTime_ms) yield Outcome.success();
-
-                double voltage = computeVoltage(curTime_ms, startTime_ms, delay_ms, rampRate_voltsPerSecond);
-                double velocityOut = emitVelocity_primeUnitsPerSecond();
-                actuator.setToVoltage(voltage);
-
-                voltageData.add(voltage);
-                velocityData.add(velocityOut);
-
-                component.logInputVoltage(voltage);
-                component.logInputVelocity(velocityOut);
-
-                yield Outcome.working();
-            }
+            case CONTINUE -> work();
             case CANCEL -> Outcome.success(); //allow proceed to cleanup
+            case DIE -> die();
+            case AWAKEN -> awaken();
+            case COMPLETED -> Outcome.success();
         };
 
     }

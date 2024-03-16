@@ -16,16 +16,7 @@ public class PatlaborMusicRoutine implements ISimpleSubroutine {
         this.orchestra = orchestra;
     }
 
-    @Override
-    public void runSetup(SetupOrders orders) {
-        if (orders == SetupOrders.AWAKEN) {
-            orchestra.play();
-        }
 
-        if (orders == SetupOrders.DIE) {
-            orchestra.stop();
-        }
-    }
 
     @Override
     public Outcome<Void> runLogic(Orders orders, Void whiteboard) {

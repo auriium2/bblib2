@@ -21,7 +21,7 @@ import xyz.auriium.mattlib2.log.yuukonfig.*;
 import xyz.auriium.mattlib2.log.yuukonfig.Pose2Manipulator;
 import xyz.auriium.mattlib2.log.yuukonfig.Translation2Manipulator;
 import xyz.auriium.mattlib2.loop.IMattlibHooked;
-import xyz.auriium.mattlib2.yuukonfig.Translation3Manipulator;
+import xyz.auriium.mattlib2.log.yuukonfig.Translation3Manipulator;
 import yuukonfig.core.ConfigLoader;
 import yuukonfig.core.YuuKonfig;
 import yuukonfig.core.impl.safe.HandlesPrimitiveManipulator;

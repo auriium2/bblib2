@@ -14,9 +14,7 @@ public interface CommonPIDComponent extends INetworkedComponent {
     @Tune("p") double pConstant();
     @Tune("i") double iConstant();
     @Tune("d") double dConstant();
-    @Tune("tolerance") double tolerance_pidUnits();
+    @Conf("tolerance") Optional<Double> tolerance_pidUnits();
     @Conf("use_pid_deadband") Optional<Boolean> usePidDeadband();
-
-    boolean hasUpdated();
 
 }

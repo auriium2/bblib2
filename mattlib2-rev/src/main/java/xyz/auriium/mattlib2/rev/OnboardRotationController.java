@@ -36,7 +36,7 @@ public class OnboardRotationController extends BaseSparkMotor implements IRotati
                 pidComponent.dConstant()
         );
 
-        pidController.setTolerance(pidComponent.tolerance_pidUnits());
+        pidComponent.tolerance_pidUnits().ifPresent(pidController::setTolerance);
 
         return ee;
     }
@@ -51,12 +51,14 @@ public class OnboardRotationController extends BaseSparkMotor implements IRotati
     @Override public void tunePeriodic() {
         super.tunePeriodic();
 
+        //TODO
+/*
         if (pidComponent.hasUpdated()) {
             pidController.setP(pidComponent.pConstant());
             pidController.setI(pidComponent.iConstant());
             pidController.setD(pidComponent.dConstant());
-            pidController.setTolerance(pidComponent.tolerance_pidUnits());
-        }
+            pidComponent.tolerance_pidUnits().ifPresent(pidController::setTolerance);
+        }*/
     }
 
     @Override public void stopActuator() {

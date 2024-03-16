@@ -55,6 +55,10 @@ public interface PIDComponent extends CommonPIDComponent, IndividualPIDComponent
             individualPIDComponent.reportState(state_primeUnits);
         }
 
+        @Override public void reportIteration(int id) {
+            individualPIDComponent.reportIteration(id);
+        }
+
 
         @Override
         public double pConstant() {
@@ -66,7 +70,7 @@ public interface PIDComponent extends CommonPIDComponent, IndividualPIDComponent
             return commonPIDComponent.dConstant();
         }
 
-        @Override public double tolerance_pidUnits() {
+        @Override public Optional<Double> tolerance_pidUnits() {
             return commonPIDComponent.tolerance_pidUnits();
         }
 
@@ -75,15 +79,10 @@ public interface PIDComponent extends CommonPIDComponent, IndividualPIDComponent
         }
 
         @Override
-
         public double iConstant() {
             return commonPIDComponent.iConstant();
         }
 
-        @Override
-        public boolean hasUpdated() {
-            return commonPIDComponent.hasUpdated();
-        }
     }
 
 

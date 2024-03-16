@@ -15,7 +15,7 @@ public class WrappedCommand extends Command {
 
     @Override
     public void initialize() {
-        routine.runSetup(ISubroutine.SetupOrders.AWAKEN);
+        routine.runLogic(ISubroutine.Orders.AWAKEN);
     }
 
     @Override
@@ -30,6 +30,6 @@ public class WrappedCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        routine.runSetup(ISubroutine.SetupOrders.DIE);
+        routine.runLogic(ISubroutine.Orders.DIE);
     }
 }

@@ -5,7 +5,14 @@ import xyz.auriium.mattlib2.loop.ISubroutine;
 import xyz.auriium.mattlib2.loop.Outcome;
 /*
 
-public class SequentialSubroutine<I,O> implements ISubroutine<I,O> {
+
+public class SequenceSimilarRoutine<I,O> implements ISubroutine<I,O> {
+
+    */
+/**
+     * Represents a function that coalesces the output of many children into a single output
+     * @param <O>
+     *//*
 
     public interface CoalescingFunction<O> {
         O coalesce(O[] childrenOutput);
@@ -14,7 +21,7 @@ public class SequentialSubroutine<I,O> implements ISubroutine<I,O> {
     final ISubroutine<I,O>[] orderedRoutines;
     final CoalescingFunction<O> coalescingFunction;
 
-    public SequentialSubroutine(ISubroutine<I, O>[] orderedRoutines, CoalescingFunction<O> coalescingFunction) {
+    public SequenceSimilarRoutine(ISubroutine<I, O>[] orderedRoutines, CoalescingFunction<O> coalescingFunction) {
         this.coalescingFunction = coalescingFunction;
         this.orderedRoutines = orderedRoutines;
 
@@ -23,7 +30,7 @@ public class SequentialSubroutine<I,O> implements ISubroutine<I,O> {
 
     int nextIndex = 0;
     ISubroutine<I,O> loaded = null;
-    O[] childrenOutput =
+    O[] childrenOutput = new O[3];
 
     int maxIndex() {
         return orderedRoutines.length - 1;
@@ -46,6 +53,7 @@ public class SequentialSubroutine<I,O> implements ISubroutine<I,O> {
                 return outcome; //failure should bubble up
             }
 
+
             if (outcome.type() == Outcome.Type.SUCCESS) {
                 //go to the next one
                 loaded.runSetup(SetupOrders.DIE);
@@ -54,7 +62,7 @@ public class SequentialSubroutine<I,O> implements ISubroutine<I,O> {
                 if (predictedNextIndex > maxIndex()) {
                     //the entire routine is done
 
-                    return Outcome.success()
+                    return Outcome.success(coalescingFunction.coalesce(childrenOutput));
 
                 }
 
@@ -71,4 +79,5 @@ public class SequentialSubroutine<I,O> implements ISubroutine<I,O> {
         return null;
     }
 }
+
 */

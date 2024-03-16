@@ -1,4 +1,4 @@
-package xyz.auriium.mattlib2.auto.model;
+package xyz.auriium.mattlib2.hardware.signal;
 
 /**
  * Represents something that emits data continuously

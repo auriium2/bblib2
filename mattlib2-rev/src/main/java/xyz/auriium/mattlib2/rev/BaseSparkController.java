@@ -46,12 +46,12 @@ public class BaseSparkController extends BaseSparkMotor implements ILinearContro
     @Override
     public void tunePeriodic() {
         super.tunePeriodic();
-
+/*
         if (pidConfig.hasUpdated()) {
             localPidController.setP(pidConfig.pConstant(), 0);
             localPidController.setI(pidConfig.iConstant(), 0);
             localPidController.setD(pidConfig.dConstant(), 0);
-        }
+        }*/
     }
 
     @Override

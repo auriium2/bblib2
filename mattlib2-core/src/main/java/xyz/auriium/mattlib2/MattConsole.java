@@ -1,16 +1,27 @@
 package xyz.auriium.mattlib2;
 
 import xyz.auriium.mattlib2.log.ConsoleComponent;
+import xyz.auriium.mattlib2.loop.IMattlibHooked;
 import xyz.auriium.yuukonstants.exception.ExplainedException;
 
 import static java.lang.String.format;
 
-public class MattConsole {
+public class MattConsole implements IMattlibHooked {
 
     final ConsoleComponent component;
 
     public MattConsole(ConsoleComponent component) {
         this.component = component;
+
+        mattRegister();
+    }
+
+    String stringCache;
+
+    @Override public void logPeriodic() {
+        component.reportToConsole(stringCache);
+
+        stringCache = "";
     }
 
     public void reportExceptions(ExplainedException[] ahhhh) {
@@ -33,6 +44,6 @@ public class MattConsole {
             }
         }
 
-        component.reportToConsole(diseaster.toString());
+        stringCache = diseaster.toString();
     }
 }
