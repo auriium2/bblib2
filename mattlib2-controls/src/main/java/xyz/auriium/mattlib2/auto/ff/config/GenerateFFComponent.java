@@ -19,6 +19,7 @@ public interface GenerateFFComponent extends INetworkedComponent {
 
     @Log("predictKS") void logPredictedStaticConstant(double ks);
     @Log("predictKV") void logPredictedVelocityConstant(double kv);
+    @Log("predictKA") void logPredictedAccelConstant(double ka);
 
 
 }

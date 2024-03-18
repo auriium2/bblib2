@@ -48,11 +48,13 @@ public abstract class BaseFFGenRoutine implements ISimpleSubroutine, IMattlibHoo
     }
 
     Outcome<Void> die() {
-        var pr = FastPolynomialRegression.loadRankDeficient_iterative(from(velocityData), from(voltageData), 1);
+        var pr = FastPolynomialRegression.loadRankDeficient_iterative(from(velocityData), from(voltageData), 2);
         var ks = pr.beta(0);
         var kv = pr.beta(1);
+        var ka = pr.beta(2);
         component.logPredictedStaticConstant(ks);
         component.logPredictedVelocityConstant(kv);
+        component.logPredictedAccelConstant(ka);
 
         actuator.setToVoltage(0);
         velocityData.clear();

@@ -26,9 +26,11 @@ public class RotationalPIDBrain implements IPIDBrain, IMattlibHooked {
     double lastI = 0;
     double lastD = 0;
 
+
     @Override public void logPeriodic() {
         component.reportState(lastState);
         component.reportReference(lastReference);
+        component.reportAtGoal(internalController.atSetpoint());
     }
 
     @Override public ExplainedException[] verifyInit() {
@@ -43,6 +45,8 @@ public class RotationalPIDBrain implements IPIDBrain, IMattlibHooked {
         if (!MathUtil.isNear(component.pConstant(), lastP, 0.0001)) {
             internalController.setP(component.pConstant());
             lastP = component.pConstant();
+            System.out.println("last: " + lastP + " now: " + component.pConstant());
+
         }
 
         if (!MathUtil.isNear(component.iConstant(), lastI, 0.0001)) {
@@ -72,6 +76,11 @@ public class RotationalPIDBrain implements IPIDBrain, IMattlibHooked {
 
                 lastReference = setpoint_primeUnits;
                 lastState = state_primeUnits; //TODO do we want to wrap the state? let's wrap the state!
+
+
+                if (component.tolerance_pidUnits().isPresent()) {
+
+                }
 
                 return internalController.calculate(state_primeUnits,setpoint_primeUnits);
             }

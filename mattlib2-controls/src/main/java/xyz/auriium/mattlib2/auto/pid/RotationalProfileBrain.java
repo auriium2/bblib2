@@ -2,18 +2,25 @@ package xyz.auriium.mattlib2.auto.pid;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import xyz.auriium.mattlib2.Mattlib2Exception;
 import xyz.auriium.mattlib2.hardware.config.PIDComponent;
 import xyz.auriium.mattlib2.loop.IMattlibHooked;
 import xyz.auriium.yuukonstants.exception.ExplainedException;
 
-public class LinearPIDBrain implements IPIDBrain, IMattlibHooked {
+public class RotationalProfileBrain implements IPIDBrain, IMattlibHooked {
 
     final PIDComponent component;
-    final PIDController internalController = new PIDController(0,0,0);
+    final ProfiledPIDController internalController;
+    final double maxVelocity;
+    final double maxAccel;
 
-    public LinearPIDBrain(PIDComponent component) {
+    public RotationalProfileBrain(PIDComponent component, double maxVelocity, double maxAccel) {
         this.component = component;
+        this.maxVelocity = maxVelocity;
+        this.maxAccel = maxAccel;
+        this.internalController = new ProfiledPIDController(0,0,0, new TrapezoidProfile.Constraints(maxVelocity, maxAccel));
 
         mattRegister();
     }
@@ -26,15 +33,22 @@ public class LinearPIDBrain implements IPIDBrain, IMattlibHooked {
     double lastI = 0;
     double lastD = 0;
 
+
     @Override public void logPeriodic() {
         component.reportState(lastState);
         component.reportReference(lastReference);
-
+        component.reportAtGoal(internalController.atSetpoint());
     }
 
     @Override public ExplainedException[] verifyInit() {
+        System.out.println("WE PROFILED");
         internalController.setPID(component.pConstant(),component.iConstant(),component.dConstant());
-        component.tolerance_pidUnits().ifPresent(internalController::setTolerance);
+        internalController.setConstraints(new TrapezoidProfile.Constraints(maxVelocity, maxAccel));
+        component.tolerance_pidUnits().ifPresent(i -> {
+            System.out.println("WE TOLERANT");
+            internalController.setTolerance(i);
+        });
+        internalController.enableContinuousInput(-Math.PI, Math.PI);
 
         return IMattlibHooked.super.verifyInit();
     }
@@ -44,7 +58,6 @@ public class LinearPIDBrain implements IPIDBrain, IMattlibHooked {
             internalController.setP(component.pConstant());
             lastP = component.pConstant();
             System.out.println("last: " + lastP + " now: " + component.pConstant());
-
         }
 
         if (!MathUtil.isNear(component.iConstant(), lastI, 0.0001)) {
@@ -60,7 +73,7 @@ public class LinearPIDBrain implements IPIDBrain, IMattlibHooked {
 
     @Override public IPIDController spawn() {
         index++;
-        internalController.reset();
+        internalController.reset(lastState);
 
         return new IPIDController() {
             final int ownIndex = index;

@@ -2,6 +2,7 @@ package xyz.auriium.mattlib2.auto.ff;
 
 import org.ojalgo.matrix.MatrixR064;
 import org.ojalgo.matrix.decomposition.QR;
+import org.ojalgo.matrix.decomposition.SingularValue;
 import org.ojalgo.matrix.store.MatrixStore;
 import xyz.auriium.mattlib2.Mattlib2Exception;
 import xyz.auriium.yuukonstants.exception.ExplainedException;
@@ -26,9 +27,12 @@ public class FastPolynomialRegression {
      */
     public static FastPolynomialRegression loadRankDeficient_iterative(double[] x, double[] y, int desiredDegree) throws ExplainedException {
         MatrixR064 y_columnVector = MatrixR064.FACTORY.column(y); //y.length by 1 matrix
+        MatrixR064 x_columnVector = MatrixR064.FACTORY.column(x); //x.length by 1 matrix
+
 
         int actualDegree = desiredDegree;
         QR<Double> qr;
+        MatrixR064 vandermondeMatrix;
 
         while (true) {
             double[][] vandermondeMatrixComposition = new double[x.length][actualDegree + 1];
@@ -39,7 +43,7 @@ public class FastPolynomialRegression {
                 }
             }
 
-            MatrixR064 vandermondeMatrix = MatrixR064.FACTORY.rows(vandermondeMatrixComposition);
+            vandermondeMatrix = MatrixR064.FACTORY.rows(vandermondeMatrixComposition);
 
             qr = QR.R064.make(vandermondeMatrix);
             if (!qr.decompose(vandermondeMatrix)) {
@@ -60,6 +64,27 @@ public class FastPolynomialRegression {
 
 
         MatrixR064 polyCoefficientsBeta = MatrixR064.FACTORY.copy(qr.getSolution(y_columnVector)); //rank by 1 column vector
+/*
+
+        // mean of y[] values
+        double sst = 0;
+        double sum = 0.0;
+        for (int i = 0; i < x.length; i++) sum += y[i];
+        double mean = sum / x.length;
+
+        // total variation to be accounted for
+        for (int i = 0; i < x.length; i++) {
+            double dev = y[i] - mean;
+            sst += dev * dev;
+        }
+
+        // variation not accounted for
+        MatrixR064 residuals = vandermonde.multiply(polyCoefficientsBeta).subtract(y_columnVector);
+*/
+
+        //SingularValue.R064.make(residuals)
+
+
         return new FastPolynomialRegression(polyCoefficientsBeta, actualDegree);
     }
 

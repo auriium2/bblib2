@@ -21,5 +21,6 @@ public interface IndividualPIDComponent extends INetworkedComponent {
      */
     @Log("state") void reportState(double state_primeUnits);
     @Log("iteration") void reportIteration(int id);
+    @Log("atGoal") void reportAtGoal(boolean atGoal);
 
 }

@@ -59,6 +59,10 @@ public interface PIDComponent extends CommonPIDComponent, IndividualPIDComponent
             individualPIDComponent.reportIteration(id);
         }
 
+        @Override public void reportAtGoal(boolean atGoal) {
+            individualPIDComponent.reportAtGoal(atGoal);
+        }
+
 
         @Override
         public double pConstant() {
