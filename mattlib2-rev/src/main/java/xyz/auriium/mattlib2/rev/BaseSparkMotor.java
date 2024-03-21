@@ -85,90 +85,85 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IMattlibHooked {
         }*/
 
 
-        for (int i = 0; i < 30; i++) {
 
-            //TODO why?
+        toThrow = orThrow(sparkMax.getLastError(), path, toThrow); //initial error check
+        toThrow = orThrow(sparkMax.restoreFactoryDefaults(), path, toThrow);
+        //NEVER PUYT FUCKING CODE BEHIND THIS LINE BECAUSE IF YOU DO IT WILL WASTE <4> hours
+        //CHANGE THIS NUMBER WHEN YOUR TIME GETS WASTED
 
-            toThrow = orThrow(sparkMax.getLastError(), path, toThrow); //initial error check
-            toThrow = orThrow(sparkMax.restoreFactoryDefaults(), path, toThrow);
-            //NEVER PUYT FUCKING CODE BEHIND THIS LINE BECAUSE IF YOU DO IT WILL WASTE <4> hours
-            //CHANGE THIS NUMBER WHEN YOUR TIME GETS WASTED
-
-            motorComponent.inverted().ifPresent(sparkMax::setInverted);
+        motorComponent.inverted().ifPresent(sparkMax::setInverted);
 
 
-            toThrow = orThrow(
-                    encoder.setPositionConversionFactor(motorComponent.encoderToMechanismCoefficient()),
-                    path,
-                    toThrow
-            );
+        toThrow = orThrow(
+                encoder.setPositionConversionFactor(motorComponent.encoderToMechanismCoefficient()),
+                path,
+                toThrow
+        );
 
-            toThrow = orThrow(
-                    encoder.setVelocityConversionFactor(motorComponent.encoderToMechanismCoefficient() / 60.0),
-                    path,
-                    toThrow
-            );
+        toThrow = orThrow(
+                encoder.setVelocityConversionFactor(motorComponent.encoderToMechanismCoefficient() / 60.0),
+                path,
+                toThrow
+        );
 
-            toThrow = orThrow(
-                    sparkMax.enableVoltageCompensation(12),
-                    path,
-                    toThrow
-            );
+        toThrow = orThrow(
+                sparkMax.enableVoltageCompensation(12),
+                path,
+                toThrow
+        );
 
-            //cyrrent limits
-            int currentLimit = motorComponent.currentLimit().orElse(70);
-            toThrow = orThrow(
-                    sparkMax.setSmartCurrentLimit(currentLimit),
-                    path,
-                    toThrow
-            );
+        //cyrrent limits
+        int currentLimit = motorComponent.currentLimit().orElse(70);
+        toThrow = orThrow(
+                sparkMax.setSmartCurrentLimit(currentLimit),
+                path,
+                toThrow
+        );
 
-            //hard and soft limits
-            motorComponent.forwardLimit().ifPresent(normally -> {
-                SparkLimitSwitch.Type type;
-                if (normally == CommonMotorComponent.Normally.CLOSED) {
-                    type = SparkLimitSwitch.Type.kNormallyClosed;
-                } else {
-                    type = SparkLimitSwitch.Type.kNormallyOpen;
-                }
-                sparkMax.getForwardLimitSwitch(type).enableLimitSwitch(true);
-            });
-            motorComponent.reverseLimit().ifPresent(normally -> {
-                SparkLimitSwitch.Type type;
-                if (normally == CommonMotorComponent.Normally.CLOSED) {
-                    type = SparkLimitSwitch.Type.kNormallyClosed;
-                } else {
-                    type = SparkLimitSwitch.Type.kNormallyOpen;
-                }
-                sparkMax.getReverseLimitSwitch(type).enableLimitSwitch(true);
-            });
+        //hard and soft limits
+        motorComponent.forwardLimit().ifPresent(normally -> {
+            SparkLimitSwitch.Type type;
+            if (normally == CommonMotorComponent.Normally.CLOSED) {
+                type = SparkLimitSwitch.Type.kNormallyClosed;
+            } else {
+                type = SparkLimitSwitch.Type.kNormallyOpen;
+            }
+            sparkMax.getForwardLimitSwitch(type).enableLimitSwitch(true);
+        });
+        motorComponent.reverseLimit().ifPresent(normally -> {
+            SparkLimitSwitch.Type type;
+            if (normally == CommonMotorComponent.Normally.CLOSED) {
+                type = SparkLimitSwitch.Type.kNormallyClosed;
+            } else {
+                type = SparkLimitSwitch.Type.kNormallyOpen;
+            }
+            sparkMax.getReverseLimitSwitch(type).enableLimitSwitch(true);
+        });
 
-            motorComponent.forwardSoftLimit_mechanismRot().ifPresent(limit -> {
-                sparkMax.setSoftLimit(CANSparkBase.SoftLimitDirection.kForward, (float) (limit * motorComponent.encoderToMechanismCoefficient()));
-                sparkMax.enableSoftLimit(CANSparkBase.SoftLimitDirection.kForward, true);
-            });
-            motorComponent.reverseSoftLimit_mechanismRot().ifPresent(limit -> {
-                sparkMax.setSoftLimit(CANSparkBase.SoftLimitDirection.kReverse, (float) (limit * motorComponent.encoderToMechanismCoefficient()));
-                sparkMax.enableSoftLimit(CANSparkBase.SoftLimitDirection.kReverse, true);
-            });
-            motorComponent.breakModeEnabled().ifPresentOrElse(
-                    breakMode -> sparkMax.setIdleMode(breakMode ? CANSparkBase.IdleMode.kBrake : CANSparkBase.IdleMode.kCoast),
-                    () -> sparkMax.setIdleMode(CANSparkBase.IdleMode.kCoast)
-            );
+        motorComponent.forwardSoftLimit_mechanismRot().ifPresent(limit -> {
+            sparkMax.setSoftLimit(CANSparkBase.SoftLimitDirection.kForward, (float) (limit * motorComponent.encoderToMechanismCoefficient()));
+            sparkMax.enableSoftLimit(CANSparkBase.SoftLimitDirection.kForward, true);
+        });
+        motorComponent.reverseSoftLimit_mechanismRot().ifPresent(limit -> {
+            sparkMax.setSoftLimit(CANSparkBase.SoftLimitDirection.kReverse, (float) (limit * motorComponent.encoderToMechanismCoefficient()));
+            sparkMax.enableSoftLimit(CANSparkBase.SoftLimitDirection.kReverse, true);
+        });
+        motorComponent.breakModeEnabled().ifPresentOrElse(
+                breakMode -> sparkMax.setIdleMode(breakMode ? CANSparkBase.IdleMode.kBrake : CANSparkBase.IdleMode.kCoast),
+                () -> sparkMax.setIdleMode(CANSparkBase.IdleMode.kCoast)
+        );
 
-            motorComponent.openRampRate_seconds().ifPresent(sparkMax::setOpenLoopRampRate);
-            motorComponent.closedRampRate_seconds().ifPresent(sparkMax::setClosedLoopRampRate);
+        motorComponent.openRampRate_seconds().ifPresent(sparkMax::setOpenLoopRampRate);
+        motorComponent.closedRampRate_seconds().ifPresent(sparkMax::setClosedLoopRampRate);
 
 
-            sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus0, 200);
-            sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus1, 20);
-            sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus2, 10);
-            sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 100);
-            sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 100);
-            sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus5, 500);
-            sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus6, 500);
-
-        }
+        sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus0, 200);
+        sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus1, 20);
+        sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus2, 10);
+        sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 100);
+        sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 100);
+        sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus5, 500);
+        sparkMax.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus6, 500);
 
         return toThrow;
     }
