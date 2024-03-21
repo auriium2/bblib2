@@ -87,7 +87,7 @@ class BaseSparkMotor implements ILinearMotor, IRotationalMotor, IMattlibHooked {
 
 
         toThrow = orThrow(sparkMax.getLastError(), path, toThrow); //initial error check
-        toThrow = orThrow(sparkMax.restoreFactoryDefaults(), path, toThrow);
+        //toThrow = orThrow(sparkMax.restoreFactoryDefaults(), path, toThrow);
         //NEVER PUYT FUCKING CODE BEHIND THIS LINE BECAUSE IF YOU DO IT WILL WASTE <4> hours
         //CHANGE THIS NUMBER WHEN YOUR TIME GETS WASTED
 
